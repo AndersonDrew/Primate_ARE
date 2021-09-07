@@ -1,0 +1,1617 @@
+#in Biostrings package...
+#AREs are searched both forward and reverse to find on sense and antisense strand--palindromic motifs are only read one direction
+#sequence files are broken into four parts with less data to successfully load into R 
+hrecount<-function(seq)
+	{
+	 hklkf<-"GGAACANNNAGTGCT"
+	 hklkr<-"AGCACTNNNTGTTCC"
+	 mvdpf<-"TGAAGTNNNTGTTCT"
+	 mvdpr<-"AGAACANNNACTTCA"
+	 p21f<-"AGCACGNNNGGTTCC"
+	 p21r<-"GGAACCNNNCGTGCT"
+	 c3f<-"AGTACGNNNTGTTCT"
+	 c3r<-"AGAACANNNCGTACT"
+	 pb2f<-"GGTTCTNNNAGTACT"
+	 pb2r<-"AGTACTNNNAGAACC"
+	 pem1f<-"AGATCTNNNTGTTCC"
+	 pem1r<-"GGAACANNNAGATCT"
+	 pem2f<-"AGCACANNNTGCTCA"
+	 pem2r<-"TGAGCANNNTGTGCT"
+	 psa1f<-"AGAACANNNAGTGCT"
+	 psa1r<-"AGCACTNNNTGTTCT"
+	 psa3f<-"GGAACANNNTGTATC"
+	 psa3r<-"GATACANNNTGTTCC"
+	 sc12f<-"GGCTCTNNNAGTTCT"
+	 sc12r<-"AGAACTNNNAGAGCC"
+	 slp2f<-"TGGTCANNNAGTTCT"
+	 slp2r<-"AGAACTNNNTGACCA"
+	 slp3f<-"GAAACANNNTGTTCT"
+	 slp3r<-"AGAACANNNTGTTTC"
+	 sre1f<-"GGAACANNNTGTTCT"
+	 sre1r<-"AGAACANNNTGTTCC"
+	 sre2f<-"GGTACANNNTGTTCT"
+	 sre2r<-"AGAACANNNTGTACC"
+	 ccnd1f<-"TGCTAANNNAGTTCT"
+	 ccnd1r<-"AGAACTNNNTTAGCA"
+	 hk2f<-"GGAACANNNTGTATT"
+	 hk2r<-"AATACANNNTGTTCC"
+	 are<-"AGAACANNNTGTTCT"
+	 selare<-"GGAACANNNTGTTCC"
+	 patrn<-c(hklkf,hklkr,mvdpf,mvdpr,p21f,p21r,c3f,c3r,pb2f,pb2r,pem1f,pem1r,pem2f,pem2r,psa1f,psa1r,psa3f,psa3r,sc12f,sc12r,slp2f,slp2r,slp3f,slp3r,sre1f,sre1r,sre2f,sre2r,ccnd1f,ccnd1r,hk2f,hk2r,are,selare)
+	 nms<-c("hklkf","hklkr","mvdpf","mvdpr","p21f","p21r","c3f","c3r","pb2f","pb2r","pem1f","pem1r","pem2f","pem2r","psa1f","psa1r","psa3f","psa3r","sc12f","sc12r","slp2f","slp2r","slp3f","slp3r","sre1f","sre1r","sre2f","sre2r","ccnd1f","ccnd1r","hk2f","hk2r","are","selare")	
+	 total<-c()
+	 for (i in 1:length(patrn))
+		{
+		 heri<-patrn[i]
+		 print(nms[i])
+		 vector<-c()
+		 for (j in 1:length(seq))
+		 	{
+			 seqj<-seq[[j]]
+		 	 stringj<-DNAString(c2s(seqj),start=1,nchar=NA)
+		 	 findj<-countPattern(heri,stringj,fixed="subject")
+			 vector<-c(vector,findj)
+			 }
+		 vali<-sum(vector)
+		 total<-c(total,vali)
+		}
+	 names(total)<-nms	 
+	 return(total)
+	}
+seq<-read.fasta("~/Aotus_nancymaae/seq1.fasta")
+ana1<-hrecount(seq)
+seq<-read.fasta("~/Aotus_nancymaae/seq2.fasta")
+ana2<-hrecount(seq)
+seq<-read.fasta("~/Aotus_nancymaae/seq3.fasta")
+ana3<-hrecount(seq)
+seq<-read.fasta("~/Aotus_nancymaae/seq4.fasta")
+ana4<-hrecount(seq)
+seq<-read.fasta("~/Callithrix_jacchus/seq1.fasta")
+cja1<-hrecount(seq)
+seq<-read.fasta("~/Callithrix_jacchus/seq2.fasta")
+cja2<-hrecount(seq)
+seq<-read.fasta("~/Callithrix_jacchus/seq3.fasta")
+cja3<-hrecount(seq)
+seq<-read.fasta("~/Callithrix_jacchus/seq4.fasta")
+cja4<-hrecount(seq)
+seq<-read.fasta("~/Cebus_capucinus/seq1.fasta")
+cca1<-hrecount(seq)
+seq<-read.fasta("~/Cebus_capucinus/seq2.fasta")
+cca2<-hrecount(seq)
+seq<-read.fasta("~/Cebus_capucinus/seq3.fasta")
+cca3<-hrecount(seq)
+seq<-read.fasta("~/Cebus_capucinus/seq4.fasta")
+cca4<-hrecount(seq)
+seq<-read.fasta("~/Cercocebus_atys/seq1.fasta")
+cat1<-hrecount(seq)
+seq<-read.fasta("~/Cercocebus_atys/seq2.fasta")
+cat2<-hrecount(seq)
+seq<-read.fasta("~/Cercocebus_atys/seq3.fasta")
+cat3<-hrecount(seq)
+seq<-read.fasta("~/Cercocebus_atys/seq4.fasta")
+cat4<-hrecount(seq)
+seq<-read.fasta("~/Chlorocebus_sabaeus/seq1.fasta")
+csa1<-hrecount(seq)
+seq<-read.fasta("~/Chlorocebus_sabaeus/seq2.fasta")
+csa2<-hrecount(seq)
+seq<-read.fasta("~/Chlorocebus_sabaeus/seq3.fasta")
+csa3<-hrecount(seq)
+seq<-read.fasta("~/Chlorocebus_sabaeus/seq4.fasta")
+csa4<-hrecount(seq)
+seq<-read.fasta("~/Colobus_angolensis/seq1.fasta")
+can1<-hrecount(seq)
+seq<-read.fasta("~/Colobus_angolensis/seq2.fasta")
+can2<-hrecount(seq)
+seq<-read.fasta("~/Colobus_angolensis/seq3.fasta")
+can3<-hrecount(seq)
+seq<-read.fasta("~/Colobus_angolensis/seq4.fasta")
+can4<-hrecount(seq)
+seq<-read.fasta("~/Gorilla_gorilla/seq1.fasta")
+ggo1<-hrecount(seq)
+seq<-read.fasta("~/Gorilla_gorilla/seq2.fasta")
+ggo2<-hrecount(seq)
+seq<-read.fasta("~/Gorilla_gorilla/seq3.fasta")
+ggo3<-hrecount(seq)
+seq<-read.fasta("~/Gorilla_gorilla/seq4.fasta")
+ggo4<-hrecount(seq)
+seq<-read.fasta("~/Homo_sapiens/seq1.fasta")
+hsa1<-hrecount(seq)
+seq<-read.fasta("~/Homo_sapiens/seq2.fasta")
+hsa2<-hrecount(seq)
+seq<-read.fasta("~/Homo_sapiens/seq3.fasta")
+hsa3<-hrecount(seq)
+seq<-read.fasta("~/Homo_sapiens/seq4.fasta")
+hsa4<-hrecount(seq)
+seq<-read.fasta("~/Hylobates_moloch/seq1.fasta")
+hmo1<-hrecount(seq)
+seq<-read.fasta("~/Hylobates_moloch/seq2.fasta")
+hmo2<-hrecount(seq)
+seq<-read.fasta("~/Hylobates_moloch/seq3.fasta")
+hmo3<-hrecount(seq)
+seq<-read.fasta("~/Hylobates_moloch/seq4.fasta")
+hmo4<-hrecount(seq)
+seq<-read.fasta("~/Macaca_fascicularis/seq1.fasta")
+mfa1<-hrecount(seq)
+seq<-read.fasta("~/Macaca_fascicularis/seq2.fasta")
+mfa2<-hrecount(seq)
+seq<-read.fasta("~/Macaca_fascicularis/seq3.fasta")
+mfa3<-hrecount(seq)
+seq<-read.fasta("~/Macaca_fascicularis/seq4.fasta")
+mfa4<-hrecount(seq)
+seq<-read.fasta("~/Macaca_fuscata/seq1.fasta")
+mfu1<-hrecount(seq)
+seq<-read.fasta("~/Macaca_fuscata/seq2.fasta")
+mfu2<-hrecount(seq)
+seq<-read.fasta("~/Macaca_fuscata/seq3.fasta")
+mfu3<-hrecount(seq)
+seq<-read.fasta("~/Macaca_fuscata/seq4.fasta")
+mfu4<-hrecount(seq)
+seq<-read.fasta("~/Macaca_mulatta/seq1.fasta")
+mmu1<-hrecount(seq)
+seq<-read.fasta("~/Macaca_mulatta/seq2.fasta")
+mmu2<-hrecount(seq)
+seq<-read.fasta("~/Macaca_mulatta/seq3.fasta")
+mmu3<-hrecount(seq)
+seq<-read.fasta("~/Macaca_mulatta/seq4.fasta")
+mmu4<-hrecount(seq)
+seq<-read.fasta("~/Macaca_nemestrina/seq1.fasta")
+mne1<-hrecount(seq)
+seq<-read.fasta("~/Macaca_nemestrina/seq2.fasta")
+mne2<-hrecount(seq)
+seq<-read.fasta("~/Macaca_nemestrina/seq3.fasta")
+mne3<-hrecount(seq)
+seq<-read.fasta("~/Macaca_nemestrina/seq4.fasta")
+mne4<-hrecount(seq)
+seq<-read.fasta("~/Mandrillus_leucophaeus/seq1.fasta")
+mle1<-hrecount(seq)
+seq<-read.fasta("~/Mandrillus_leucophaeus/seq2.fasta")
+mle2<-hrecount(seq)
+seq<-read.fasta("~/Mandrillus_leucophaeus/seq3.fasta")
+mle3<-hrecount(seq)
+seq<-read.fasta("~/Mandrillus_leucophaeus/seq4.fasta")
+mle4<-hrecount(seq)
+seq<-read.fasta("~/Mandrillus_sphinx/seq1.fasta")
+msp1<-hrecount(seq)
+seq<-read.fasta("~/Mandrillus_sphinx/seq2.fasta")
+msp2<-hrecount(seq)
+seq<-read.fasta("~/Mandrillus_sphinx/seq3.fasta")
+msp3<-hrecount(seq)
+seq<-read.fasta("~/Mandrillus_sphinx/seq4.fasta")
+msp4<-hrecount(seq)
+seq<-read.fasta("~/Nomascus_leucogenys/seq1.fasta")
+nle1<-hrecount(seq)
+seq<-read.fasta("~/Nomascus_leucogenys/seq2.fasta")
+nle2<-hrecount(seq)
+seq<-read.fasta("~/Nomascus_leucogenys/seq3.fasta")
+nle3<-hrecount(seq)
+seq<-read.fasta("~/Nomascus_leucogenys/seq4.fasta")
+nle4<-hrecount(seq)
+seq<-read.fasta("~/Pan_paniscus/seq1.fasta")
+ppn1<-hrecount(seq)
+seq<-read.fasta("~/Pan_paniscus/seq2.fasta")
+ppn2<-hrecount(seq)
+seq<-read.fasta("~/Pan_paniscus/seq3.fasta")
+ppn3<-hrecount(seq)
+seq<-read.fasta("~/Pan_paniscus/seq4.fasta")
+ppn4<-hrecount(seq)
+seq<-read.fasta("~/Pan_troglodytes/seq1.fasta")
+ptr1<-hrecount(seq)
+seq<-read.fasta("~/Pan_troglodytes/seq2.fasta")
+ptr2<-hrecount(seq)
+seq<-read.fasta("~/Pan_troglodytes/seq3.fasta")
+ptr3<-hrecount(seq)
+seq<-read.fasta("~/Pan_troglodytes/seq4.fasta")
+ptr4<-hrecount(seq)
+seq<-read.fasta("~/Papio_anubis/seq1.fasta")
+pan1<-hrecount(seq)
+seq<-read.fasta("~/Papio_anubis/seq2.fasta")
+pan2<-hrecount(seq)
+seq<-read.fasta("~/Papio_anubis/seq3.fasta")
+pan3<-hrecount(seq)
+seq<-read.fasta("~/Papio_anubis/seq4.fasta")
+pan4<-hrecount(seq)
+seq<-read.fasta("~/Pongo_abelii/seq1.fasta")
+pab1<-hrecount(seq)
+seq<-read.fasta("~/Pongo_abelii/seq2.fasta")
+pab2<-hrecount(seq)
+seq<-read.fasta("~/Pongo_abelii/seq3.fasta")
+pab3<-hrecount(seq)
+seq<-read.fasta("~/Pongo_abelii/seq4.fasta")
+pab4<-hrecount(seq)
+seq<-read.fasta("~/Saimiri_boliviensis/seq1.fasta")
+sbo1<-hrecount(seq)
+seq<-read.fasta("~/Saimiri_boliviensis/seq2.fasta")
+sbo2<-hrecount(seq)
+seq<-read.fasta("~/Saimiri_boliviensis/seq3.fasta")
+sbo3<-hrecount(seq)
+seq<-read.fasta("~/Saimiri_boliviensis/seq4.fasta")
+sbo4<-hrecount(seq)
+seq<-read.fasta("~/Theropithecus_gelada/seq1.fasta")
+tge1<-hrecount(seq)
+seq<-read.fasta("~/Theropithecus_gelada/seq2.fasta")
+tge2<-hrecount(seq)
+seq<-read.fasta("~/Theropithecus_gelada/seq3.fasta")
+tge3<-hrecount(seq)
+seq<-read.fasta("~/Theropithecus_gelada/seq4.fasta")
+tge4<-hrecount(seq)
+seq<-read.fasta("~/Trachypithecus_francoisi/seq1.fasta")
+tfr1<-hrecount(seq)
+seq<-read.fasta("~/Trachypithecus_francoisi/seq2.fasta")
+tfr2<-hrecount(seq)
+seq<-read.fasta("~/Trachypithecus_francoisi/seq3.fasta")
+tfr3<-hrecount(seq)
+seq<-read.fasta("~/Trachypithecus_francoisi/seq4.fasta")
+tfr4<-hrecount(seq)
+Aotus_nancymaae<-ana1+ana2+ana3+ana4
+Callathrix_jacchus<-cja1+cja2+cja3+cja4
+Cebus_capucinus<-cca1+cca2+cca3+cca4
+Cercocebus_atys<-cat1+cat2+cat3+cat4
+Chlorocebus_sabaeus<-csa1+csa2+csa3+csa4
+Colobus_angolensis<-can1+can2+can3+can4
+Gorilla_gorilla<-ggo1+ggo2+ggo3+ggo4
+Homo_sapiens<-hsa1+hsa2+hsa3+hsa4
+Hylobates_moloch<-hmo1+hmo2+hmo3+hmo4
+Macaca_fascicularis<-mfa1+mfa2+mfa3+mfa4
+Macaca_fuscata<-mfu1+mfu2+mfu3+mfu4
+Macaca_mulatta<-mmu1+mmu2+mmu3+mmu4
+Macaca_nemestrina<-mne1+mne2+mne3+mne4
+Mandrillus_leucophaeus<-mle1+mle2+mle3+mle4
+Mandrillus_sphinx<-msp1+msp2+msp3+msp4
+Nomascus_leucogenys<-nle1+nle2+nle3+nle4
+Pan_paniscus<-ppn1+ppn2+ppn3+ppn4
+Pan_troglodytes<-ptr1+ptr2+ptr3+ptr4
+Papio_anubis<-pan1+pan2+pan3+pan4
+Pongo_abelii<-pab1+pab2+pab3+pab4
+Saimiri_boliviensis<-sbo1+sbo2+sbo3+sbo4
+Theropithecus_gelada<-tge1+tge2+tge3+tge4
+Trachypithecus_francoisi<-tfr1+tfr2+tfr3+tfr4
+df<-as.data.frame(rbind(Aotus_nancymaae,Callathrix_jacchus,Cebus_capucinus,Cercocebus_atys,Chlorocebus_sabaeus,Colobus_angolensis,Gorilla_gorilla,Homo_sapiens,Hylobates_moloch,Macaca_fascicularis,Macaca_fuscata,Macaca_mulatta,Macaca_nemestrina,Mandrillus_leucophaeus,Mandrillus_sphinx,Nomascus_leucogenys,Pan_paniscus,Pan_troglodytes,Papio_anubis,Pongo_abelii,Saimiri_boliviensis,Theropithecus_gelada,Trachypithecus_francoisi))
+
+#Added species names and raw measures of phenotypes to dataframe as well as column names for AREs--all done in Excel
+
+df<-read.csv("~/primdf.csv")
+
+# read in tree and flip nodes to make for easier viewing.
+library(phytools)
+tree<-read.nexus("~/treeall.nex")
+
+# read in tree with species without testes data removed
+treenoT<-read.nexus("~/treenoT.nex")
+
+#get residuals from log-log plot to account for increasing size
+Mass<-resid(lm(log(massm)~log(massf),df))
+Canine<-resid(lm(log(k9m)~log(k9f),df))
+Testes<-resid(lm(log(testes)~log(masst),na.action=na.exclude,df))
+#remove na set
+TestesnoT<-Testes[complete.cases(Testes)]
+dtf<-data.frame(Testes,Mass,Canine,df[,8:25])
+rownames(dtf)<-df$Species
+
+#Find PCA with positive loadings to simplify all AREs
+hre<-prcomp(dtf[,4:21])
+hre
+#Standard deviations (1, .., p=18):
+# [1] 128.241575  81.124273  56.457188  42.594905  37.313822  30.942242  26.101446  18.525838  16.515420  14.799746  13.038792   9.655945   8.489800   6.609720   4.450577   4.222396   2.749724   2.017907
+#
+#Rotation (n x k) = (18 x 18):
+#               PC1          PC2          PC3          PC4          PC5          PC6         PC7         PC8          PC9         PC10        PC11          PC12          PC13          PC14         PC15        PC16        PC17         PC18
+#cARE   0.170755568 -0.143650113 -0.056073536  0.265107568 -0.043451466 -0.374362086  0.41879550 -0.18367002  0.179913989 -0.387690550 -0.04154257 -0.4042119488  0.1503817424  -0.1329549774 -0.347444716  0.10025168 -0.07078076  0.042019458
+#aARE   0.072284761 -0.040913937  0.008474142  0.085587597 -0.129731934 -0.033679618  0.26260365 -0.11570966  0.030659883 -0.151516355  0.13255817  0.7541565951 -0.2171219705  -0.3986561159 -0.009845121  0.17457061 -0.11701588  0.157593010
+#aSRE   0.176454704 -0.168461817 -0.156332955  0.007791609  0.176488110 -0.047467515 -0.23722447 -0.06414906 -0.315015994  0.127735823 -0.56317156 -0.0375569608 -0.1283234704  -0.5301111119 -0.169468830 -0.22216359  0.11182721  0.001123257
+#cSRE  -0.034122312  0.159326989 -0.058203504  0.059193167  0.043825677  0.068233934  0.06438118 -0.10411953  0.006703629 -0.307035830  0.06213980 -0.1504578644  0.2235356225  -0.4140735179  0.718828545 -0.08525946  0.09326533 -0.264716332
+#c3     0.003432997  0.029003015  0.003600192 -0.026659638 -0.049560683  0.017234974  0.11188751  0.13968744  0.058518360  0.245924313  0.07194276 -0.0254401959 -0.1502976233  -0.1693883475 -0.206594674  0.17246138 -0.25157742 -0.840782516
+#ccnd1  0.854699570  0.225447158  0.334985773 -0.265566290  0.080897736  0.132430386  0.02483480 -0.05047328  0.035565626 -0.009913665  0.01880873 -0.0348708901 -0.0009714009   0.0482592154  0.038928544  0.03010062 -0.02909603  0.011993202
+#hk2    0.110788901 -0.066990886 -0.092824701  0.093502021 -0.217362765  0.014123097  0.01360674 -0.05552760 -0.704899352 -0.223959287  0.41125432 -0.1553643142 -0.3700676187   0.1137467775 -0.018743010 -0.12158600  0.06841405 -0.071778455
+#hklk   0.151129047  0.006964224 -0.120631000  0.083028937 -0.527461486 -0.359803573 -0.45642129 -0.43967146  0.076033640  0.273956275  0.07556781  0.0128499498  0.1551055060   0.0005662909  0.114500595  0.09516812 -0.11349252 -0.023356701
+#mvdp   0.087085516  0.262115803 -0.695635475 -0.124077872  0.454638075 -0.031989194  0.14144720 -0.33854717  0.009883159  0.147923797  0.11091458  0.0299020406 -0.0908687806   0.1522929897  0.018490153  0.08899316 -0.08188264  0.021789318
+#p21    0.007170636 -0.020261387 -0.008097350 -0.021448333 -0.002961809  0.006589081 -0.04912204 -0.05042368 -0.043554169 -0.031896424 -0.07260040  0.0174825834 -0.0182495731   0.0316232969 -0.038239961  0.64976665  0.73971724 -0.115500092
+#pb2    0.066735450 -0.103106219 -0.052945055  0.123876761  0.109103605 -0.008956095 -0.10808786  0.15298950 -0.400835637 -0.226367198 -0.31716671  0.1464281828  0.3293932927   0.2476200043  0.136364597  0.43743749 -0.45150281 -0.046149424
+#pem1   0.092851493 -0.006047473 -0.064084735  0.041551328  0.081574182 -0.111907294 -0.06172784 -0.05730783 -0.048876079 -0.214992608  0.05756483  0.4252650842  0.4652024869   0.2211939710 -0.243190441 -0.43921509  0.29720618 -0.347474661
+#pem2   0.125616800 -0.003063787 -0.027852262  0.230115270 -0.173749835 -0.129197095  0.57475238  0.16481074 -0.229846257  0.562849322 -0.13323921  0.0395451965  0.1947727028   0.0947333889  0.228834764 -0.09486421  0.15751790  0.063765410
+#psa1  -0.084116270  0.805189918  0.013266948  0.105699908 -0.050399535 -0.346225100 -0.11812272  0.34864291 -0.118361917 -0.072094478 -0.02412100  0.0043280971 -0.0059655241  -0.1375231068 -0.160264328  0.02791824  0.02062481  0.098402286
+#psa3   0.173968839 -0.007194234  0.060328418  0.821039930  0.306217780  0.211701946 -0.25094456  0.04378803  0.131689651  0.141206168  0.21587426 -0.0007171223 -0.0510033558  -0.0191133404 -0.010978733  0.02558355  0.02261449  0.017964158
+#sc12   0.101002886  0.091394105 -0.147519658  0.208338539 -0.236054654 -0.009554340  0.03792101  0.02005184  0.262615000 -0.248157602 -0.48870066  0.0871279534 -0.4916468899   0.3786448636  0.206909194 -0.15193942  0.05351994 -0.166754124
+#slp2  -0.126346047  0.333559150 -0.016997610  0.113829478 -0.317697647  0.667114990  0.13283365 -0.36206891 -0.098043660 -0.015046892 -0.18990864 -0.0559857436  0.1994809758  -0.0386433918 -0.267738144  0.01011178 -0.04557002  0.025075881
+#slp3   0.260161544 -0.141184728 -0.562168173 -0.066588971 -0.324554187  0.253241890 -0.09656771  0.54174870  0.179567428 -0.079101316  0.13415559 -0.0429643110  0.1569206087  -0.1393139643 -0.062336702  0.01899555  0.04040357  0.106654164
+ 
+summary(hre)
+#Importance of components:
+#                            PC1     PC2      PC3      PC4      PC5      PC6      PC7      PC8      PC9     PC10     PC11    PC12    PC13    PC14    PC15    PC16    PC17    PC18
+#Standard deviation     128.2416 81.1243 56.45719 42.59491 37.31382 30.94224 26.10145 18.52584 16.51542 14.79975 13.03879 9.65594 8.48980 6.60972 4.45058 4.22240 2.74972 2.01791
+#Proportion of Variance   0.5088  0.2036  0.09861  0.05613  0.04308  0.02962  0.02108  0.01062  0.00844  0.00678  0.00526 0.00288 0.00223 0.00135 0.00061 0.00055 0.00023 0.00013
+#Cumulative Proportion    0.5088  0.7124  0.81101  0.86714  0.91022  0.93984  0.96092  0.97154  0.97997  0.98675  0.99201 0.99489 0.99712 0.99848 0.99909 0.99964 0.99987 1.00000
+
+#add PC1 into dataframe
+HRE<-hre$x[,1]
+dtf<-data.frame(dtf,HRE)
+#add Species names to dataframe
+dtf$Species<-df$Species
+rownames(dtf)<-dtf$Species
+#remove na
+dtfnoT<-dtf[complete.cases(dtf),]
+
+#model testing for each pairwise model
+#AIC used to choose model
+#extract values from chosen model
+library(nlme)
+testes.results<-data.frame(are=factor(),model=factor(),correlation=numeric(),pval=numeric(),r2=numeric(),lambda=numeric())
+for(i in 2)
+	{
+	 print(i)
+	 namei<-colnames(dtfnoT)[i]
+	 v<-dtfnoT[,i]
+	 l<-phylosig(treenoT,resid(gls(v~Testes,dtfnoT)),method="lambda",test=T)$lambda
+	 fix.lambda<-gls(v~TestesnoT,correlation=corPagel(l,phy=treenoT,form=~Species,fixed=TRUE),method="ML",dtfnoT)
+	 print("mod2")
+	 no.lambda<-gls(v~TestesnoT,correlation=corPagel(0,phy=treenoT,form=~Species,fixed=TRUE),method="ML",dtfnoT)
+	 print("mod3")
+	 mod.choose<-anova(fix.lambda,no.lambda)
+	 model<-rownames(mod.choose)[which(min(mod.choose$AIC)==mod.choose$AIC)]
+	 if(model=="free.lambda")
+	 	{
+	 	  l<-attr(free.lambda$apVar,"Pars")[1]
+	 	  if(l>1)
+	 	  {
+	 	  	l=1
+	 	  }
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dtfnoT[,1:22]),vcv(treenoT),l)$R)[1,i]	
+	 	 p<-summary(free.lambda)$tTable[2,4]
+	 	 aov.free<-aov(free.lambda)
+	 	 RSS<-summary(aov.free)[[1]]["Residuals", "Sum Sq"]
+	 	 TSS<-summary(aov.free)[[1]]["TestesnoT", "Sum Sq"]+RSS
+	 	 r<-1-RSS/TSS
+	 	}
+	 if(model=="fix.lambda")
+	 	{
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dtfnoT[,1:22]),vcv(treenoT),l)$R)[1,i]	
+	 	 p<-summary(fix.lambda)$tTable[2,4]
+	 	 aov.fix<-aov(fix.lambda)
+	 	 RSS<-summary(aov.fix)[[1]]["Residuals", "Sum Sq"]
+	 	 TSS<-summary(aov.fix)[[1]]["TestesnoT", "Sum Sq"]+RSS
+	 	 r<-1-RSS/TSS
+	 	}
+	 if(model=="no.lambda")
+	 	{
+	 	 l=0
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dtfnoT[,1:22]),vcv(treenoT),l)$R)[1,i]	
+	 	 p<-summary(no.lambda)$tTable[2,4]
+	 	 aov.no<-aov(no.lambda)
+	 	 RSS<-summary(aov.no)[[1]]["Residuals", "Sum Sq"]
+	 	 TSS<-summary(aov.no)[[1]]["TestesnoT", "Sum Sq"]+RSS
+	 	 r<-1-RSS/TSS
+	 	}
+	 dfi<-data.frame(namei,model,cor,p,r,l)
+	 colnames(dfi)<-c("are","model","correlation","pval","r2","lambda")
+	 testes.results<-rbind(testes.results,dfi)
+	 print(i)
+	}
+for(i in 3:11)
+	{
+	 print(i)
+	 namei<-colnames(dtfnoT)[i]
+	 v<-dtfnoT[,i]
+	 l<-phylosig(treenoT,resid(gls(v~Testes,dtfnoT)),method="lambda",test=T)$lambda
+	 free.lambda<-gls(v~TestesnoT,correlation=corPagel(l,phy=treenoT,form=~Species,fixed=FALSE),method="ML",dtfnoT)
+	 print("mod1")
+	 fix.lambda<-gls(v~TestesnoT,correlation=corPagel(l,phy=treenoT,form=~Species,fixed=TRUE),method="ML",dtfnoT)
+	 print("mod2")
+	 no.lambda<-gls(v~TestesnoT,correlation=corPagel(0,phy=treenoT,form=~Species,fixed=TRUE),method="ML",dtfnoT)
+	 print("mod3")
+	 mod.choose<-anova(free.lambda,fix.lambda,no.lambda)
+	 model<-rownames(mod.choose)[which(min(mod.choose$AIC)==mod.choose$AIC)]
+	 if(model=="free.lambda")
+	 	{
+	 	  l<-attr(free.lambda$apVar,"Pars")[1]
+	 	  if(l>1)
+	 	  {
+	 	  	l=1
+	 	  }
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dtfnoT[,1:22]),vcv(treenoT),l)$R)[1,i]	
+	 	 p<-summary(free.lambda)$tTable[2,4]
+	 	 aov.free<-aov(free.lambda)
+	 	 RSS<-summary(aov.free)[[1]]["Residuals", "Sum Sq"]
+	 	 TSS<-summary(aov.free)[[1]]["TestesnoT", "Sum Sq"]+RSS
+	 	 r<-1-RSS/TSS
+	 	}
+	 if(model=="fix.lambda")
+	 	{
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dtfnoT[,1:22]),vcv(treenoT),l)$R)[1,i]	
+	 	 p<-summary(fix.lambda)$tTable[2,4]
+	 	 aov.fix<-aov(fix.lambda)
+	 	 RSS<-summary(aov.fix)[[1]]["Residuals", "Sum Sq"]
+	 	 TSS<-summary(aov.fix)[[1]]["TestesnoT", "Sum Sq"]+RSS
+	 	 r<-1-RSS/TSS
+	 	}
+	 if(model=="no.lambda")
+	 	{
+	 	 l=0
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dtfnoT[,1:22]),vcv(treenoT),l)$R)[1,i]	
+	 	 p<-summary(no.lambda)$tTable[2,4]
+	 	 aov.no<-aov(no.lambda)
+	 	 RSS<-summary(aov.no)[[1]]["Residuals", "Sum Sq"]
+	 	 TSS<-summary(aov.no)[[1]]["TestesnoT", "Sum Sq"]+RSS
+	 	 r<-1-RSS/TSS
+	 	}
+	 dfi<-data.frame(namei,model,cor,p,r,l)
+	 colnames(dfi)<-c("are","model","correlation","pval","r2","lambda")
+	 testes.results<-rbind(testes.results,dfi)
+	 print(i)
+	}
+for(i in 12)
+	{
+	 print(i)
+	 namei<-colnames(dtfnoT)[i]
+	 v<-dtfnoT[,i]
+	 l<-phylosig(treenoT,resid(gls(v~Testes,dtfnoT)),method="lambda",test=T)$lambda
+	 fix.lambda<-gls(v~TestesnoT,correlation=corPagel(l,phy=treenoT,form=~Species,fixed=TRUE),method="ML",dtfnoT)
+	 print("mod2")
+	 no.lambda<-gls(v~TestesnoT,correlation=corPagel(0,phy=treenoT,form=~Species,fixed=TRUE),method="ML",dtfnoT)
+	 print("mod3")
+	 mod.choose<-anova(fix.lambda,no.lambda)
+	 model<-rownames(mod.choose)[which(min(mod.choose$AIC)==mod.choose$AIC)]
+	 if(model=="free.lambda")
+	 	{
+	 	  l<-attr(free.lambda$apVar,"Pars")[1]
+	 	  if(l>1)
+	 	  {
+	 	  	l=1
+	 	  }
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dtfnoT[,1:22]),vcv(treenoT),l)$R)[1,i]	
+	 	 p<-summary(free.lambda)$tTable[2,4]
+	 	 aov.free<-aov(free.lambda)
+	 	 RSS<-summary(aov.free)[[1]]["Residuals", "Sum Sq"]
+	 	 TSS<-summary(aov.free)[[1]]["TestesnoT", "Sum Sq"]+RSS
+	 	 r<-1-RSS/TSS
+	 	}
+	 if(model=="fix.lambda")
+	 	{
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dtfnoT[,1:22]),vcv(treenoT),l)$R)[1,i]	
+	 	 p<-summary(fix.lambda)$tTable[2,4]
+	 	 aov.fix<-aov(fix.lambda)
+	 	 RSS<-summary(aov.fix)[[1]]["Residuals", "Sum Sq"]
+	 	 TSS<-summary(aov.fix)[[1]]["TestesnoT", "Sum Sq"]+RSS
+	 	 r<-1-RSS/TSS
+	 	}
+	 if(model=="no.lambda")
+	 	{
+	 	 l=0
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dtfnoT[,1:22]),vcv(treenoT),l)$R)[1,i]	
+	 	 p<-summary(no.lambda)$tTable[2,4]
+	 	 aov.no<-aov(no.lambda)
+	 	 RSS<-summary(aov.no)[[1]]["Residuals", "Sum Sq"]
+	 	 TSS<-summary(aov.no)[[1]]["TestesnoT", "Sum Sq"]+RSS
+	 	 r<-1-RSS/TSS
+	 	}
+	 dfi<-data.frame(namei,model,cor,p,r,l)
+	 colnames(dfi)<-c("are","model","correlation","pval","r2","lambda")
+	 testes.results<-rbind(testes.results,dfi)
+	 print(i)
+	}
+for(i in 13:22)
+	{
+	 print(i)
+	 namei<-colnames(dtfnoT)[i]
+	 v<-dtfnoT[,i]
+	 l<-phylosig(treenoT,resid(gls(v~Testes,dtfnoT)),method="lambda",test=T)$lambda
+	 free.lambda<-gls(v~TestesnoT,correlation=corPagel(l,phy=treenoT,form=~Species,fixed=FALSE),method="ML",dtfnoT)
+	 print("mod1")
+	 fix.lambda<-gls(v~TestesnoT,correlation=corPagel(l,phy=treenoT,form=~Species,fixed=TRUE),method="ML",dtfnoT)
+	 print("mod2")
+	 no.lambda<-gls(v~TestesnoT,correlation=corPagel(0,phy=treenoT,form=~Species,fixed=TRUE),method="ML",dtfnoT)
+	 print("mod3")
+	 mod.choose<-anova(free.lambda,fix.lambda,no.lambda)
+	 model<-rownames(mod.choose)[which(min(mod.choose$AIC)==mod.choose$AIC)]
+	 if(model=="free.lambda")
+	 	{
+	 	  l<-attr(free.lambda$apVar,"Pars")[1]
+	 	  if(l>1)
+	 	  {
+	 	  	l=1
+	 	  }
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dtfnoT[,1:22]),vcv(treenoT),l)$R)[1,i]	
+	 	 p<-summary(free.lambda)$tTable[2,4]
+	 	 aov.free<-aov(free.lambda)
+	 	 RSS<-summary(aov.free)[[1]]["Residuals", "Sum Sq"]
+	 	 TSS<-summary(aov.free)[[1]]["TestesnoT", "Sum Sq"]+RSS
+	 	 r<-1-RSS/TSS
+	 	}
+	 if(model=="fix.lambda")
+	 	{
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dtfnoT[,1:22]),vcv(treenoT),l)$R)[1,i]	
+	 	 p<-summary(fix.lambda)$tTable[2,4]
+	 	 aov.fix<-aov(fix.lambda)
+	 	 RSS<-summary(aov.fix)[[1]]["Residuals", "Sum Sq"]
+	 	 TSS<-summary(aov.fix)[[1]]["TestesnoT", "Sum Sq"]+RSS
+	 	 r<-1-RSS/TSS
+	 	}
+	 if(model=="no.lambda")
+	 	{
+	 	 l=0
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dtfnoT[,1:22]),vcv(treenoT),l)$R)[1,i]	
+	 	 p<-summary(no.lambda)$tTable[2,4]
+	 	 aov.no<-aov(no.lambda)
+	 	 RSS<-summary(aov.no)[[1]]["Residuals", "Sum Sq"]
+	 	 TSS<-summary(aov.no)[[1]]["TestesnoT", "Sum Sq"]+RSS
+	 	 r<-1-RSS/TSS
+	 	}
+	 dfi<-data.frame(namei,model,cor,p,r,l)
+	 colnames(dfi)<-c("are","model","correlation","pval","r2","lambda")
+	 testes.results<-rbind(testes.results,dfi)
+	 print(i)
+	}
+mass.results<-data.frame(are=factor(),model=factor(),correlation=numeric(),pval=numeric(),r2=numeric(),lambda=numeric())
+for(i in 3:22)
+	{
+	 print(i)
+	 namei<-colnames(dtf)[i]
+	 v<-dtf[,i]
+	 l<-phylosig(tree,resid(gls(v~Mass,dtf)),method="lambda",test=T)$lambda
+	 free.lambda<-gls(v~Mass,correlation=corPagel(l,phy=tree,form=~Species,fixed=FALSE),method="ML",dtf)
+	 print("mod1")
+	 fix.lambda<-gls(v~Mass,correlation=corPagel(l,phy=tree,form=~Species,fixed=TRUE),method="ML",dtf)
+	 print("mod2")
+	 no.lambda<-gls(v~Mass,correlation=corPagel(0,phy=tree,form=~Species,fixed=TRUE),method="ML",dtf)
+	 print("mod3")
+	 mod.choose<-anova(free.lambda,fix.lambda,no.lambda)
+	 model<-rownames(mod.choose)[which(min(mod.choose$AIC)==mod.choose$AIC)]
+	 if(model=="free.lambda")
+	 	{
+	 	  l<-attr(free.lambda$apVar,"Pars")[1]
+	 	  if(l>1)
+	 	  {
+	 	  	l=1
+	 	  }
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dtf[,2:22]),vcv(tree),l)$R)[1,i-1]	
+	 	 p<-summary(free.lambda)$tTable[2,4]
+	 	 aov.free<-aov(free.lambda)
+	 	 RSS<-summary(aov.free)[[1]]["Residuals", "Sum Sq"]
+	 	 TSS<-summary(aov.free)[[1]]["Mass", "Sum Sq"]+RSS
+	 	 r<-1-RSS/TSS
+	 	}
+	 if(model=="fix.lambda")
+	 	{
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dtf[,2:22]),vcv(tree),l)$R)[1,i-1]	
+	 	 p<-summary(fix.lambda)$tTable[2,4]
+	 	 aov.fix<-aov(fix.lambda)
+	 	 RSS<-summary(aov.fix)[[1]]["Residuals", "Sum Sq"]
+	 	 TSS<-summary(aov.fix)[[1]]["Mass", "Sum Sq"]+RSS
+	 	 r<-1-RSS/TSS
+	 	}
+	 if(model=="no.lambda")
+	 	{
+	 	 l=0
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dtf[,2:22]),vcv(tree),l)$R)[1,i-1]	
+	 	 p<-summary(no.lambda)$tTable[2,4]
+	 	 aov.no<-aov(no.lambda)
+	 	 RSS<-summary(aov.no)[[1]]["Residuals", "Sum Sq"]
+	 	 TSS<-summary(aov.no)[[1]]["Mass", "Sum Sq"]+RSS
+	 	 r<-1-RSS/TSS
+	 	}
+	 dfi<-data.frame(namei,model,cor,p,r,l)
+	 colnames(dfi)<-c("are","model","correlation","pval","r2","lambda")
+	 mass.results<-rbind(mass.results,dfi)
+	 print(i)
+	}
+canine.results<-data.frame(are=factor(),model=factor(),correlation=numeric(),pval=numeric(),r2=numeric(),lambda=numeric())
+for(i in 4:22)
+	{
+	 print(i)
+	 namei<-colnames(dtf)[i]
+	 v<-dtf[,i]
+	 l<-phylosig(tree,resid(gls(v~Canine,dtf)),method="lambda",test=T)$lambda
+	 free.lambda<-gls(v~Canine,correlation=corPagel(l,phy=tree,form=~Species,fixed=FALSE),method="ML",dtf)
+	 print("mod1")
+	 fix.lambda<-gls(v~Canine,correlation=corPagel(l,phy=tree,form=~Species,fixed=TRUE),method="ML",dtf)
+	 print("mod2")
+	 no.lambda<-gls(v~Canine,correlation=corPagel(0,phy=tree,form=~Species,fixed=TRUE),method="ML",dtf)
+	 print("mod3")
+	 mod.choose<-anova(free.lambda,fix.lambda,no.lambda)
+	 model<-rownames(mod.choose)[which(min(mod.choose$AIC)==mod.choose$AIC)]
+	 if(model=="free.lambda")
+	 	{
+	 	  l<-attr(free.lambda$apVar,"Pars")[1]
+	 	  if(l>1)
+	 	  {
+	 	  	l=1
+	 	  }
+	 	  if(l<0)
+	 	  {
+	 	  	l=0
+	 	  }
+	 	  cor<-cov2cor(phyl.vcv(as.matrix(dtf[,2:22]),vcv(tree),l)$R)[2,i-1]	
+	 	 p<-summary(free.lambda)$tTable[2,4]
+	 	 aov.free<-aov(free.lambda)
+	 	 RSS<-summary(aov.free)[[1]]["Residuals", "Sum Sq"]
+	 	 TSS<-summary(aov.free)[[1]]["Canine", "Sum Sq"]+RSS
+	 	 r<-1-RSS/TSS
+	 	}
+	 if(model=="fix.lambda")
+	 	{
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dtf[,2:22]),vcv(tree),l)$R)[2,i-1]	
+	 	 p<-summary(fix.lambda)$tTable[2,4]
+	 	 aov.fix<-aov(fix.lambda)
+	 	 RSS<-summary(aov.fix)[[1]]["Residuals", "Sum Sq"]
+	 	 TSS<-summary(aov.fix)[[1]]["Canine", "Sum Sq"]+RSS
+	 	 r<-1-RSS/TSS
+	 	}
+	 if(model=="no.lambda")
+	 	{
+	 	 l=0
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dtf[,2:22]),vcv(tree),l)$R)[2,i-1]	
+	 	 p<-summary(no.lambda)$tTable[2,4]
+	 	 aov.no<-aov(no.lambda)
+	 	 RSS<-summary(aov.no)[[1]]["Residuals", "Sum Sq"]
+	 	 TSS<-summary(aov.no)[[1]]["Canine", "Sum Sq"]+RSS
+	 	 r<-1-RSS/TSS
+	 	}
+	 dfi<-data.frame(namei,model,cor,p,r,l)
+	 colnames(dfi)<-c("are","model","correlation","pval","r2","lambda")
+	 canine.results<-rbind(canine.results,dfi)
+	 print(i)
+	}
+
+#model results
+testes.results
+      are       model correlation          pval           r2     lambda
+#1    Mass   no.lambda  0.24831874  2.532503e-01 6.166220e-02 0.00000000
+#2  Canine  fix.lambda  0.36624054  9.813823e-01 9.977055e-02 0.85460497
+#3    cARE  fix.lambda  0.26258618  8.000107e-01 7.233390e-02 0.97510692
+#4    aARE  fix.lambda  0.32390015  1.588541e-01 8.808389e-02 0.99889996
+#5    aSRE  fix.lambda  0.19850943  8.393008e-01 1.619266e-02 0.83042988
+#6    cSRE  fix.lambda -0.27790741  5.065714e-01 5.251671e-02 0.82971545
+#7      c3  fix.lambda  0.08049954  4.029936e-01 1.906770e-02 0.99993389
+#8   ccnd1  fix.lambda  0.25510921  3.966586e-01 5.520727e-02 0.09716815
+#9     hk2  fix.lambda  0.21128277  9.855799e-01 3.510041e-02 0.52985762
+#10   hklk  fix.lambda  0.62404101  5.936714e-03 3.778012e-01 0.22414545
+#11   mvdp   no.lambda -0.19624585  3.694799e-01 3.851243e-02 0.00000000
+#12    p21  fix.lambda  0.38438759  8.574858e-02 1.129021e-01 0.26612207
+#13    pb2  fix.lambda  0.07279559  9.089259e-01 3.604864e-06 0.90231007
+#14   pem1  fix.lambda  0.19748476  7.867111e-01 1.873790e-02 0.99993389
+#15   pem2  fix.lambda  0.12028514  4.628417e-01 1.367970e-02 0.91708466
+#16   psa1  fix.lambda  0.12132931  6.550054e-01 4.802335e-05 0.99486720
+#17   psa3 free.lambda  0.28370881  3.669915e-88 6.800040e-02 1.00000000
+#18   sc12  fix.lambda  0.47714924  2.972065e-01 1.844972e-01 0.92767156
+#19   slp2  fix.lambda -0.12988625  8.168817e-01 7.864662e-03 0.98657461
+#20   slp3  fix.lambda  0.20377884  6.673392e-01 4.284472e-02 0.85979814
+#21    HRE free.lambda  0.27870871 1.475855e-100 6.955835e-02 1.00000000
+
+mass.results
+#             are       model   correlation          pval           r2     lambda
+#1         Canine  fix.lambda  0.6414825331  7.854516e-04 3.954188e-01  0.8297608
+#2           cARE  fix.lambda  0.2528891174  5.109620e-01 4.799184e-02  0.9484304
+#3           aARE  fix.lambda -0.2422812757  2.023541e-02 3.552060e-02  0.9508757
+#4           aSRE  fix.lambda  0.1182164463  8.958765e-01 1.156268e-03  0.8619233
+#5           cSRE  fix.lambda -0.1455111440  2.303068e-01 2.177551e-02  0.8665989
+#6             c3  fix.lambda -0.0523906783  1.931246e-01 4.267827e-03  0.9999339
+#7          ccnd1  fix.lambda -0.0070370844  6.915790e-01 5.655531e-05  0.2539229
+#8            hk2  fix.lambda  0.1152952009  9.147711e-01 1.336842e-02  0.5636760
+#9           hklk  fix.lambda  0.4071783560  1.533620e-01 1.794064e-01  0.5435541
+#corStruct   mvdp free.lambda -0.0763323517  9.126147e-01 1.075371e-02 -0.3463507
+#11           p21  fix.lambda -0.1351305147  3.122271e-01 3.131936e-02  0.3304714
+#12           pb2  fix.lambda -0.0143929866  5.913870e-01 1.768988e-02  0.9076940
+#13          pem1  fix.lambda -0.1914781522  2.401724e-01 1.159450e-02  0.9999339
+#14          pem2  fix.lambda  0.2471026252  6.563172e-01 3.259240e-02  0.9204856
+#15          psa1  fix.lambda -0.0009366342  1.806331e-01 8.637235e-04  0.9869744
+#16          psa3 free.lambda  0.0699165393 1.496508e-131 7.511053e-03  1.0000000
+#17          sc12  fix.lambda  0.2901508835  6.052020e-01 4.296692e-02  0.9641839
+#18          slp2  fix.lambda -0.0357517354  5.762147e-01 4.367111e-03  0.9815988
+#19          slp3  fix.lambda  0.0714398740  4.034097e-01 2.194854e-05  0.8846707
+#110          HRE  fix.lambda  0.0279192393  6.542926e-01 1.052862e-03  0.5012105
+
+canine.results
+            are       model correlation          pval           r2    lambda
+#corStruct  cARE free.lambda  0.68761804  6.022157e-01 0.3683749906 0.9595374
+#1          aARE free.lambda  0.38099563  5.709036e-02 0.1175399684 1.0000000
+#11         aSRE  fix.lambda  0.34519813  4.311171e-01 0.1053765063 0.8510527
+#12         cSRE free.lambda -0.18528050 1.148646e-122 0.0991934902 1.0000000
+#13           c3  fix.lambda  0.13277538  6.121062e-01 0.0003409197 0.9999339
+#14        ccnd1 free.lambda  0.41715081  4.213188e-08 0.1740148001 0.0000000
+#15          hk2  fix.lambda  0.49220512  4.734865e-02 0.2277783396 0.1386819
+#16         hklk free.lambda  0.58939665  1.883261e-24 0.3473884065 0.0000000
+#17         mvdp free.lambda -0.20236148  6.312467e-01 0.0409501673 0.0000000
+#18          p21  fix.lambda -0.02267599  6.445268e-01 0.0027612329 0.2809304
+#19          pb2  fix.lambda  0.35483399  4.548669e-01 0.0762042828 0.9032921
+#110        pem1  fix.lambda  0.18261536  9.351080e-01 0.0977217901 0.9999339
+#111        pem2  fix.lambda  0.63928051  1.996590e-01 0.3377621429 0.8038515
+#112        psa1  fix.lambda  0.03701851  6.432327e-01 0.0240051773 0.9999339
+#113        psa3 free.lambda  0.42221422 9.523140e-113 0.1518231761 1.0000000
+#114        sc12  fix.lambda  0.62411261  5.400685e-01 0.2346014808 0.9016925
+#115        slp2  fix.lambda -0.23414965  3.549315e-01 0.1255604336 0.9795818
+#116        slp3  fix.lambda  0.40291969  9.123547e-01 0.0975760524 0.8910362
+#117         HRE free.lambda  0.49383810  1.138678e-18 0.2438760659 0.0000000
+
+#binomial test for more positive correlations than expected by chance
+binom.test(14,18)
+#
+#	Exact binomial test
+#
+#data:  14 and 18
+#number of successes = 14, number of trials = 18, p-value = 0.03088
+#alternative hypothesis: true probability of success is not equal to 0.5
+#95 percent confidence interval:
+# 0.5236272 0.9359080
+#sample estimates:
+#probability of success 
+#             0.7777778 
+
+#Canine passes therefore testis also passes. Mass fails
+
+#plot heatmap of significant correlations using viridis color scheme
+phylo.heatmap(tree,dtf[,c(1:2,17,11,20,19,12,3)],standardize = TRUE,col=plasma(50))
+
+             
+#investigate multidimensional analysis
+#split data into ARE and trait
+#cannot use species with missing data in testis
+hre.set<-dtfnoT[,4:21]
+trait.set<-dtfnoT[,1:3]
+
+#phylogenic canonical correlation
+cca.phy<-phyl.cca(treenoT,trait.set,hre.set,fixed=FALSE)
+cca.phy
+#
+#Object of class "phyl.cca" from a phylogenetic canonical
+#   correlation analysis.
+#
+#Summary of results:
+#     correlation       X^2  P-value
+#CC:1    0.996977 100.58423 0.000123
+#CC:2    0.967650  44.37423 0.109717
+#CC:3    0.849640  14.07706 0.592973
+#
+#Assumed or estimated value of lambda:
+#      lambda         logL 
+#    0.000066 -1578.172372 
+#
+#Canonical x coefficients:
+#              CA1        CA2        CA3
+#Testes   3.267920   1.939911   6.172044
+#Mass   -25.810512 -18.175614  16.791691
+#Canine  -1.640213  19.154134 -10.570834
+#
+#Canonical y coefficients:
+#               CA1          CA2          CA3
+#cARE   0.023949+0i -0.364880+0i  0.320368+0i
+#aARE   0.263901+0i -0.122856+0i -0.066851+0i
+#aSRE  -0.041130+0i -0.026155+0i  0.187915+0i
+#cSRE   0.228777+0i  0.461456+0i -0.572253+0i
+#c3     1.249805+0i  0.647852+0i  0.291863+0i
+#ccnd1  0.001143+0i -0.016189+0i -0.026890+0i
+#hk2   -0.082124+0i  0.092490+0i -0.029532+0i
+#hklk   0.006669+0i  0.018627+0i  0.073282+0i
+#mvdp  -0.023736+0i -0.076175+0i -0.017052+0i
+#p21    0.538834+0i  0.427354+0i  0.248300+0i
+#pb2    0.426557+0i -0.101856+0i -0.064233+0i
+#pem1   0.339734+0i  0.358899+0i -0.103252+0i
+#pem2  -0.289499+0i  0.149468+0i -0.289623+0i
+#psa1  -0.049676+0i -0.122514+0i  0.133278+0i
+#psa3  -0.135154+0i  0.289226+0i -0.110279+0i
+#sc12   0.048017+0i  0.442894+0i -0.004385+0i
+#slp2   0.064329+0i -0.267673+0i  0.204311+0i
+#slp3  -0.048370+0i -0.134725+0i  0.027499+0i
+
+
+#noticed lambda is close to zero and many of ARE do not have phylogenic correlations independently
+#use vegan package to do correlation analysis for easier time manipulating data
+
+veg.ccora<-CCorA(hre.set,trait.set, stand.X = TRUE, stand.Y = TRUE, permutations = 10000)
+Canonical Correlation Analysis
+
+Call:
+CCorA(Y = hre.set, X = trait.set, stand.Y = TRUE, stand.X = TRUE,      permutations = 10000) 
+
+              Y X
+Matrix Ranks 18 3
+
+Pillai's trace:  2.652214 
+
+Significance of Pillai's trace:
+from F-distribution:   0.15943 
+based on permutations: 0.1384862 
+Permutation: free
+Number of permutations: 10000
+ 
+                       CanAxis1 CanAxis2 CanAxis3
+Canonical Correlations  0.99698  0.96765   0.8496
+
+                     Y | X  X | Y
+RDA R squares      0.26775 0.8942
+adj. RDA R squares 0.15213 0.4179
+
+#use canonical correspondance analysis as it works in unimodal fashion
+veg.cca<-cca(hre.set~.,data=trait.set)
+
+#find marginal effects
+anova(veg.cca, by= 'margin', permutations = 10000)
+#Permutation test for cca under reduced model
+#Marginal effects of terms
+#Permutation: free
+#Number of permutations: 10000
+#
+#Model: cca(formula = hre.set ~ Testes + Mass + Canine, data = trait.set)
+#         Df ChiSquare      F Pr(>F)   
+#Testes    1 0.0001261 0.6741 0.5945   
+#Mass      1 0.0005238 2.8008 0.0401 * 
+#Canine    1 0.0009809 5.2451 0.0030 **
+#Residual 19 0.0035531                 
+#---
+#Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+#find significant CCA
+anova(veg.cca, by= 'axis', permutations = 10000)
+#Permutation test for cca under reduced model
+#Forward tests for axes
+#Permutation: free
+#Number of permutations: 10000
+#
+#Model: cca(formula = hre.set ~ Testes + Mass + Canine, data = trait.set)
+#         Df ChiSquare      F Pr(>F)  
+#CCA1      1 0.0011735 6.2753 0.0138 *
+#CCA2      1 0.0001462 0.7819 0.8502  
+#CCA3      1 0.0000583 0.3118 0.9292  
+#Residual 19 0.0035531                
+#---
+#Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+#find significant terms
+anova(veg.cca, by= 'terms', permutations = 10000)
+#Permutation test for cca under reduced model
+#Terms added sequentially (first to last)
+#Permutation: free
+#Number of permutations: 10000
+#
+#Model: cca(formula = hre.set ~ Testes + Mass + Canine, data = trait.set)
+#         Df ChiSquare      F Pr(>F)   
+#Testes    1 0.0002796 1.4954 0.2015   
+#Mass      1 0.0001175 0.6284 0.6177   
+#Canine    1 0.0009809 5.2451 0.0043 **
+#Residual 19 0.0035531                 
+#---
+#Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+#investigate full CCA
+summary(veg.cca)
+#
+#Call:
+#cca(formula = hre.set ~ Testes + Mass + Canine, data = trait.set) 
+#
+#Partitioning of scaled Chi-square:
+#               Inertia Proportion
+#Total         0.004931     1.0000
+#Constrained   0.001378     0.2795
+#Unconstrained 0.003553     0.7205
+#
+#Eigenvalues, and their contribution to the scaled Chi-square 
+#
+#Importance of components:
+#                          CCA1      CCA2      CCA3      CA1     CA2       CA3       CA4       CA5       CA6       CA7       CA8       CA9      CA10      CA11      CA12      CA13      CA14      CA15      CA16     CA17
+#Eigenvalue            0.001173 0.0001462 0.0000583 0.001505 0.00112 0.0002641 0.0001883 0.0001579 9.024e-05 6.999e-05 4.845e-05 2.781e-05 2.126e-05 2.063e-05 1.516e-05 1.086e-05 7.455e-06 3.822e-06 8.920e-07 6.26e-07
+#Proportion Explained  0.237979 0.0296527 0.0118229 0.305277 0.22718 0.0535483 0.0381867 0.0320246 1.830e-02 1.419e-02 9.825e-03 5.639e-03 4.312e-03 4.184e-03 3.074e-03 2.202e-03 1.512e-03 7.750e-04 1.809e-04 1.27e-04
+#Cumulative Proportion 0.237979 0.2676320 0.2794550 0.584732 0.81192 0.8654640 0.9036507 0.9356753 9.540e-01 9.682e-01 9.780e-01 9.836e-01 9.879e-01 9.921e-01 9.952e-01 9.974e-01 9.989e-01 9.997e-01 9.999e-01 1.00e+00
+#
+#Accumulated constrained eigenvalues
+#Importance of components:
+#                          CCA1      CCA2      CCA3
+#Eigenvalue            0.001173 0.0001462 0.0000583
+#Proportion Explained  0.851584 0.1061091 0.0423072
+#Cumulative Proportion 0.851584 0.9576928 1.0000000
+#
+#Scaling 2 for species and site scores
+#* Species are scaled proportional to eigenvalues
+#* Sites are unscaled: weighted dispersion equal on all dimensions
+#
+#
+#Species scores
+#
+#           CCA1      CCA2       CCA3       CA1       CA2       CA3
+#cARE   0.014438  0.009884  9.526e-03  0.008015 -0.028782  0.003833
+#aARE   0.022350 -0.007238 -7.755e-03  0.002748 -0.017401 -0.021649
+#aSRE   0.000553 -0.004233  2.076e-03  0.021873 -0.033240  0.007590
+#cSRE  -0.035977 -0.008682  1.876e-03 -0.037483  0.013393  0.005883
+#c3    -0.012000  0.003435 -1.528e-02 -0.024094  0.047689 -0.041862
+#ccnd1  0.096576 -0.015130 -8.616e-03  0.113284  0.073836 -0.005530
+#hk2    0.001929  0.003881  7.259e-03  0.002490 -0.018220 -0.010897
+#hklk   0.018764  0.038972 -8.166e-03  0.003557 -0.006257  0.001408
+#mvdp  -0.029566 -0.009200  2.707e-03 -0.006253 -0.004453  0.018067
+#p21   -0.002928 -0.006640 -3.391e-02  0.008115 -0.046098  0.005684
+#pb2    0.012876 -0.019932  5.343e-03  0.014481 -0.055710  0.012947
+#pem1   0.000196 -0.007463  3.068e-05  0.007149 -0.013575  0.015763
+#pem2   0.009342  0.004465  1.466e-02 -0.006113 -0.007420 -0.013907
+#psa1  -0.039315  0.003576 -6.786e-03 -0.054959  0.060303  0.022371
+#psa3   0.023001  0.008817  1.031e-02  0.008062 -0.015566 -0.011093
+#sc12   0.007759  0.008148 -4.815e-03 -0.018631 -0.002864 -0.006157
+#slp2  -0.055371 -0.004499 -1.021e-02 -0.064420  0.031777 -0.043265
+#slp3   0.004664 -0.002394 -4.611e-04  0.010579 -0.024900 -0.006373
+#
+#
+#Site scores (weighted averages of species scores)
+#
+#                              CCA1     CCA2     CCA3      CA1     CA2     CA3
+#Aotus_nancymaae          -2.107436 -0.29085 -2.19341 -0.78516  0.7269  1.6293
+#Callithrix_jacchus       -2.277102 -0.06080 -4.40374 -1.81751  1.3486 -3.3445
+#Cebus_imitator           -2.303926  0.33347 -3.25970 -1.65073  1.9551  2.1328
+#Cercocebus_atys           0.384710  2.41247  0.79743 -0.13961 -0.6717 -0.6258
+#Chlorocebus_sabaeus      -0.360255  0.68478  3.08104  0.76959 -0.7080 -0.1586
+#Colobus_angolensis       -0.008155 -0.10471  2.86239 -0.32179 -0.6257 -0.6442
+#Gorilla_gorilla          -0.414926 -0.03645  2.16957  1.33870 -0.6256 -1.2508
+#Homo_sapiens             -0.549888 -0.88038  1.23539 -0.10813 -1.0661 -0.1627
+#Hylobates_moloch         -0.767748 -1.71746  1.27109 -0.06036 -0.4590  0.5930
+#Macaca_fascicularis       0.620158  0.94525  1.62149  0.21235 -0.8904  0.4255
+#Macaca_fuscata            3.646208 -3.15002 -4.92141  2.63968  1.9694 -0.3165
+#Macaca_mulatta            2.150304 -0.55849 -2.68998  1.08390  0.7173 -0.1893
+#Macaca_nemestrina         0.446294  2.52304  1.09340 -0.04889 -0.6264 -0.0989
+#Mandrillus_leucophaeus    1.389683  0.33185  0.58529 -0.42150  0.2014  0.1857
+#Mandrillus_sphinx         0.623271  1.03383  2.95718 -0.91323 -0.5145 -0.1263
+#Nomascus_leucogenys      -0.599445 -2.07887  2.51853  0.29165 -0.4234 -0.0973
+#Pan_paniscus             -0.310938 -0.15649  0.02032 -0.07086 -0.9977  0.5894
+#Pan_troglodytes          -0.386482  0.26986 -0.88107 -0.36087 -0.9679  0.2734
+#Papio_anubis             -0.572116  1.44923  2.25136 -1.15183 -1.0566  0.1337
+#Pongo_abelii             -0.708605 -0.35350  3.20804  0.97207 -0.5610  0.8251
+#Saimiri_boliviensis      -1.811862  2.61921 -5.85452 -0.79298  1.8789 -0.2424
+#Theropithecus_gelada      1.372180 -0.71490  0.09732  0.10890  0.3403 -0.1119
+#Trachypithecus_francoisi  1.725569 -2.17933 -0.95215  0.90101  0.7632  0.5727
+#
+#
+#Site constraints (linear combinations of constraining variables)
+#
+#                            CCA1     CCA2     CCA3      CA1     CA2     CA3
+#Aotus_nancymaae          -1.0680 -0.60375  0.22235 -0.78516  0.7269  1.6293
+#Callithrix_jacchus       -0.6319 -0.60029 -0.90057 -1.81751  1.3486 -3.3445
+#Cebus_imitator           -0.6184  0.33492 -0.01212 -1.65073  1.9551  2.1328
+#Cercocebus_atys           0.3542  0.85876  0.15658 -0.13961 -0.6717 -0.6258
+#Chlorocebus_sabaeus      -1.3378  0.94328 -0.42375  0.76959 -0.7080 -0.1586
+#Colobus_angolensis        0.2208 -1.36015  1.31305 -0.32179 -0.6257 -0.6442
+#Gorilla_gorilla          -1.7895  0.78135  1.82700  1.33870 -0.6256 -1.2508
+#Homo_sapiens             -0.3957 -1.41591 -0.63656 -0.10813 -1.0661 -0.1627
+#Hylobates_moloch         -0.5779 -1.15385 -0.50321 -0.06036 -0.4590  0.5930
+#Macaca_fascicularis       0.4859  1.00942 -0.87365  0.21235 -0.8904  0.4255
+#Macaca_fuscata            0.8413  0.15234 -1.06219  2.63968  1.9694 -0.3165
+#Macaca_mulatta            0.9633  0.04752 -0.97706  1.08390  0.7173 -0.1893
+#Macaca_nemestrina         0.4591  1.15542 -0.81542 -0.04889 -0.6264 -0.0989
+#Mandrillus_leucophaeus    1.8526 -0.12226  1.40774 -0.42150  0.2014  0.1857
+#Mandrillus_sphinx         1.7090  1.44640  1.43005 -0.91323 -0.5145 -0.1263
+#Nomascus_leucogenys      -0.8775 -1.89603  0.71988  0.29165 -0.4234 -0.0973
+#Pan_paniscus             -0.0279 -0.02625 -1.62244 -0.07086 -0.9977  0.5894
+#Pan_troglodytes           0.1261 -0.33159 -1.56821 -0.36087 -0.9679  0.2734
+#Papio_anubis              0.6500  0.25328 -0.62213 -1.15183 -1.0566  0.1337
+#Pongo_abelii             -1.5059  0.97316  1.00242  0.97207 -0.5610  0.8251
+#Saimiri_boliviensis      -1.1990  1.56726  0.20828 -0.79298  1.8789 -0.2424
+#Theropithecus_gelada      1.2906 -0.22463  1.13362  0.10890  0.3403 -0.1119
+#Trachypithecus_francoisi  0.6080 -1.80410  0.63771  0.90101  0.7632  0.5727
+#
+#
+#Biplot scores for constraining variables
+#
+#          CCA1   CCA2    CCA3 CA1 CA2 CA3
+#Testes 0.41474 0.5794 -0.7016   0   0   0
+#Mass   0.04106 0.9075  0.4180   0   0   0
+#Canine 0.77076 0.4882  0.4094   0   0   0
+
+#determine number of clusters
+
+#CCorA AREs
+library(NbClust)
+nb <- NbClust(as.matrix(veg.ccora$corr.Y.Cx[,1:2]), diss=NULL, distance = "euclidean", min.nc=2, max.nc=10, method = "kmeans", index = "all", alphaBeale = 0.1)
+#*** : The Hubert index is a graphical method of determining the number of clusters.
+#                In the plot of Hubert index, we seek a significant knee that corresponds to a 
+#                significant increase of the value of the measure i.e the significant peak in Hubert
+#                index second differences plot. 
+# 
+#*** : The D index is a graphical method of determining the number of clusters. 
+#                In the plot of D index, we seek a significant knee (the significant peak in Dindex
+#                second differences plot) that corresponds to a significant increase of the value of
+#                the measure. 
+# 
+#******************************************************************* 
+#* Among all indices:                                                
+#* 5 proposed 2 as the best number of clusters 
+#* 5 proposed 3 as the best number of clusters 
+#* 6 proposed 4 as the best number of clusters 
+#* 1 proposed 6 as the best number of clusters 
+#* 4 proposed 9 as the best number of clusters 
+#* 3 proposed 10 as the best number of clusters 
+#
+#                   ***** Conclusion *****                            
+# 
+#* According to the majority rule, the best number of clusters is  4 
+# 
+# 
+#******************************************************************* 
+
+wss <- sapply(1:16, function(k){kmeans(veg.ccora$corr.Y.Cx[,1:2], k, nstart=50,iter.max = 16 )$tot.withinss})
+wss
+#[1] 2.619629453 0.697476591 0.346470088 0.161838767 0.111261495 0.070430600 0.057926909 0.033903383 0.023767341 0.017268079 0.012481914  0.008502522 0.007508205 0.003874105 0.002879788 0.001351555
+
+#library(mclust)
+#d_clust <- Mclust(as.matrix(veg.ccora$corr.Y.Cx[,1:2]), G=1:8, modelNames = mclust.options("emModelNames"))
+#d_clust$BIC
+#Bayesian Information Criterion (BIC): 
+#          EII        VII        EEI       VEI        EVI       VVI         EEE       EVE       VEE       VVE        EEV        VEV       EVV        VVV
+#1 -16.4971915 -16.497191 -7.8226287 -7.822629 -7.8226287 -7.822629  -8.7379429 -8.737943 -8.737943 -8.737943  -8.737943 -8.7379429 -8.737943 -8.7379429
+#2   0.4857534  -8.627414 -8.4168125  5.759087 -0.4534936  5.599665 -10.1211875  5.658389  3.481151  3.583495   7.652112  0.6120243  8.917638  0.7056934
+#3   1.3350955  10.093248  2.8442506 13.821995  5.2203832  9.959956   3.4252092  2.385180 12.401971  6.707057   4.280451  6.3943522  1.929653  5.5991150
+#4  10.9744358         NA 13.5681966        NA         NA        NA  10.6981112        NA        NA        NA   6.330682         NA        NA         NA
+#5  12.9420710         NA 14.3404794        NA         NA        NA  11.4962460        NA        NA        NA   0.560938         NA        NA         NA
+#6  11.2782358         NA  9.9652468        NA         NA        NA   9.4323884        NA        NA        NA   2.815631         NA        NA         NA
+#7   5.8823240         NA  6.6120735        NA         NA        NA   4.1144592        NA        NA        NA  -7.360153         NA        NA         NA
+#8  -2.6075030         NA -0.9416662        NA         NA        NA   0.8406347        NA        NA        NA -18.921360         NA        NA         NA
+#
+#Top 3 models based on the BIC criterion: 
+#   EEI,5    VEI,3    EEI,4 
+#14.34048 13.82199 13.56820 
+
+#looks like 4 is the optimal number
+#generate a clustering with 4 groups
+k.ccora.hre<-kmeans(veg.ccora$corr.Y.Cx[,1:2],centers=4,iter.max=1000,nstart=25)
+
+#repeat for species in CCorA
+nb <- NbClust(as.matrix(veg.ccora$Cx[,1:2]), diss=NULL, distance = "euclidean", min.nc=2, max.nc=10, method = "kmeans", index = "all", alphaBeale = 0.1)
+#*** : The Hubert index is a graphical method of determining the number of clusters.
+#                In the plot of Hubert index, we seek a significant knee that corresponds to a 
+#                significant increase of the value of the measure i.e the significant peak in Hubert
+#                index second differences plot. 
+# 
+#*** : The D index is a graphical method of determining the number of clusters. 
+#                In the plot of D index, we seek a significant knee (the significant peak in Dindex
+#                second differences plot) that corresponds to a significant increase of the value of
+#                the measure. 
+# 
+#******************************************************************* 
+#* Among all indices:                                                
+#* 5 proposed 2 as the best number of clusters 
+#* 4 proposed 3 as the best number of clusters 
+#* 2 proposed 4 as the best number of clusters 
+#* 5 proposed 5 as the best number of clusters 
+#* 3 proposed 6 as the best number of clusters 
+#* 2 proposed 9 as the best number of clusters 
+#* 2 proposed 10 as the best number of clusters 
+#
+#                   ***** Conclusion *****                            
+# 
+#* According to the majority rule, the best number of clusters is  2 
+# 
+# 
+#******************************************************************* 
+ 
+wss <- sapply(1:16, function(k){kmeans(veg.ccora$Cx[,1:2], k, nstart=50,iter.max = 16 )$tot.withinss})
+wss
+# [1] 44.0000000 27.2727142 14.7339836  8.8177430  5.3882111  3.8530819  2.9613519  2.3412544  1.8941619  1.4554248  1.1665974  0.9495238  0.7577662  0.5720314  0.4701012  0.2951809
+
+d_clust <- Mclust(as.matrix(veg.ccora$Cx[,1:2]), G=1:8, modelNames = mclust.options("emModelNames"))
+d_clust$BIC
+#Bayesian Information Criterion (BIC): 
+#        EII       VII       EEI       VEI       EVI       VVI       EEE       EVE       VEE       VVE       EEV       VEV       EVV       VVV
+#1 -137.9040 -137.9040 -141.0395 -141.0395 -141.0395 -141.0395 -144.1750 -144.1750 -144.1750 -144.1750 -144.1750 -144.1750 -144.1750 -144.1750
+#2 -145.5538 -145.9271 -147.6561 -150.7938 -148.6359 -149.5351 -146.3861 -144.8822 -146.6621 -146.7289 -135.4856 -137.9495 -137.0377 -139.2142
+#3 -144.0170 -145.9501 -150.3186 -155.5614 -150.1194 -153.4534 -151.1859 -145.3277 -151.1262 -155.0281 -143.3055 -146.0073 -152.7434 -151.1383
+#4 -148.6550 -155.7525 -144.9533 -155.9429 -153.5861 -157.1236 -146.2530 -152.7579 -151.4564        NA -144.5025 -149.7876 -153.2006 -158.2276
+#5 -148.7195 -158.7028 -149.3876 -160.7937 -157.7177 -167.5425 -151.4590 -154.6293 -161.7683 -162.3986 -150.2198 -157.9985 -155.2893 -166.1946
+#6 -153.0406 -164.9444 -155.6372 -168.0801 -167.0058 -163.5066 -158.6599 -161.1217 -169.8099 -174.1785 -160.3563 -166.9528 -162.8145 -163.1699
+#7 -154.9998        NA -158.0694        NA        NA        NA -158.0633        NA        NA        NA -166.5706        NA        NA        NA
+#8 -161.0129        NA -163.8119        NA        NA        NA -166.5354        NA        NA        NA -178.2288        NA        NA        NA
+#
+#Top 3 models based on the BIC criterion: 
+#    EEV,2     EVV,2     EII,1 
+#-135.4856 -137.0377 -137.9040 
+
+#looks like 2 clusters is best
+k.ccora.sp<-kmeans(veg.ccora$Cx[,1:2],centers=2,iter.max=1000,nstart=25)
+
+
+#check for cluster in the CCA analysis
+nb <- NbClust(as.matrix(veg.cca$CCA$v[,1:2]), diss=NULL, distance = "euclidean", min.nc=2, max.nc=10, method = "kmeans", index = "all", alphaBeale = 0.1)
+#*** : The Hubert index is a graphical method of determining the number of clusters.
+#                In the plot of Hubert index, we seek a significant knee that corresponds to a 
+#                significant increase of the value of the measure i.e the significant peak in Hubert
+#                index second differences plot. 
+# 
+#*** : The D index is a graphical method of determining the number of clusters. 
+#                In the plot of D index, we seek a significant knee (the significant peak in Dindex
+#                second differences plot) that corresponds to a significant increase of the value of
+#                the measure. 
+# 
+#******************************************************************* 
+#* Among all indices:                                                
+#* 4 proposed 2 as the best number of clusters 
+#* 2 proposed 3 as the best number of clusters 
+#* 7 proposed 4 as the best number of clusters 
+#* 2 proposed 5 as the best number of clusters 
+#* 1 proposed 6 as the best number of clusters 
+#* 2 proposed 9 as the best number of clusters 
+#* 4 proposed 10 as the best number of clusters 
+#
+#                   ***** Conclusion *****                            
+# 
+#* According to the majority rule, the best number of clusters is  4 
+# 
+# 
+#******************************************************************* 
+
+wss <- sapply(1:16, function(k){kmeans(veg.cca$CCA$v[,1:2], k, nstart=50,iter.max = 16 )$tot.withinss})
+wss
+# [1] 34.59255965 23.20989740 13.80317873  7.86192077  3.59143528  2.37530412  1.60854198  1.14422232  0.79924259  0.46643266  0.28703414  0.17800199  0.09755744  0.07297587  0.04366171  0.02490171
+d_clust <- Mclust(as.matrix(veg.cca$CCA$v[,1:2]), G=1:8, modelNames = mclust.options("emModelNames"))
+d_clust$BIC
+#Bayesian Information Criterion (BIC): 
+#        EII       VII       EEI       VEI       EVI       VVI       EEE       EVE       VEE       VVE       EEV       VEV       EVV       VVV
+#1 -109.3990 -109.3990 -112.0793 -112.0793 -112.0793 -112.0793 -114.9694 -114.9694 -114.9694 -114.9694 -114.9694 -114.9694 -114.9694 -114.9694
+#2 -111.4171 -111.4677 -113.6041 -114.3129 -111.5613 -116.5401 -114.9613        NA        NA        NA -121.9961 -117.7282        NA        NA
+#3 -108.9948 -114.2662 -111.8849 -116.9931 -110.6721 -121.3313 -126.0753        NA        NA        NA -119.2684 -119.4354        NA        NA
+#4 -115.1470 -121.9638 -107.5775 -123.1132 -113.6418 -126.8747 -129.7211        NA        NA        NA -128.6174 -126.1846        NA        NA
+#5 -111.8038        NA -112.8010        NA        NA        NA -115.6585        NA        NA        NA -120.3356        NA        NA        NA
+#6 -111.4954        NA -114.3640        NA        NA        NA -117.0810        NA        NA        NA -123.6412        NA        NA        NA
+#7 -113.3760        NA -111.6358        NA        NA        NA -114.3847        NA        NA        NA -120.3845        NA        NA        NA
+#8 -115.8551        NA -111.7852        NA        NA        NA -112.1444        NA        NA        NA -126.5712        NA        NA        NA
+#
+#Top 3 models based on the BIC criterion: 
+#    EEI,4     EII,3     EII,1 
+#-107.5775 -108.9948 -109.3990 
+
+# Solid evidence for 4 groups
+k.cca.hre<-kmeans(veg.cca$CCA$v[,1:2],centers = 4, iter.max = 1000, nstart = 25)
+
+nb <- NbClust(as.matrix(veg.cca$CCA$u[,1:2]), diss=NULL, distance = "euclidean", min.nc=2, max.nc=10, method = "kmeans", index = "all", alphaBeale = 0.1)
+#*** : The Hubert index is a graphical method of determining the number of clusters.
+#                In the plot of Hubert index, we seek a significant knee that corresponds to a 
+#                significant increase of the value of the measure i.e the significant peak in Hubert
+#                index second differences plot. 
+# 
+#*** : The D index is a graphical method of determining the number of clusters. 
+#                In the plot of D index, we seek a significant knee (the significant peak in Dindex
+#                second differences plot) that corresponds to a significant increase of the value of
+#                the measure. 
+# 
+#******************************************************************* 
+#* Among all indices:                                                
+#* 3 proposed 2 as the best number of clusters 
+#* 11 proposed 3 as the best number of clusters 
+#* 3 proposed 5 as the best number of clusters 
+#* 2 proposed 8 as the best number of clusters 
+#* 3 proposed 10 as the best number of clusters 
+#
+#                   ***** Conclusion *****                            
+# 
+#* According to the majority rule, the best number of clusters is  3 
+# 
+# 
+#******************************************************************* 
+ 
+wss <- sapply(1:16, function(k){kmeans(veg.cca$CCA$u[,1:2], k, nstart=50,iter.max = 16 )$tot.withinss})
+wss
+# [1] 46.1801872 28.2455171 12.8634609  9.4429656  6.4722862  5.1070524  3.8200237  2.8468531  2.0393727  1.5662979  1.1421928  0.7914379  0.6282647  0.4547365  0.3437949  0.2853222
+d_clust <- Mclust(as.matrix(veg.cca$CCA$v[,1:2]), G=1:8, modelNames = mclust.options("emModelNames"))
+d_clust$BIC
+#Bayesian Information Criterion (BIC): 
+#        EII       VII       EEI       VEI       EVI       VVI       EEE       EVE       VEE       VVE       EEV       VEV       EVV       VVV
+#1 -109.3990 -109.3990 -112.0793 -112.0793 -112.0793 -112.0793 -114.9694 -114.9694 -114.9694 -114.9694 -114.9694 -114.9694 -114.9694 -114.9694
+#2 -111.4171 -111.4677 -113.6041 -114.3129 -111.5613 -116.5401 -114.9613        NA        NA        NA -121.9961 -117.7282        NA        NA
+#3 -108.9948 -114.2662 -111.8849 -116.9931 -110.6721 -121.3313 -126.0753        NA        NA        NA -119.2684 -119.4354        NA        NA
+#4 -115.1470 -121.9638 -107.5775 -123.1132 -113.6418 -126.8747 -129.7211        NA        NA        NA -128.6174 -126.1846        NA        NA
+#5 -111.8038        NA -112.8010        NA        NA        NA -115.6585        NA        NA        NA -120.3356        NA        NA        NA
+#6 -111.4954        NA -114.3640        NA        NA        NA -117.0810        NA        NA        NA -123.6412        NA        NA        NA
+#7 -113.3760        NA -111.6358        NA        NA        NA -114.3847        NA        NA        NA -120.3845        NA        NA        NA
+#8 -115.8551        NA -111.7852        NA        NA        NA -112.1444        NA        NA        NA -126.5712        NA        NA        NA
+#
+#Top 3 models based on the BIC criterion: 
+#    EEI,4     EII,3     EII,1 
+#-107.5775 -108.9948 -109.3990 
+
+#Looks like three is the optimal 
+k.cca.sp<-kmeans(veg.cca$CCA$u[,1:2],centers = 3, iter.max = 1000, nstart = 25)
+
+
+#generate CCA plot
+setEPS()
+postscript("/Users/andersond/Desktop/Primate/CCAFig.eps")
+par(mfrow=c(2,1),mar=c(4.7,4.5,1,1))
+spcol<-c("deeppink2","deeppink2","deeppink2","darkgoldenrod3","darkgoldenrod3","darkgoldenrod3","cyan3","cyan3","cyan3","darkgoldenrod3","darkgoldenrod3","darkgoldenrod3","darkgoldenrod3","darkgoldenrod3","darkgoldenrod3","cyan3","cyan3","cyan3","darkgoldenrod3","cyan3","deeppink2","darkgoldenrod3","darkgoldenrod3")
+sigsiz<-c(1.25,1.25,1.25,1.25,1.25,1.75,1.75,2,1.25,1.25,1.25,1.25,1.25,1.25,2,1.25,1.25,1.25)
+sigcol<-c("black","black","black","black","black","blue","blue","red","black","black","black","black","black","black","red","black","black","black")
+plot(veg.ccora$corr.Y.Cx[,1],veg.ccora$corr.Y.Cx[,2],col="white",xlab="CCorA1",ylab="CCorA2",xlim=c(-.24,.33),ylim=c(-0.5,0.68))
+abline(h=0,lty=2,col="gray65")
+abline(v=0,lty=2,col="gray65")
+arrows(x0=0,y0=0,x1=veg.ccora$corr.X.Cx[,1]*.22,y1=veg.ccora$corr.X.Cx[,2]*.75,length = .08, angle = 15, lwd = 3)
+text(rownames(veg.ccora$corr.X.Cx),x=c(-.030,.196,.083),y=c(.410,.177,.640),cex =1.25)
+text(rownames(veg.ccora$Cx),x=veg.ccora$Cx[,1]*.16,y=veg.ccora$Cx[,2]*.29, cex = 0.6, col = spcol)
+text(rownames(veg.ccora$corr.Y.Cx),x=veg.ccora$corr.Y.Cx[,1],y=veg.ccora$corr.Y.Cx[,2], cex = sigsiz*.6, col = sigcol)
+text("A",x=-.245,y=.615,cex=2.5)
+
+plot(veg.cca$CCA$v[,1:2],type="n",xlim=c(-1.65,3.1),ylim=c(-1.8,3.2))
+abline(h=0,lty=2,col="gray65")
+abline(v=0,lty=2,col="gray65")
+text(veg.cca,display="bp",lwd=2.5,cex=1.25,scaling='sp')
+text(rownames(veg.cca$CCA$u),x=veg.cca$CCA$u[,1]*1.2+.6,y=veg.cca$CCA$u[,2]*1.5+.8,cex=0.6,col=spcol)
+text(rownames(veg.cca$CCA$v),x=veg.cca$CCA$v[,1],y=veg.cca$CCA$v[,2],cex=sigsiz*.6,col=sigcol)
+text("B",x=-1.65,y=2.95,cex=2.5)
+
+dev.off()
+
+
+#use pegas and import list of motifs
+library(pegas)
+motif<-read.dna("/Users/andersond/Desktop/Primate/motifs.fasta",format = "fasta")
+mot<-haplotype(motif)
+rownames(mot)<-rownames(motif)
+motnet<-haploNet(mot)
+motnet[]
+#            step      Prob
+# [1,]  6  1    1 0.9636119
+# [2,] 14  7    1 0.9636119
+# [3,] 11 10    1 0.9636119
+# [4,] 12 11    1 0.9636119
+# [5,] 15 11    1 0.9636119
+# [6,] 16 11    1 0.9636119
+# [7,]  4  1    2 0.8927557
+# [8,]  6  3    2 0.8927557
+# [9,] 15  6    2 0.8927557
+#[10,] 10  7    2 0.8927557
+#[11,] 13  9    2 0.8927557
+#[12,] 18 15    2 0.8927557
+#[13,]  6  2    3 0.7931866
+#[14,] 11  5    3 0.7931866
+#[15,]  8  6    3 0.7931866
+#[16,]  9  8    3 0.7931866
+#[17,] 17  1    4 0.6738089
+#attr(,"freq")
+# [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+#attr(,"labels")
+# [1] "hklk"  "mvdp"  "p21"   "pem1"  "pem2"  "psa1"  "psa3"  "sc12"  "slp2"  "slp3"  "aSRE"  "cSRE"  "ccnd1" "hk2"  "cARE"  "aARE"  "pb2"   "c3"   
+#attr(,"alter.links")
+#            step      Prob
+# [1,] 12  7    2 0.8927557
+# [2,] 16  7    2 0.8927557
+# [3,] 12 10    2 0.8927557
+# [4,] 15 10    2 0.8927557
+# [5,] 16 10    2 0.8927557
+# [6,] 15 12    2 0.8927557
+# [7,] 16 12    2 0.8927557
+# [8,] 16 15    2 0.8927557
+# [9,]  3  1    3 0.7931866
+#[10,] 14  1    3 0.7931866
+#[11,] 15  1    3 0.7931866
+#[12,] 16  1    3 0.7931866
+#[13,] 11  2    3 0.7931866
+#[14,] 15  2    3 0.7931866
+#[15,] 15  3    3 0.7931866
+#[16,]  6  4    3 0.7931866
+#[17,] 15  4    3 0.7931866
+#[18,] 16  4    3 0.7931866
+#[19,] 15  5    3 0.7931866
+#[20,] 11  6    3 0.7931866
+#[21,] 12  6    3 0.7931866
+#[22,] 11  7    3 0.7931866
+#[23,] 13  8    3 0.7931866
+#[24,] 14 10    3 0.7931866
+#[25,] 18 11    3 0.7931866
+#[26,] 14 12    3 0.7931866
+#[27,] 15 14    3 0.7931866
+#[28,] 16 14    3 0.7931866
+#[29,]  2  1    4 0.6738089
+#[30,]  7  1    4 0.6738089
+#[31,]  8  1    4 0.6738089
+#[32,] 11  1    4 0.6738089
+#[33,] 12  1    4 0.6738089
+#[34,]  4  2    4 0.6738089
+#[35,]  5  2    4 0.6738089
+#[36,] 10  2    4 0.6738089
+#[37,] 12  2    4 0.6738089
+#[38,] 16  2    4 0.6738089
+#[39,]  8  3    4 0.6738089
+#[40,] 11  3    4 0.6738089
+#[41,] 12  3    4 0.6738089
+#[42,] 18  3    4 0.6738089
+#[43,]  8  4    4 0.6738089
+#[44,] 11  4    4 0.6738089
+#[45,] 14  4    4 0.6738089
+#[46,]  9  5    4 0.6738089
+#[47,] 10  5    4 0.6738089
+#[48,] 12  5    4 0.6738089
+#[49,] 16  5    4 0.6738089
+#[50,] 18  5    4 0.6738089
+#[51,] 10  6    4 0.6738089
+#[52,] 14  6    4 0.6738089
+#[53,] 16  6    4 0.6738089
+#[54,] 18  6    4 0.6738089
+#[55,] 15  7    4 0.6738089
+#[56,] 11  8    4 0.6738089
+#[57,] 12  8    4 0.6738089
+#[58,] 11  9    4 0.6738089
+#[59,] 12  9    4 0.6738089
+#[60,] 15  9    4 0.6738089
+#[61,] 18 10    4 0.6738089
+#[62,] 14 11    4 0.6738089
+#[63,] 18 12    4 0.6738089
+#[64,] 18 16    4 0.6738089
+
+#generate plot for haplotype network
+back<-c("red","gray50","gray72","gray72","cyan3","gray50","red","gray72","gray50","gray72","gray72","gray50","dodgerblue","dodgerblue","cyan3","gray72","gray72","gray72")
+fon.val=c(3,3,3,2,2,3,3,2,2,3,3,3,2,3,3,3,2,3)
+wid<-c(5,5,5,5,5,5,3,3,3,3,3,3,1,1,1,1,0.5)
+
+setEPS()
+postscript("/Users/andersond/Desktop/Primate/HaploFig.eps")
+par(mar=c(1,1,1,1))
+plot(motnet,size=1.5,show.mutation=1,fast=FALSE,threshold=c(0,1),scale.ratio=1,cex=.8,lty=1,lwd=wid,bg=back,font=fon.val)
+dev.off()
+
+#need to visualize nodes needed for lag
+plot(tree)
+nodelabels()
+
+#for each node take the difference between the two tips for mass, canine, and testes
+#mass, canine, and testes must be positive so flip sign if they aren't
+
+n31m<-(dtf[5,c(2,4,9,10,11,16,18,19,22)]-dtf[6,c(2,4,9,10,11,16,18,19,22)])
+n31m<-n31m*-1
+n31c<-(dtf[5,c(3,4,9,10,11,16,18,19,22)]-dtf[6,c(3,4,9,10,11,16,18,19,22)])
+n35m<-(dtf[15,c(2,4,9,10,11,16,18,19,22)]-dtf[16,c(2,4,9,10,11,16,18,19,22)])
+n35m<-n35m*-1
+n35c<-(dtf[15,c(3,4,9,10,11,16,18,19,22)]-dtf[16,c(3,4,9,10,11,16,18,19,22)])
+n35c<--n35c
+n36m<-(dtf[20,c(2,4,9,10,11,16,18,19,22)]-dtf[25,c(2,4,9,10,11,16,18,19,22)])
+n36m<--n36m
+n36c<-(dtf[20,c(3,4,9,10,11,16,18,19,22)]-dtf[25,c(3,4,9,10,11,16,18,19,22)])
+n36c<--n36c
+n38m<-(dtf[12,c(2,4,9,10,11,16,18,19,22)]-dtf[14,c(2,4,9,10,11,16,18,19,22)])
+n38c<-(dtf[12,c(3,4,9,10,11,16,18,19,22)]-dtf[14,c(3,4,9,10,11,16,18,19,22)])
+n38c<--n38c
+n39m<-(dtf[11,c(2,4,9,10,11,16,18,19,22)]-dtf[13,c(2,4,9,10,11,16,18,19,22)])
+n39c<-(dtf[11,c(3,4,9,10,11,16,18,19,22)]-dtf[13,c(3,4,9,10,11,16,18,19,22)])
+n41m<-(dtf[7,c(2,4,9,10,11,16,18,19,22)]-dtf[21,c(2,4,9,10,11,16,18,19,22)])
+n41c<-(dtf[7,c(3,4,9,10,11,16,18,19,22)]-dtf[21,c(3,4,9,10,11,16,18,19,22)])
+n42m<-(dtf[23,c(2,4,9,10,11,16,18,19,22)]-dtf[26,c(2,4,9,10,11,16,18,19,22)])
+n42c<-(dtf[23,c(3,4,9,10,11,16,18,19,22)]-dtf[26,c(3,4,9,10,11,16,18,19,22)])
+n44m<-(dtf[10,c(2,4,9,10,11,16,18,19,22)]-dtf[17,c(2,4,9,10,11,16,18,19,22)])
+n44c<-(dtf[10,c(3,4,9,10,11,16,18,19,22)]-dtf[17,c(3,4,9,10,11,16,18,19,22)])
+n46m<-(dtf[8,c(2,4,9,10,11,16,18,19,22)]-dtf[9,c(2,4,9,10,11,16,18,19,22)])
+n46c<-(dtf[8,c(3,4,9,10,11,16,18,19,22)]-dtf[9,c(3,4,9,10,11,16,18,19,22)])
+n48m<-(dtf[18,c(2,4,9,10,11,16,18,19,22)]-dtf[19,c(2,4,9,10,11,16,18,19,22)])
+n48c<-(dtf[18,c(3,4,9,10,11,16,18,19,22)]-dtf[19,c(3,4,9,10,11,16,18,19,22)])
+n50m<-(dtf[1,c(2,4,9,10,11,16,18,19,22)]-dtf[2,c(2,4,9,10,11,16,18,19,22)])
+n50c<-(dtf[1,c(3,4,9,10,11,16,18,19,22)]-dtf[2,c(3,4,9,10,11,16,18,19,22)])
+n51m<-(dtf[3,c(2,4,9,10,11,16,18,19,22)]-dtf[24,c(2,4,9,10,11,16,18,19,22)])
+n51m<--n51m
+n51c<-(dtf[3,c(3,4,9,10,11,16,18,19,22)]-dtf[24,c(3,4,9,10,11,16,18,19,22)])
+n51c<--n51c
+
+n31t<-(dtfnoT[14,c(1,4,9,10,11,16,18,19,22)]-dtfnoT[15,c(1,4,9,10,11,16,18,19,22)])
+n31t<--n31t
+n32t<-(dtfnoT[19,c(1,4,9,10,11,16,18,19,22)]-dtfnoT[22,c(1,4,9,10,11,16,18,19,22)])
+n34t<-(dtfnoT[11,c(1,4,9,10,11,16,18,19,22)]-dtfnoT[13,c(1,4,9,10,11,16,18,19,22)])
+n34t<--n34t
+n35t<-(dtfnoT[10,c(1,4,9,10,11,16,18,19,22)]-dtfnoT[12,c(1,4,9,10,11,16,18,19,22)])
+n36t<-(dtfnoT[6,c(1,4,9,10,11,16,18,19,22)]-dtfnoT[23,c(1,4,9,10,11,16,18,19,22)])
+n36t<--n36t
+n38t<-(dtfnoT[9,c(1,4,9,10,11,16,18,19,22)]-dtfnoT[17,c(1,4,9,10,11,16,18,19,22)])
+n38t<--n38t
+n40t<-(dtfnoT[7,c(1,4,9,10,11,16,18,19,22)]-dtfnoT[8,c(1,4,9,10,11,16,18,19,22)])
+n40t<--n40t
+n42t<-(dtfnoT[18,c(1,4,9,10,11,16,18,19,22)]-dtfnoT[19,c(1,4,9,10,11,16,18,19,22)])
+n44t<-(dtfnoT[1,c(1,4,9,10,11,16,18,19,22)]-dtfnoT[2,c(1,4,9,10,11,16,18,19,22)])
+n44t<--n44t
+n45t<-(dtfnoT[3,c(1,4,9,10,11,16,18,19,22)]-dtfnoT[21,c(1,4,9,10,11,16,18,19,22)])
+n45t<--n45t
+
+#make dataframes with just the differences
+df.m<-rbind(n31m,n35m,n36m,n38m,n39m,n41m,n42m,n44m,n46m,n48m,n50m,n51m)
+df.c<-rbind(n31c,n35c,n36c,n38c,n39c,n41c,n42c,n44c,n46c,n48c,n50c,n51c)
+rownames(df.m)<-c(31,35,36,38,39,41,42,44,46,48,50,51)
+rownames(df.c)<-c(31,35,36,38,39,41,42,44,46,48,50,51)
+df.t<-rbind(n31t,n32t,n34t,n35t,n36t,n38t,n40t,n42t,n44t,n45t)
+rownames(df.t)<-c(31,32,34,35,36,38,40,42,44,45)
+
+#find the residuals of the difference in ARE as a function of the trait with a 0 intercept
+#add those columns to the existing dataframe 
+for(i in 2:9)
+	{
+	 r<-resid(lm(df.c[,i]~0+df.c$Canine))
+	 df.c<-data.frame(df.c,r)
+	}
+colnames(df.c)<-c(colnames(df.c[,1:9]),"r.cARE","r.ccnd1","r.hk2","r.hklk","r.pem2","r.psa3","r.sc12","r.hre")
+
+for(i in 2:9)
+	{
+	r<-resid(lm(df.m[,i]~0+df.m$Mass))
+	df.m<-data.frame(df.m,r)
+	}
+colnames(df.m)<-c(colnames(df.m[,1:9]),"r.cARE","r.ccnd1","r.hk2","r.hklk","r.pem2","r.psa3","r.sc12","r.hre")
+
+for(i in 2:9)
+	{
+	 r<-resid(lm(df.t[,i]~0+df.t$Testes))
+	 df.t<-data.frame(df.t,r)
+	}
+colnames(df.t)<-c(colnames(df.t[,1:9]),"r.cARE","r.ccnd1","r.hk2","r.hklk","r.pem2","r.psa3","r.sc12","r.hre")
+
+
+#print the edges of tree to find the distance
+tree$edge
+      [,1] [,2]
+ [1,]   27   28
+ [2,]   28   29
+ [3,]   29   30
+ [4,]   30   31
+ [5,]   31    1
+ [6,]   31    2
+ [7,]   30   32
+ [8,]   32   33
+ [9,]   33   34
+[10,]   34   14
+[11,]   34   35
+[12,]   35   19
+[13,]   35   20
+[14,]   33   36
+[15,]   36   22
+[16,]   36   21
+[17,]   32   37
+[18,]   37   38
+[19,]   38   18
+[20,]   38   16
+[21,]   37   39
+[22,]   39   15
+[23,]   39   17
+[24,]   29   40
+[25,]   40   41
+[26,]   41   23
+[27,]   41   24
+[28,]   40   42
+[29,]   42   25
+[30,]   42   26
+[31,]   28   43
+[32,]   43   44
+[33,]   44    9
+[34,]   44   10
+[35,]   43   45
+[36,]   45   46
+[37,]   46    7
+[38,]   46   47
+[39,]   47    8
+[40,]   47   48
+[41,]   48   11
+[42,]   48   12
+[43,]   45   13
+[44,]   27   49
+[45,]   49   50
+[46,]   50    3
+[47,]   50    4
+[48,]   49   51
+[49,]   51    5
+[50,]   51    6
+
+#add edge lengths to the dataframes
+d<-tree$edge.length[c(5,12,15,19,22,26,29,33,37,41,46,49)]
+df.m<-cbind(df.m,d)
+df.c<-cbind(df.c,d)
+
+treenoT$edge
+      [,1] [,2]
+ [1,]   24   25
+ [2,]   25   26
+ [3,]   26   27
+ [4,]   27    1
+ [5,]   27   28
+ [6,]   28   29
+ [7,]   29   30
+ [8,]   30   13
+ [9,]   30   31
+[10,]   31   18
+[11,]   31   19
+[12,]   29   32
+[13,]   32   21
+[14,]   32   20
+[15,]   28   33
+[16,]   33   34
+[17,]   34   17
+[18,]   34   15
+[19,]   33   35
+[20,]   35   14
+[21,]   35   16
+[22,]   26   36
+[23,]   36   22
+[24,]   36   23
+[25,]   25   37
+[26,]   37   38
+[27,]   38    8
+[28,]   38    9
+[29,]   37   39
+[30,]   39   40
+[31,]   40    6
+[32,]   40   41
+[33,]   41    7
+[34,]   41   42
+[35,]   42   10
+[36,]   42   11
+[37,]   39   12
+[38,]   24   43
+[39,]   43   44
+[40,]   44    2
+[41,]   44    3
+[42,]   43   45
+[43,]   45    4
+[44,]   45    5
+
+dt<-tree$edge.length[c(10,13,17,20,23,27,31,35,40,43)]
+df.t<-cbind(df.t,dt)
+
+#check for significant correlation with distance (d)
+library(Hmisc)
+ rcorr(as.matrix(df.c[,10:18]))
+        r.cARE r.ccnd1 r.hk2 r.hklk r.pem2 r.psa3 r.sc12 r.hre     d
+r.cARE    1.00   -0.06 -0.41  -0.33   0.13   0.31   0.30  0.00  0.14
+r.ccnd1  -0.06    1.00  0.26   0.01  -0.09   0.01   0.19  0.98  0.24
+r.hk2    -0.41    0.26  1.00   0.00   0.04  -0.16   0.45  0.27 -0.12
+r.hklk   -0.33    0.01  0.00   1.00  -0.21  -0.27   0.20  0.09  0.59
+r.pem2    0.13   -0.09  0.04  -0.21   1.00   0.35   0.38 -0.13 -0.34
+r.psa3    0.31    0.01 -0.16  -0.27   0.35   1.00   0.28  0.05  0.12
+r.sc12    0.30    0.19  0.45   0.20   0.38   0.28   1.00  0.29  0.29
+r.hre     0.00    0.98  0.27   0.09  -0.13   0.05   0.29  1.00  0.32
+d         0.14    0.24 -0.12   0.59  -0.34   0.12   0.29  0.32  1.00
+
+n= 12 
+
+
+P
+        r.cARE r.ccnd1 r.hk2  r.hklk r.pem2 r.psa3 r.sc12 r.hre  d     
+r.cARE         0.8542  0.1897 0.2953 0.6901 0.3347 0.3400 0.9981 0.6616
+r.ccnd1 0.8542         0.4161 0.9657 0.7706 0.9738 0.5647 0.0000 0.4614
+r.hk2   0.1897 0.4161         0.9971 0.9092 0.6195 0.1381 0.3896 0.7076
+r.hklk  0.2953 0.9657  0.9971        0.5089 0.3998 0.5327 0.7795 0.0457
+r.pem2  0.6901 0.7706  0.9092 0.5089        0.2626 0.2276 0.6954 0.2821
+r.psa3  0.3347 0.9738  0.6195 0.3998 0.2626        0.3829 0.8690 0.6990
+r.sc12  0.3400 0.5647  0.1381 0.5327 0.2276 0.3829        0.3541 0.3537
+r.hre   0.9981 0.0000  0.3896 0.7795 0.6954 0.8690 0.3541        0.3153
+d       0.6616 0.4614  0.7076 0.0457 0.2821 0.6990 0.3537 0.3153       
+
+rcorr(as.matrix(df.m[,10:18]))
+        r.cARE r.ccnd1 r.hk2 r.hklk r.pem2 r.psa3 r.sc12 r.hre     d
+r.cARE    1.00   -0.03 -0.44  -0.41   0.08   0.08   0.34  0.00  0.19
+r.ccnd1  -0.03    1.00  0.15  -0.02  -0.03   0.13   0.08  0.98  0.25
+r.hk2    -0.44    0.15  1.00   0.04   0.10   0.03   0.35  0.18 -0.16
+r.hklk   -0.41   -0.02  0.04   1.00  -0.19  -0.12   0.17  0.08  0.51
+r.pem2    0.08   -0.03  0.10  -0.19   1.00   0.39   0.40 -0.06 -0.33
+r.psa3    0.08    0.13  0.03  -0.12   0.39   1.00   0.30  0.19  0.08
+r.sc12    0.34    0.08  0.35   0.17   0.40   0.30   1.00  0.19  0.33
+r.hre     0.00    0.98  0.18   0.08  -0.06   0.19   0.19  1.00  0.33
+d         0.19    0.25 -0.16   0.51  -0.33   0.08   0.33  0.33  1.00
+
+n= 12 
+
+
+P
+        r.cARE r.ccnd1 r.hk2  r.hklk r.pem2 r.psa3 r.sc12 r.hre  d     
+r.cARE         0.9169  0.1526 0.1831 0.8073 0.7948 0.2846 0.9899 0.5517
+r.ccnd1 0.9169         0.6406 0.9480 0.9264 0.6946 0.8090 0.0000 0.4269
+r.hk2   0.1526 0.6406         0.9133 0.7639 0.9248 0.2627 0.5686 0.6234
+r.hklk  0.1831 0.9480  0.9133        0.5604 0.7065 0.5901 0.8150 0.0921
+r.pem2  0.8073 0.9264  0.7639 0.5604        0.2039 0.1991 0.8617 0.2978
+r.psa3  0.7948 0.6946  0.9248 0.7065 0.2039        0.3446 0.5526 0.7988
+r.sc12  0.2846 0.8090  0.2627 0.5901 0.1991 0.3446        0.5451 0.2993
+r.hre   0.9899 0.0000  0.5686 0.8150 0.8617 0.5526 0.5451        0.2963
+d       0.5517 0.4269  0.6234 0.0921 0.2978 0.7988 0.2993 0.2963       
+
+> rcorr(as.matrix(df.t[,10:18]))
+        r.cARE r.ccnd1 r.hk2 r.hklk r.pem2 r.psa3 r.sc12 r.hre    dt
+r.cARE    1.00    0.00  0.14   0.11   0.29   0.24   0.82  0.13  0.14
+r.ccnd1   0.00    1.00  0.35   0.07  -0.12   0.57   0.45  0.99  0.20
+r.hk2     0.14    0.35  1.00  -0.41  -0.02   0.25   0.03  0.34  0.23
+r.hklk    0.11    0.07 -0.41   1.00  -0.50  -0.23   0.25  0.14  0.58
+r.pem2    0.29   -0.12 -0.02  -0.50   1.00  -0.05   0.29 -0.14 -0.33
+r.psa3    0.24    0.57  0.25  -0.23  -0.05   1.00   0.42  0.58 -0.19
+r.sc12    0.82    0.45  0.03   0.25   0.29   0.42   1.00  0.55  0.10
+r.hre     0.13    0.99  0.34   0.14  -0.14   0.58   0.55  1.00  0.22
+dt        0.14    0.20  0.23   0.58  -0.33  -0.19   0.10  0.22  1.00
+
+n= 10 
+
+
+P
+        r.cARE r.ccnd1 r.hk2  r.hklk r.pem2 r.psa3 r.sc12 r.hre  dt    
+r.cARE         0.9964  0.6967 0.7606 0.4243 0.5100 0.0038 0.7286 0.6909
+r.ccnd1 0.9964         0.3182 0.8544 0.7459 0.0851 0.1888 0.0000 0.5703
+r.hk2   0.6967 0.3182         0.2410 0.9586 0.4865 0.9448 0.3407 0.5194
+r.hklk  0.7606 0.8544  0.2410        0.1383 0.5235 0.4876 0.7065 0.0797
+r.pem2  0.4243 0.7459  0.9586 0.1383        0.8996 0.4134 0.6923 0.3567
+r.psa3  0.5100 0.0851  0.4865 0.5235 0.8996        0.2310 0.0762 0.6080
+r.sc12  0.0038 0.1888  0.9448 0.4876 0.4134 0.2310        0.0960 0.7786
+r.hre   0.7286 0.0000  0.3407 0.7065 0.6923 0.0762 0.0960        0.5469
+dt      0.6909 0.5703  0.5194 0.0797 0.3567 0.6080 0.7786 0.5469       
