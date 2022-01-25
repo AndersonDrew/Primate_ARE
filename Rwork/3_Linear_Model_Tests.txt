@@ -728,6 +728,6 @@ binom.test(8,18)
 ##plot heatmap of values in order of interest using viridis color scheme
 library(viridis)
 setEPS()
-postscript("/Users/andersond/Desktop/Primate/heatmapfig.eps")
+postscript("~heatmapfig.eps")
 phylo.heatmap(tree,dtf[,c(1,3,22,11,10,18,9,4,19,16,5,21,6,8,14,15,17,13,20,12,7,2)],fsize = c(.8,.5,1),standardize = TRUE,col=magma(100))
 dev.off()
