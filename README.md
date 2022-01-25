@@ -1,8 +1,10 @@
 # Primate_ARE
-All R code for the search of motifs, analysis, and plot generation are included in Rworkprimate.txt
+All coding for the Manuscript is foung in the Rwork file. Files are numbered based on creation and order of analysis, not the order they appear in the MS
 
-motifs.fasta contains the sequences used for search and for haplotype network building
+Supplemental Table contains all data tables reference in the MS.
 
-nexus files are the ultrametric trees used for phylogenic anlaysis in this study. "noT" indicates tree for species set without those with no testis values available
+Stuff Used is all data used in generating data that is not in the supplemental section. Items such as motif sequences, or transitional tables as data is analyzed. These tables are called in the Rwork files.
 
-primatedf.all is the collection of raw data and motif counts from which analysis was conducted and is also included as Supplemental Table 2 in the manuscript
+Stuff Not Included is data generated or analyzed that was removed from the manuscript through edits or deemed as not worth contributing to the MS. Code for these analyses can be found in the Rwork under 10_Excluded_from_MS.txt
+
+If user needs more information on files they can contact me.
