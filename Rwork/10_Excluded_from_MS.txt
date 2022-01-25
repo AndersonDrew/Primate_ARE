@@ -583,7 +583,7 @@ spcol<-c("deeppink2","deeppink2","deeppink2","darkgoldenrod3","darkgoldenrod3","
 sigsiz<-c(1.25,1.25,1.25,1.25,1.25,1.75,1.75,2,1.25,1.25,1.25,1.25,1.25,1.25,2,1.25,1.25,1.25)
 sigcol<-c("black","black","black","black","black","blue","blue","red","black","black","black","black","black","black","red","black","black","black")
 setEPS()
-postscript("/Users/andersond/Desktop/Primate/CCAFig.eps")
+postscript("~CCAFig.eps")
 layout( matrix(c(1,3,2,3), ncol=2) )
 par(mar=c(4.7,4.5,1,1))
 plot(veg.ccora$corr.Y.Cy[,1],veg.ccora$corr.Y.Cy[,2],col="white",xlab="CCorA1",ylab="CCorA2",xlim=c(-.38,.33))
@@ -1034,7 +1034,7 @@ gosig<-goscore[which(goscore <= 0.01)]
 ## Make table of these terms
 
 gotable<-GenTable(godata,resultFisher,topNodes=31)
-write.csv(gotable,"/Users/andersond/Desktop/Primate/Evolution/Submission3/gotable.csv")
+write.csv(gotable,"~gotable.csv")
 
 ##Sliding window analysis to see if AREs cluster
 
