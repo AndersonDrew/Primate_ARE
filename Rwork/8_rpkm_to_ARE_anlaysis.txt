@@ -1,7 +1,7 @@
 ##Dataset: Orthologous genes within primates with tissue and expression levels (Supplementary Data 1) Brawand et al. 2011: The evolution of gene expression levels in mammalian organs
 
 library(biomaRt)
-df<-read.csv("/Users/andersond/Desktop/Primate/Evolution/Submission3/NormalizedRPKM_ConstitutiveAlignedExons_Primate1to1Orthologues.csv")
+df<-read.csv("~NormalizedRPKM_ConstitutiveAlignedExons_Primate1to1Orthologues.csv")
 
 ##Extract Gene names/symbol from ensembl ID provided
 hsmart <- useDataset("hsapiens_gene_ensembl", useMart("ensembl"))
@@ -35,7 +35,7 @@ df<-merge(dftrim3,hsgenestrim,by="hsa")
 df<-merge(df,ptgenestrim,by="ptr")
 df<-merge(df,gggenestrim,by="ggo")
 df<-merge(df,mmgenestrim,by="mml")
-write.csv(df,"/Users/andersond/Desktop/Primate/Evolution/Submission3/RPKM_ident.csv")
+write.csv(df,"~RPKM_ident.csv")
 
 ##calculate averages across samples and fold change using excel
 ##discovered that the biomart coordinates did not correspond to the gff files!
@@ -176,7 +176,7 @@ write.csv(rpkm_samp,"RPKM_count.csv")
 ##Read in expression data with fold change and number of hits
 ##Separate data by organ
 
-rpkm<-read.csv("/Users/andersond/Desktop/Primate/Evolution/Submission3/RPKM_count.csv")
+rpkm<-read.csv("~RPKM_count.csv")
 brain<-rpkm[,c(80,2,16,32,48,64,4,18,34,50,66,81:85)]
 cerebellum<-rpkm[,c(80,5,19,35,51,67,7,21,37,53,69,81:85)]
 heart<-rpkm[,c(80,8,22,38,54,70,10,24,40,56,72,81:85)]
@@ -204,7 +204,7 @@ library(phytools)
 
 ##Read in tree with just five species
 
-tree<-read.nexus("/Users/andersond/Desktop/Primate/Evolution/Submission3/smalltree.nex")
+tree<-read.nexus("~smalltree.nex")
 library(nlme)
 library(rr2)
 
@@ -1020,12 +1020,12 @@ testisrpkm.results<-testisrpkm.results[order(testisrpkm.results$fdr),]
 
 ##Write out results
 
-write.csv(brainrpkm.results,"/Users/andersond/Desktop/Primate/Evolution/Submission3/data/brainrpkm.csv")
-write.csv(brainfoldchange.results,"/Users/andersond/Desktop/Primate/Evolution/Submission3/data/brainfoldchange.csv")
-write.csv(cerebellumrpkm.results,"/Users/andersond/Desktop/Primate/Evolution/Submission3/data/cerebellumrpkm.csv")
-write.csv(cerebellumfoldchange.results,"/Users/andersond/Desktop/Primate/Evolution/Submission3/data/cerebellumfoldchange.csv")
-write.csv(heartrpkm.results,"/Users/andersond/Desktop/Primate/Evolution/Submission3/data/heartrpkm.csv")
-write.csv(heartfoldchange.results,"/Users/andersond/Desktop/Primate/Evolution/Submission3/data/heartfoldchange.csv")
-write.csv(kidneyrpkm.results,"/Users/andersond/Desktop/Primate/Evolution/Submission3/data/kidneyrpkm.csv")
-write.csv(kidneyfoldchange.results,"/Users/andersond/Desktop/Primate/Evolution/Submission3/data/kidneyfoldchange.csv")
-write.csv(testisrpkm.results,"/Users/andersond/Desktop/Primate/Evolution/Submission3/data/testisrpkm.csv")
+write.csv(brainrpkm.results,"~brainrpkm.csv")
+write.csv(brainfoldchange.results,"~brainfoldchange.csv")
+write.csv(cerebellumrpkm.results,"~cerebellumrpkm.csv")
+write.csv(cerebellumfoldchange.results,"~cerebellumfoldchange.csv")
+write.csv(heartrpkm.results,"~heartrpkm.csv")
+write.csv(heartfoldchange.results,"~heartfoldchange.csv")
+write.csv(kidneyrpkm.results,"~kidneyrpkm.csv")
+write.csv(kidneyfoldchange.results,"~kidneyfoldchange.csv")
+write.csv(testisrpkm.results,"~testisrpkm.csv")
