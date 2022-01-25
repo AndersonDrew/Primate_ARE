@@ -2,7 +2,7 @@
 ##Continuation of rpkm_to_ARE_anlaysis.txt
 ##Read in allhits data
 
-allpeaks<-read.csv("/Users/andersond/Desktop/Primate/Evolution/Submission3/allpeaks.csv")
+allpeaks<-read.csv("~allpeaks.csv")
 
 ##Find genes with at least one ARE in one species
 
@@ -278,21 +278,4 @@ chisq_drop_fdr
 #X-squared = 15.161, df = 16, p-value = 0.5128
 
 ##p21 has incredibly strong influence.
-
-##GO Analysis
-
-BiocManager::install("topGO")
-library(topGO)
-rpkm<-read.csv("/Users/andersond/Desktop/Primate/Evolution/Submission3/RPKM_count.csv")
-
-##reading as tibble works over the dataframe
-
-library(tibble)
-rpkm_tbl<-as_tibble(rpkm)
-
-##find genes with at least one ARE in one species
-
-select_genes<-rpkm_tbl$hsa_gene[which(apply(rpkm_tbl[,81:85],1,function(r) any(r >= 1)))]
-
-#1312 Genes have an ARE in one of the 5 species
 
