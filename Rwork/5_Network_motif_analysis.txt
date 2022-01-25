@@ -1,7 +1,7 @@
 ##use pegas and import list of motifs
 
 library(pegas)
-motif<-read.dna("/Users/andersond/Desktop/Primate/motifs.fasta",format = "fasta")
+motif<-read.dna("~motifs.fasta",format = "fasta")
 mot<-haplotype(motif)
 rownames(mot)<-rownames(motif)
 motnet<-haploNet(mot)
@@ -102,7 +102,7 @@ fon.val=c(3,3,3,2,2,3,3,2,2,3,3,3,2,3,3,3,2,3)
 wid<-c(5,5,5,5,5,5,3,3,3,3,3,3,1,1,1,1,0.5)
 
 setEPS()
-postscript("/Users/andersond/Desktop/Primate/HaploFig.eps")
+postscript("~HaploFig.eps")
 par(mar=c(1,1,1,1))
 plot(motnet,size=1.5,show.mutation=1,fast=FALSE,threshold=c(0,1),scale.ratio=1,cex=.8,lty=1,lwd=wid,bg=back,font=fon.val)
 dev.off()
