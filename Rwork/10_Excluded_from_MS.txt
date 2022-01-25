@@ -1,0 +1,1269 @@
+##Evolutionary Lag Test--not included in this manuscript... dropped between version 1 and 2
+
+##need to visualize nodes needed for lag
+
+plot(tree)
+nodelabels()
+
+##for each node take the difference between the two tips for mass, canine, and testes
+##mass, canine, and testes must be positive so flip sign if they aren't
+
+n31m<-(dtf[5,c(2,4,9,10,11,16,18,19,22)]-dtf[6,c(2,4,9,10,11,16,18,19,22)])
+n31m<-n31m*-1
+n31c<-(dtf[5,c(3,4,9,10,11,16,18,19,22)]-dtf[6,c(3,4,9,10,11,16,18,19,22)])
+n35m<-(dtf[15,c(2,4,9,10,11,16,18,19,22)]-dtf[16,c(2,4,9,10,11,16,18,19,22)])
+n35m<-n35m*-1
+n35c<-(dtf[15,c(3,4,9,10,11,16,18,19,22)]-dtf[16,c(3,4,9,10,11,16,18,19,22)])
+n35c<--n35c
+n36m<-(dtf[20,c(2,4,9,10,11,16,18,19,22)]-dtf[25,c(2,4,9,10,11,16,18,19,22)])
+n36m<--n36m
+n36c<-(dtf[20,c(3,4,9,10,11,16,18,19,22)]-dtf[25,c(3,4,9,10,11,16,18,19,22)])
+n36c<--n36c
+n38m<-(dtf[12,c(2,4,9,10,11,16,18,19,22)]-dtf[14,c(2,4,9,10,11,16,18,19,22)])
+n38c<-(dtf[12,c(3,4,9,10,11,16,18,19,22)]-dtf[14,c(3,4,9,10,11,16,18,19,22)])
+n38c<--n38c
+n39m<-(dtf[11,c(2,4,9,10,11,16,18,19,22)]-dtf[13,c(2,4,9,10,11,16,18,19,22)])
+n39c<-(dtf[11,c(3,4,9,10,11,16,18,19,22)]-dtf[13,c(3,4,9,10,11,16,18,19,22)])
+n41m<-(dtf[7,c(2,4,9,10,11,16,18,19,22)]-dtf[21,c(2,4,9,10,11,16,18,19,22)])
+n41c<-(dtf[7,c(3,4,9,10,11,16,18,19,22)]-dtf[21,c(3,4,9,10,11,16,18,19,22)])
+n42m<-(dtf[23,c(2,4,9,10,11,16,18,19,22)]-dtf[26,c(2,4,9,10,11,16,18,19,22)])
+n42c<-(dtf[23,c(3,4,9,10,11,16,18,19,22)]-dtf[26,c(3,4,9,10,11,16,18,19,22)])
+n44m<-(dtf[10,c(2,4,9,10,11,16,18,19,22)]-dtf[17,c(2,4,9,10,11,16,18,19,22)])
+n44c<-(dtf[10,c(3,4,9,10,11,16,18,19,22)]-dtf[17,c(3,4,9,10,11,16,18,19,22)])
+n46m<-(dtf[8,c(2,4,9,10,11,16,18,19,22)]-dtf[9,c(2,4,9,10,11,16,18,19,22)])
+n46c<-(dtf[8,c(3,4,9,10,11,16,18,19,22)]-dtf[9,c(3,4,9,10,11,16,18,19,22)])
+n48m<-(dtf[18,c(2,4,9,10,11,16,18,19,22)]-dtf[19,c(2,4,9,10,11,16,18,19,22)])
+n48c<-(dtf[18,c(3,4,9,10,11,16,18,19,22)]-dtf[19,c(3,4,9,10,11,16,18,19,22)])
+n50m<-(dtf[1,c(2,4,9,10,11,16,18,19,22)]-dtf[2,c(2,4,9,10,11,16,18,19,22)])
+n50c<-(dtf[1,c(3,4,9,10,11,16,18,19,22)]-dtf[2,c(3,4,9,10,11,16,18,19,22)])
+n51m<-(dtf[3,c(2,4,9,10,11,16,18,19,22)]-dtf[24,c(2,4,9,10,11,16,18,19,22)])
+n51m<--n51m
+n51c<-(dtf[3,c(3,4,9,10,11,16,18,19,22)]-dtf[24,c(3,4,9,10,11,16,18,19,22)])
+n51c<--n51c
+
+n31t<-(dtfnoT[14,c(1,4,9,10,11,16,18,19,22)]-dtfnoT[15,c(1,4,9,10,11,16,18,19,22)])
+n31t<--n31t
+n32t<-(dtfnoT[19,c(1,4,9,10,11,16,18,19,22)]-dtfnoT[22,c(1,4,9,10,11,16,18,19,22)])
+n34t<-(dtfnoT[11,c(1,4,9,10,11,16,18,19,22)]-dtfnoT[13,c(1,4,9,10,11,16,18,19,22)])
+n34t<--n34t
+n35t<-(dtfnoT[10,c(1,4,9,10,11,16,18,19,22)]-dtfnoT[12,c(1,4,9,10,11,16,18,19,22)])
+n36t<-(dtfnoT[6,c(1,4,9,10,11,16,18,19,22)]-dtfnoT[23,c(1,4,9,10,11,16,18,19,22)])
+n36t<--n36t
+n38t<-(dtfnoT[9,c(1,4,9,10,11,16,18,19,22)]-dtfnoT[17,c(1,4,9,10,11,16,18,19,22)])
+n38t<--n38t
+n40t<-(dtfnoT[7,c(1,4,9,10,11,16,18,19,22)]-dtfnoT[8,c(1,4,9,10,11,16,18,19,22)])
+n40t<--n40t
+n42t<-(dtfnoT[18,c(1,4,9,10,11,16,18,19,22)]-dtfnoT[19,c(1,4,9,10,11,16,18,19,22)])
+n44t<-(dtfnoT[1,c(1,4,9,10,11,16,18,19,22)]-dtfnoT[2,c(1,4,9,10,11,16,18,19,22)])
+n44t<--n44t
+n45t<-(dtfnoT[3,c(1,4,9,10,11,16,18,19,22)]-dtfnoT[21,c(1,4,9,10,11,16,18,19,22)])
+n45t<--n45t
+
+##make dataframes with just the differences
+
+df.m<-rbind(n31m,n35m,n36m,n38m,n39m,n41m,n42m,n44m,n46m,n48m,n50m,n51m)
+df.c<-rbind(n31c,n35c,n36c,n38c,n39c,n41c,n42c,n44c,n46c,n48c,n50c,n51c)
+rownames(df.m)<-c(31,35,36,38,39,41,42,44,46,48,50,51)
+rownames(df.c)<-c(31,35,36,38,39,41,42,44,46,48,50,51)
+df.t<-rbind(n31t,n32t,n34t,n35t,n36t,n38t,n40t,n42t,n44t,n45t)
+rownames(df.t)<-c(31,32,34,35,36,38,40,42,44,45)
+
+##find the residuals of the difference in ARE as a function of the trait with a 0 intercept
+##add those columns to the existing dataframe 
+
+for(i in 2:9)
+	{
+	 r<-resid(lm(df.c[,i]~0+df.c$Canine))
+	 df.c<-data.frame(df.c,r)
+	}
+colnames(df.c)<-c(colnames(df.c[,1:9]),"r.cARE","r.ccnd1","r.hk2","r.hklk","r.pem2","r.psa3","r.sc12","r.hre")
+
+for(i in 2:9)
+	{
+	r<-resid(lm(df.m[,i]~0+df.m$Mass))
+	df.m<-data.frame(df.m,r)
+	}
+colnames(df.m)<-c(colnames(df.m[,1:9]),"r.cARE","r.ccnd1","r.hk2","r.hklk","r.pem2","r.psa3","r.sc12","r.hre")
+
+for(i in 2:9)
+	{
+	 r<-resid(lm(df.t[,i]~0+df.t$Testes))
+	 df.t<-data.frame(df.t,r)
+	}
+colnames(df.t)<-c(colnames(df.t[,1:9]),"r.cARE","r.ccnd1","r.hk2","r.hklk","r.pem2","r.psa3","r.sc12","r.hre")
+
+
+##print the edges of tree to find the distance
+
+tree$edge
+      [,1] [,2]
+ [1,]   27   28
+ [2,]   28   29
+ [3,]   29   30
+ [4,]   30   31
+ [5,]   31    1
+ [6,]   31    2
+ [7,]   30   32
+ [8,]   32   33
+ [9,]   33   34
+[10,]   34   14
+[11,]   34   35
+[12,]   35   19
+[13,]   35   20
+[14,]   33   36
+[15,]   36   22
+[16,]   36   21
+[17,]   32   37
+[18,]   37   38
+[19,]   38   18
+[20,]   38   16
+[21,]   37   39
+[22,]   39   15
+[23,]   39   17
+[24,]   29   40
+[25,]   40   41
+[26,]   41   23
+[27,]   41   24
+[28,]   40   42
+[29,]   42   25
+[30,]   42   26
+[31,]   28   43
+[32,]   43   44
+[33,]   44    9
+[34,]   44   10
+[35,]   43   45
+[36,]   45   46
+[37,]   46    7
+[38,]   46   47
+[39,]   47    8
+[40,]   47   48
+[41,]   48   11
+[42,]   48   12
+[43,]   45   13
+[44,]   27   49
+[45,]   49   50
+[46,]   50    3
+[47,]   50    4
+[48,]   49   51
+[49,]   51    5
+[50,]   51    6
+
+##add edge lengths to the dataframes
+
+d<-tree$edge.length[c(5,12,15,19,22,26,29,33,37,41,46,49)]
+df.m<-cbind(df.m,d)
+df.c<-cbind(df.c,d)
+
+treenoT$edge
+      [,1] [,2]
+ [1,]   24   25
+ [2,]   25   26
+ [3,]   26   27
+ [4,]   27    1
+ [5,]   27   28
+ [6,]   28   29
+ [7,]   29   30
+ [8,]   30   13
+ [9,]   30   31
+[10,]   31   18
+[11,]   31   19
+[12,]   29   32
+[13,]   32   21
+[14,]   32   20
+[15,]   28   33
+[16,]   33   34
+[17,]   34   17
+[18,]   34   15
+[19,]   33   35
+[20,]   35   14
+[21,]   35   16
+[22,]   26   36
+[23,]   36   22
+[24,]   36   23
+[25,]   25   37
+[26,]   37   38
+[27,]   38    8
+[28,]   38    9
+[29,]   37   39
+[30,]   39   40
+[31,]   40    6
+[32,]   40   41
+[33,]   41    7
+[34,]   41   42
+[35,]   42   10
+[36,]   42   11
+[37,]   39   12
+[38,]   24   43
+[39,]   43   44
+[40,]   44    2
+[41,]   44    3
+[42,]   43   45
+[43,]   45    4
+[44,]   45    5
+
+dt<-tree$edge.length[c(10,13,17,20,23,27,31,35,40,43)]
+df.t<-cbind(df.t,dt)
+
+##check for significant correlation with distance (d)
+
+library(Hmisc)
+
+##Canine
+
+ rcorr(as.matrix(df.c[,10:18]))
+        r.cARE r.ccnd1 r.hk2 r.hklk r.pem2 r.psa3 r.sc12 r.hre     d
+r.cARE    1.00   -0.06 -0.41  -0.33   0.13   0.31   0.30  0.00  0.14
+r.ccnd1  -0.06    1.00  0.26   0.01  -0.09   0.01   0.19  0.98  0.24
+r.hk2    -0.41    0.26  1.00   0.00   0.04  -0.16   0.45  0.27 -0.12
+r.hklk   -0.33    0.01  0.00   1.00  -0.21  -0.27   0.20  0.09  0.59
+r.pem2    0.13   -0.09  0.04  -0.21   1.00   0.35   0.38 -0.13 -0.34
+r.psa3    0.31    0.01 -0.16  -0.27   0.35   1.00   0.28  0.05  0.12
+r.sc12    0.30    0.19  0.45   0.20   0.38   0.28   1.00  0.29  0.29
+r.hre     0.00    0.98  0.27   0.09  -0.13   0.05   0.29  1.00  0.32
+d         0.14    0.24 -0.12   0.59  -0.34   0.12   0.29  0.32  1.00
+
+n= 12 
+
+
+P
+        r.cARE r.ccnd1 r.hk2  r.hklk r.pem2 r.psa3 r.sc12 r.hre  d     
+r.cARE         0.8542  0.1897 0.2953 0.6901 0.3347 0.3400 0.9981 0.6616
+r.ccnd1 0.8542         0.4161 0.9657 0.7706 0.9738 0.5647 0.0000 0.4614
+r.hk2   0.1897 0.4161         0.9971 0.9092 0.6195 0.1381 0.3896 0.7076
+r.hklk  0.2953 0.9657  0.9971        0.5089 0.3998 0.5327 0.7795 0.0457
+r.pem2  0.6901 0.7706  0.9092 0.5089        0.2626 0.2276 0.6954 0.2821
+r.psa3  0.3347 0.9738  0.6195 0.3998 0.2626        0.3829 0.8690 0.6990
+r.sc12  0.3400 0.5647  0.1381 0.5327 0.2276 0.3829        0.3541 0.3537
+r.hre   0.9981 0.0000  0.3896 0.7795 0.6954 0.8690 0.3541        0.3153
+d       0.6616 0.4614  0.7076 0.0457 0.2821 0.6990 0.3537 0.3153       
+
+##Mass
+
+rcorr(as.matrix(df.m[,10:18]))
+        r.cARE r.ccnd1 r.hk2 r.hklk r.pem2 r.psa3 r.sc12 r.hre     d
+r.cARE    1.00   -0.03 -0.44  -0.41   0.08   0.08   0.34  0.00  0.19
+r.ccnd1  -0.03    1.00  0.15  -0.02  -0.03   0.13   0.08  0.98  0.25
+r.hk2    -0.44    0.15  1.00   0.04   0.10   0.03   0.35  0.18 -0.16
+r.hklk   -0.41   -0.02  0.04   1.00  -0.19  -0.12   0.17  0.08  0.51
+r.pem2    0.08   -0.03  0.10  -0.19   1.00   0.39   0.40 -0.06 -0.33
+r.psa3    0.08    0.13  0.03  -0.12   0.39   1.00   0.30  0.19  0.08
+r.sc12    0.34    0.08  0.35   0.17   0.40   0.30   1.00  0.19  0.33
+r.hre     0.00    0.98  0.18   0.08  -0.06   0.19   0.19  1.00  0.33
+d         0.19    0.25 -0.16   0.51  -0.33   0.08   0.33  0.33  1.00
+
+n= 12 
+
+
+P
+        r.cARE r.ccnd1 r.hk2  r.hklk r.pem2 r.psa3 r.sc12 r.hre  d     
+r.cARE         0.9169  0.1526 0.1831 0.8073 0.7948 0.2846 0.9899 0.5517
+r.ccnd1 0.9169         0.6406 0.9480 0.9264 0.6946 0.8090 0.0000 0.4269
+r.hk2   0.1526 0.6406         0.9133 0.7639 0.9248 0.2627 0.5686 0.6234
+r.hklk  0.1831 0.9480  0.9133        0.5604 0.7065 0.5901 0.8150 0.0921
+r.pem2  0.8073 0.9264  0.7639 0.5604        0.2039 0.1991 0.8617 0.2978
+r.psa3  0.7948 0.6946  0.9248 0.7065 0.2039        0.3446 0.5526 0.7988
+r.sc12  0.2846 0.8090  0.2627 0.5901 0.1991 0.3446        0.5451 0.2993
+r.hre   0.9899 0.0000  0.5686 0.8150 0.8617 0.5526 0.5451        0.2963
+d       0.5517 0.4269  0.6234 0.0921 0.2978 0.7988 0.2993 0.2963       
+
+##Testes
+
+rcorr(as.matrix(df.t[,10:18]))
+        r.cARE r.ccnd1 r.hk2 r.hklk r.pem2 r.psa3 r.sc12 r.hre    dt
+r.cARE    1.00    0.00  0.14   0.11   0.29   0.24   0.82  0.13  0.14
+r.ccnd1   0.00    1.00  0.35   0.07  -0.12   0.57   0.45  0.99  0.20
+r.hk2     0.14    0.35  1.00  -0.41  -0.02   0.25   0.03  0.34  0.23
+r.hklk    0.11    0.07 -0.41   1.00  -0.50  -0.23   0.25  0.14  0.58
+r.pem2    0.29   -0.12 -0.02  -0.50   1.00  -0.05   0.29 -0.14 -0.33
+r.psa3    0.24    0.57  0.25  -0.23  -0.05   1.00   0.42  0.58 -0.19
+r.sc12    0.82    0.45  0.03   0.25   0.29   0.42   1.00  0.55  0.10
+r.hre     0.13    0.99  0.34   0.14  -0.14   0.58   0.55  1.00  0.22
+dt        0.14    0.20  0.23   0.58  -0.33  -0.19   0.10  0.22  1.00
+
+n= 10 
+
+
+P
+        r.cARE r.ccnd1 r.hk2  r.hklk r.pem2 r.psa3 r.sc12 r.hre  dt    
+r.cARE         0.9964  0.6967 0.7606 0.4243 0.5100 0.0038 0.7286 0.6909
+r.ccnd1 0.9964         0.3182 0.8544 0.7459 0.0851 0.1888 0.0000 0.5703
+r.hk2   0.6967 0.3182         0.2410 0.9586 0.4865 0.9448 0.3407 0.5194
+r.hklk  0.7606 0.8544  0.2410        0.1383 0.5235 0.4876 0.7065 0.0797
+r.pem2  0.4243 0.7459  0.9586 0.1383        0.8996 0.4134 0.6923 0.3567
+r.psa3  0.5100 0.0851  0.4865 0.5235 0.8996        0.2310 0.0762 0.6080
+r.sc12  0.0038 0.1888  0.9448 0.4876 0.4134 0.2310        0.0960 0.7786
+r.hre   0.7286 0.0000  0.3407 0.7065 0.6923 0.0762 0.0960        0.5469
+dt      0.6909 0.5703  0.5194 0.0797 0.3567 0.6080 0.7786 0.5469       
+
+
+##CCA analysis and graph dropped between version 2 and 3 
+
+##use canonical correspondance analysis as it works in unimodal fashion and can isolate variables easier
+
+veg.cca<-cca(hre.set~.,data=trait.set)
+
+##find marginal effects
+
+anova(veg.cca, by= 'margin', permutations = 10000)
+#Permutation test for cca under reduced model
+#Marginal effects of terms
+#Permutation: free
+#Number of permutations: 10000
+#
+#Model: cca(formula = hre.set ~ Testes + Mass + Canine, data = trait.set)
+#         Df ChiSquare      F Pr(>F)   
+#Testes    1 0.0001261 0.6741 0.5945   
+#Mass      1 0.0005238 2.8008 0.0401 * 
+#Canine    1 0.0009809 5.2451 0.0030 **
+#Residual 19 0.0035531                 
+#---
+#Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+##find significant CCA
+
+anova(veg.cca, by= 'axis', permutations = 10000)
+#Permutation test for cca under reduced model
+#Forward tests for axes
+#Permutation: free
+#Number of permutations: 10000
+#
+#Model: cca(formula = hre.set ~ Testes + Mass + Canine, data = trait.set)
+#         Df ChiSquare      F Pr(>F)  
+#CCA1      1 0.0011735 6.2753 0.0138 *
+#CCA2      1 0.0001462 0.7819 0.8502  
+#CCA3      1 0.0000583 0.3118 0.9292  
+#Residual 19 0.0035531                
+#---
+#Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+##find significant terms
+
+anova(veg.cca, by= 'terms', permutations = 10000)
+#Permutation test for cca under reduced model
+#Terms added sequentially (first to last)
+#Permutation: free
+#Number of permutations: 10000
+#
+#Model: cca(formula = hre.set ~ Testes + Mass + Canine, data = trait.set)
+#         Df ChiSquare      F Pr(>F)   
+#Testes    1 0.0002796 1.4954 0.2015   
+#Mass      1 0.0001175 0.6284 0.6177   
+#Canine    1 0.0009809 5.2451 0.0043 **
+#Residual 19 0.0035531                 
+#---
+#Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+##investigate full CCA
+
+summary(veg.cca)
+#
+#Call:
+#cca(formula = hre.set ~ Testes + Mass + Canine, data = trait.set) 
+#
+#Partitioning of scaled Chi-square:
+#               Inertia Proportion
+#Total         0.004931     1.0000
+#Constrained   0.001378     0.2795
+#Unconstrained 0.003553     0.7205
+#
+#Eigenvalues, and their contribution to the scaled Chi-square 
+#
+#Importance of components:
+#                          CCA1      CCA2      CCA3      CA1     CA2       CA3       CA4       CA5       CA6       CA7       CA8       CA9      CA10      CA11      CA12      CA13      CA14      CA15      CA16     CA17
+#Eigenvalue            0.001173 0.0001462 0.0000583 0.001505 0.00112 0.0002641 0.0001883 0.0001579 9.024e-05 6.999e-05 4.845e-05 2.781e-05 2.126e-05 2.063e-05 1.516e-05 1.086e-05 7.455e-06 3.822e-06 8.920e-07 6.26e-07
+#Proportion Explained  0.237979 0.0296527 0.0118229 0.305277 0.22718 0.0535483 0.0381867 0.0320246 1.830e-02 1.419e-02 9.825e-03 5.639e-03 4.312e-03 4.184e-03 3.074e-03 2.202e-03 1.512e-03 7.750e-04 1.809e-04 1.27e-04
+#Cumulative Proportion 0.237979 0.2676320 0.2794550 0.584732 0.81192 0.8654640 0.9036507 0.9356753 9.540e-01 9.682e-01 9.780e-01 9.836e-01 9.879e-01 9.921e-01 9.952e-01 9.974e-01 9.989e-01 9.997e-01 9.999e-01 1.00e+00
+#
+#Accumulated constrained eigenvalues
+#Importance of components:
+#                          CCA1      CCA2      CCA3
+#Eigenvalue            0.001173 0.0001462 0.0000583
+#Proportion Explained  0.851584 0.1061091 0.0423072
+#Cumulative Proportion 0.851584 0.9576928 1.0000000
+#
+#Scaling 2 for species and site scores
+#* Species are scaled proportional to eigenvalues
+#* Sites are unscaled: weighted dispersion equal on all dimensions
+#
+#
+#Species scores
+#
+#           CCA1      CCA2       CCA3       CA1       CA2       CA3
+#cARE   0.014438  0.009884  9.526e-03  0.008015 -0.028782  0.003833
+#aARE   0.022350 -0.007238 -7.755e-03  0.002748 -0.017401 -0.021649
+#aSRE   0.000553 -0.004233  2.076e-03  0.021873 -0.033240  0.007590
+#cSRE  -0.035977 -0.008682  1.876e-03 -0.037483  0.013393  0.005883
+#c3    -0.012000  0.003435 -1.528e-02 -0.024094  0.047689 -0.041862
+#ccnd1  0.096576 -0.015130 -8.616e-03  0.113284  0.073836 -0.005530
+#hk2    0.001929  0.003881  7.259e-03  0.002490 -0.018220 -0.010897
+#hklk   0.018764  0.038972 -8.166e-03  0.003557 -0.006257  0.001408
+#mvdp  -0.029566 -0.009200  2.707e-03 -0.006253 -0.004453  0.018067
+#p21   -0.002928 -0.006640 -3.391e-02  0.008115 -0.046098  0.005684
+#pb2    0.012876 -0.019932  5.343e-03  0.014481 -0.055710  0.012947
+#pem1   0.000196 -0.007463  3.068e-05  0.007149 -0.013575  0.015763
+#pem2   0.009342  0.004465  1.466e-02 -0.006113 -0.007420 -0.013907
+#psa1  -0.039315  0.003576 -6.786e-03 -0.054959  0.060303  0.022371
+#psa3   0.023001  0.008817  1.031e-02  0.008062 -0.015566 -0.011093
+#sc12   0.007759  0.008148 -4.815e-03 -0.018631 -0.002864 -0.006157
+#slp2  -0.055371 -0.004499 -1.021e-02 -0.064420  0.031777 -0.043265
+#slp3   0.004664 -0.002394 -4.611e-04  0.010579 -0.024900 -0.006373
+#
+#
+#Site scores (weighted averages of species scores)
+#
+#                              CCA1     CCA2     CCA3      CA1     CA2     CA3
+#Aotus_nancymaae          -2.107436 -0.29085 -2.19341 -0.78516  0.7269  1.6293
+#Callithrix_jacchus       -2.277102 -0.06080 -4.40374 -1.81751  1.3486 -3.3445
+#Cebus_imitator           -2.303926  0.33347 -3.25970 -1.65073  1.9551  2.1328
+#Cercocebus_atys           0.384710  2.41247  0.79743 -0.13961 -0.6717 -0.6258
+#Chlorocebus_sabaeus      -0.360255  0.68478  3.08104  0.76959 -0.7080 -0.1586
+#Colobus_angolensis       -0.008155 -0.10471  2.86239 -0.32179 -0.6257 -0.6442
+#Gorilla_gorilla          -0.414926 -0.03645  2.16957  1.33870 -0.6256 -1.2508
+#Homo_sapiens             -0.549888 -0.88038  1.23539 -0.10813 -1.0661 -0.1627
+#Hylobates_moloch         -0.767748 -1.71746  1.27109 -0.06036 -0.4590  0.5930
+#Macaca_fascicularis       0.620158  0.94525  1.62149  0.21235 -0.8904  0.4255
+#Macaca_fuscata            3.646208 -3.15002 -4.92141  2.63968  1.9694 -0.3165
+#Macaca_mulatta            2.150304 -0.55849 -2.68998  1.08390  0.7173 -0.1893
+#Macaca_nemestrina         0.446294  2.52304  1.09340 -0.04889 -0.6264 -0.0989
+#Mandrillus_leucophaeus    1.389683  0.33185  0.58529 -0.42150  0.2014  0.1857
+#Mandrillus_sphinx         0.623271  1.03383  2.95718 -0.91323 -0.5145 -0.1263
+#Nomascus_leucogenys      -0.599445 -2.07887  2.51853  0.29165 -0.4234 -0.0973
+#Pan_paniscus             -0.310938 -0.15649  0.02032 -0.07086 -0.9977  0.5894
+#Pan_troglodytes          -0.386482  0.26986 -0.88107 -0.36087 -0.9679  0.2734
+#Papio_anubis             -0.572116  1.44923  2.25136 -1.15183 -1.0566  0.1337
+#Pongo_abelii             -0.708605 -0.35350  3.20804  0.97207 -0.5610  0.8251
+#Saimiri_boliviensis      -1.811862  2.61921 -5.85452 -0.79298  1.8789 -0.2424
+#Theropithecus_gelada      1.372180 -0.71490  0.09732  0.10890  0.3403 -0.1119
+#Trachypithecus_francoisi  1.725569 -2.17933 -0.95215  0.90101  0.7632  0.5727
+#
+#
+#Site constraints (linear combinations of constraining variables)
+#
+#                            CCA1     CCA2     CCA3      CA1     CA2     CA3
+#Aotus_nancymaae          -1.0680 -0.60375  0.22235 -0.78516  0.7269  1.6293
+#Callithrix_jacchus       -0.6319 -0.60029 -0.90057 -1.81751  1.3486 -3.3445
+#Cebus_imitator           -0.6184  0.33492 -0.01212 -1.65073  1.9551  2.1328
+#Cercocebus_atys           0.3542  0.85876  0.15658 -0.13961 -0.6717 -0.6258
+#Chlorocebus_sabaeus      -1.3378  0.94328 -0.42375  0.76959 -0.7080 -0.1586
+#Colobus_angolensis        0.2208 -1.36015  1.31305 -0.32179 -0.6257 -0.6442
+#Gorilla_gorilla          -1.7895  0.78135  1.82700  1.33870 -0.6256 -1.2508
+#Homo_sapiens             -0.3957 -1.41591 -0.63656 -0.10813 -1.0661 -0.1627
+#Hylobates_moloch         -0.5779 -1.15385 -0.50321 -0.06036 -0.4590  0.5930
+#Macaca_fascicularis       0.4859  1.00942 -0.87365  0.21235 -0.8904  0.4255
+#Macaca_fuscata            0.8413  0.15234 -1.06219  2.63968  1.9694 -0.3165
+#Macaca_mulatta            0.9633  0.04752 -0.97706  1.08390  0.7173 -0.1893
+#Macaca_nemestrina         0.4591  1.15542 -0.81542 -0.04889 -0.6264 -0.0989
+#Mandrillus_leucophaeus    1.8526 -0.12226  1.40774 -0.42150  0.2014  0.1857
+#Mandrillus_sphinx         1.7090  1.44640  1.43005 -0.91323 -0.5145 -0.1263
+#Nomascus_leucogenys      -0.8775 -1.89603  0.71988  0.29165 -0.4234 -0.0973
+#Pan_paniscus             -0.0279 -0.02625 -1.62244 -0.07086 -0.9977  0.5894
+#Pan_troglodytes           0.1261 -0.33159 -1.56821 -0.36087 -0.9679  0.2734
+#Papio_anubis              0.6500  0.25328 -0.62213 -1.15183 -1.0566  0.1337
+#Pongo_abelii             -1.5059  0.97316  1.00242  0.97207 -0.5610  0.8251
+#Saimiri_boliviensis      -1.1990  1.56726  0.20828 -0.79298  1.8789 -0.2424
+#Theropithecus_gelada      1.2906 -0.22463  1.13362  0.10890  0.3403 -0.1119
+#Trachypithecus_francoisi  0.6080 -1.80410  0.63771  0.90101  0.7632  0.5727
+#
+#
+#Biplot scores for constraining variables
+#
+#          CCA1   CCA2    CCA3 CA1 CA2 CA3
+#Testes 0.41474 0.5794 -0.7016   0   0   0
+#Mass   0.04106 0.9075  0.4180   0   0   0
+#Canine 0.77076 0.4882  0.4094   0   0   0
+
+##determine number of clusters
+
+##check for cluster in the CCA analysis
+
+nb <- NbClust(as.matrix(veg.cca$CCA$v[,1:2]), diss=NULL, distance = "euclidean", min.nc=2, max.nc=10, method = "kmeans", index = "all", alphaBeale = 0.1)
+#*** : The Hubert index is a graphical method of determining the number of clusters.
+#                In the plot of Hubert index, we seek a significant knee that corresponds to a 
+#                significant increase of the value of the measure i.e the significant peak in Hubert
+#                index second differences plot. 
+# 
+#*** : The D index is a graphical method of determining the number of clusters. 
+#                In the plot of D index, we seek a significant knee (the significant peak in Dindex
+#                second differences plot) that corresponds to a significant increase of the value of
+#                the measure. 
+# 
+#******************************************************************* 
+#* Among all indices:                                                
+#* 4 proposed 2 as the best number of clusters 
+#* 2 proposed 3 as the best number of clusters 
+#* 7 proposed 4 as the best number of clusters 
+#* 2 proposed 5 as the best number of clusters 
+#* 1 proposed 6 as the best number of clusters 
+#* 2 proposed 9 as the best number of clusters 
+#* 4 proposed 10 as the best number of clusters 
+#
+#                   ***** Conclusion *****                            
+# 
+#* According to the majority rule, the best number of clusters is  4 
+# 
+# 
+#******************************************************************* 
+
+wss <- sapply(1:16, function(k){kmeans(veg.cca$CCA$v[,1:2], k, nstart=50,iter.max = 16 )$tot.withinss})
+wss
+# [1] 34.59255965 23.20989740 13.80317873  7.86192077  3.59143528  2.37530412  1.60854198  1.14422232  0.79924259  0.46643266  0.28703414  0.17800199  0.09755744  0.07297587  0.04366171  0.02490171
+d_clust <- Mclust(as.matrix(veg.cca$CCA$v[,1:2]), G=1:8, modelNames = mclust.options("emModelNames"))
+d_clust$BIC
+#Bayesian Information Criterion (BIC): 
+#        EII       VII       EEI       VEI       EVI       VVI       EEE       EVE       VEE       VVE       EEV       VEV       EVV       VVV
+#1 -109.3990 -109.3990 -112.0793 -112.0793 -112.0793 -112.0793 -114.9694 -114.9694 -114.9694 -114.9694 -114.9694 -114.9694 -114.9694 -114.9694
+#2 -111.4171 -111.4677 -113.6041 -114.3129 -111.5613 -116.5401 -114.9613        NA        NA        NA -121.9961 -117.7282        NA        NA
+#3 -108.9948 -114.2662 -111.8849 -116.9931 -110.6721 -121.3313 -126.0753        NA        NA        NA -119.2684 -119.4354        NA        NA
+#4 -115.1470 -121.9638 -107.5775 -123.1132 -113.6418 -126.8747 -129.7211        NA        NA        NA -128.6174 -126.1846        NA        NA
+#5 -111.8038        NA -112.8010        NA        NA        NA -115.6585        NA        NA        NA -120.3356        NA        NA        NA
+#6 -111.4954        NA -114.3640        NA        NA        NA -117.0810        NA        NA        NA -123.6412        NA        NA        NA
+#7 -113.3760        NA -111.6358        NA        NA        NA -114.3847        NA        NA        NA -120.3845        NA        NA        NA
+#8 -115.8551        NA -111.7852        NA        NA        NA -112.1444        NA        NA        NA -126.5712        NA        NA        NA
+#
+#Top 3 models based on the BIC criterion: 
+#    EEI,4     EII,3     EII,1 
+#-107.5775 -108.9948 -109.3990 
+
+## Solid evidence for 4 groups
+## Species cluster
+
+k.cca.hre<-kmeans(veg.cca$CCA$v[,1:2],centers = 4, iter.max = 1000, nstart = 25)
+
+nb <- NbClust(as.matrix(veg.cca$CCA$u[,1:2]), diss=NULL, distance = "euclidean", min.nc=2, max.nc=10, method = "kmeans", index = "all", alphaBeale = 0.1)
+#*** : The Hubert index is a graphical method of determining the number of clusters.
+#                In the plot of Hubert index, we seek a significant knee that corresponds to a 
+#                significant increase of the value of the measure i.e the significant peak in Hubert
+#                index second differences plot. 
+# 
+#*** : The D index is a graphical method of determining the number of clusters. 
+#                In the plot of D index, we seek a significant knee (the significant peak in Dindex
+#                second differences plot) that corresponds to a significant increase of the value of
+#                the measure. 
+# 
+#******************************************************************* 
+#* Among all indices:                                                
+#* 3 proposed 2 as the best number of clusters 
+#* 11 proposed 3 as the best number of clusters 
+#* 3 proposed 5 as the best number of clusters 
+#* 2 proposed 8 as the best number of clusters 
+#* 3 proposed 10 as the best number of clusters 
+#
+#                   ***** Conclusion *****                            
+# 
+#* According to the majority rule, the best number of clusters is  3 
+# 
+# 
+#******************************************************************* 
+ 
+wss <- sapply(1:16, function(k){kmeans(veg.cca$CCA$u[,1:2], k, nstart=50,iter.max = 16 )$tot.withinss})
+wss
+# [1] 46.1801872 28.2455171 12.8634609  9.4429656  6.4722862  5.1070524  3.8200237  2.8468531  2.0393727  1.5662979  1.1421928  0.7914379  0.6282647  0.4547365  0.3437949  0.2853222
+d_clust <- Mclust(as.matrix(veg.cca$CCA$v[,1:2]), G=1:8, modelNames = mclust.options("emModelNames"))
+d_clust$BIC
+#Bayesian Information Criterion (BIC): 
+#        EII       VII       EEI       VEI       EVI       VVI       EEE       EVE       VEE       VVE       EEV       VEV       EVV       VVV
+#1 -109.3990 -109.3990 -112.0793 -112.0793 -112.0793 -112.0793 -114.9694 -114.9694 -114.9694 -114.9694 -114.9694 -114.9694 -114.9694 -114.9694
+#2 -111.4171 -111.4677 -113.6041 -114.3129 -111.5613 -116.5401 -114.9613        NA        NA        NA -121.9961 -117.7282        NA        NA
+#3 -108.9948 -114.2662 -111.8849 -116.9931 -110.6721 -121.3313 -126.0753        NA        NA        NA -119.2684 -119.4354        NA        NA
+#4 -115.1470 -121.9638 -107.5775 -123.1132 -113.6418 -126.8747 -129.7211        NA        NA        NA -128.6174 -126.1846        NA        NA
+#5 -111.8038        NA -112.8010        NA        NA        NA -115.6585        NA        NA        NA -120.3356        NA        NA        NA
+#6 -111.4954        NA -114.3640        NA        NA        NA -117.0810        NA        NA        NA -123.6412        NA        NA        NA
+#7 -113.3760        NA -111.6358        NA        NA        NA -114.3847        NA        NA        NA -120.3845        NA        NA        NA
+#8 -115.8551        NA -111.7852        NA        NA        NA -112.1444        NA        NA        NA -126.5712        NA        NA        NA
+#
+#Top 3 models based on the BIC criterion: 
+#    EEI,4     EII,3     EII,1 
+#-107.5775 -108.9948 -109.3990 
+
+##Looks like three is the optimal 
+
+k.cca.sp<-kmeans(veg.cca$CCA$u[,1:2],centers = 3, iter.max = 1000, nstart = 25)
+
+spcol<-c("deeppink2","deeppink2","deeppink2","darkgoldenrod3","darkgoldenrod3","darkgoldenrod3","cyan3","cyan3","cyan3","darkgoldenrod3","darkgoldenrod3","darkgoldenrod3","darkgoldenrod3","darkgoldenrod3","darkgoldenrod3","cyan3","cyan3","cyan3","darkgoldenrod3","cyan3","deeppink2","darkgoldenrod3","darkgoldenrod3")
+sigsiz<-c(1.25,1.25,1.25,1.25,1.25,1.75,1.75,2,1.25,1.25,1.25,1.25,1.25,1.25,2,1.25,1.25,1.25)
+sigcol<-c("black","black","black","black","black","blue","blue","red","black","black","black","black","black","black","red","black","black","black")
+setEPS()
+postscript("/Users/andersond/Desktop/Primate/CCAFig.eps")
+layout( matrix(c(1,3,2,3), ncol=2) )
+par(mar=c(4.7,4.5,1,1))
+plot(veg.ccora$corr.Y.Cy[,1],veg.ccora$corr.Y.Cy[,2],col="white",xlab="CCorA1",ylab="CCorA2",xlim=c(-.38,.33))
+abline(h=0,lty=2,col="gray65")
+abline(v=0,lty=2,col="gray65")
+text(rownames(veg.ccora$Cy),x=veg.ccora$Cy[,1]*.16,y=veg.ccora$Cy[,2]*.29, cex = 0.6, col = spcol)
+text(rownames(veg.ccora$corr.Y.Cy),x=veg.ccora$corr.Y.Cy[,1],y=veg.ccora$corr.Y.Cy[,2], cex = sigsiz*.6, col = sigcol)
+text("A",x=-0.375,y=0.65,cex=2.5)
+plot(veg.ccora$corr.X.Cx[,1],veg.ccora$corr.X.Cx[,2],col="white",xlab="CCorA1",ylab="CCorA2",xlim=c(-0.675,.95),ylim=c(-0.75,.9))
+abline(h=0,lty=2,col="gray65")
+abline(v=0,lty=2,col="gray65")
+text(rownames(veg.ccora$Cx),x=veg.ccora$Cx[,1]*.45,y=veg.ccora$Cx[,2]*.45, cex = 0.6, col = spcol)
+text("B",x=-0.67,y=0.85,cex=2.5)
+arrows(x0=0,y0=0,x1=veg.ccora$corr.X.Cx[,1],y1=veg.ccora$corr.X.Cx[,2],length = .08, angle = 15, lwd = 3)
+text(rownames(veg.ccora$corr.X.Cx),x=veg.ccora$corr.X.Cx[,1],y=veg.ccora$corr.X.Cx[,2]+0.07,cex =1.25)
+plot(veg.cca$CCA$v[,1:2],type="n",xlim=c(-1.6,3),ylim=c(-1.8,3.2))
+abline(h=0,lty=2,col="gray65")
+abline(v=0,lty=2,col="gray65")
+text(veg.cca,display="bp",lwd=2.5,cex=1.25,scaling='sp')
+text(rownames(veg.cca$CCA$u),x=veg.cca$CCA$u[,1]*1.2+.6,y=veg.cca$CCA$u[,2]*1.5+.8,cex=0.6,col=spcol)
+text(rownames(veg.cca$CCA$v),x=veg.cca$CCA$v[,1],y=veg.cca$CCA$v[,2],cex=sigsiz*.6,col=sigcol)
+text("C",x=-1.65,y=2.95,cex=2.5)
+
+##Test if local ARE increases Androgen Response
+##Not included in manuscript
+
+##Extract fold change values after exposure to androgen
+
+Foldchange<-c(arelist1$X48Change,arelist2$FOLDCHANGE)
+
+##Get gene list
+
+gene1<-as.character(arelist1$GeneSymbol)
+gene2<-as.character(arelist2$Gene_Symbol)
+gene<-c(gene1,gene2)
+gene<-as.factor(gene)
+
+##Generate new dataframe of gene and Foldchange
+
+arelistfold<-data.frame(gene,Foldchange)
+
+##Generate a new vector of number of AREs close to each gene
+
+hits<-c()
+for(i in 1:length(arelistfold$gene))
+	{
+	 newi<-androgene[which(as.character(androgene$Gene)==as.character(arelistfold$gene[i])),]
+	 val<-length(newi$Gene)
+	 hits<-c(hits,val)
+	}
+
+##New dataframe to include these values
+
+arelistfold<-data.frame(gene,Foldchange,hits)
+arelistfold<-arelistfold[order(-arelistfold$Foldchange),]
+arelistfold<-arelistfold[!duplicated(arelistfold$gene),]
+arelistfold<-arelistfold[which(arelistfold$gene %in% hsgene$Name),]
+
+
+##Set with proximal AREs
+
+nearare<-arelistfold[which(arelistfold$gene %in% androgene$Gene),]
+
+##Set without Proximal AREs
+
+notnearare<-arelistfold[which(!(arelistfold$gene %in% androgene$Gene)),]
+
+##Add absolute foldchange values
+
+nearareabs<-data.frame(nearare$gene,abs(nearare$Foldchange))
+notnearareabs<-data.frame(notnearare$gene,abs(notnearare$Foldchange))
+colnames(nearareabs)<-c("gene","Foldchange")
+colnames(notnearareabs)<-c("gene","Foldchange")
+
+##Select those with only positive fold change values
+
+neararedrop<-nearare[which(nearare$Foldchange >= 0),]
+colnames(neararefarabs)<-c("gene","Foldchange")
+notneararedrop<-notnearare[which(notnearare$Foldchange >= 0),]
+colnames(notneararefarabs)<-c("gene","Foldchange")
+
+##Does set with Proximal AREs have greater fold change than those without for positive values only
+ 
+ t.test(neararedrop$Foldchange,notneararedrop$Foldchange)
+
+        Welch Two Sample t-test
+
+data:  neararedrop$Foldchange and notneararedrop$Foldchange
+t = 0.21146, df = 20.393, p-value = 0.8346
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -5.359092  6.569862
+sample estimates:
+mean of x mean of y 
+ 9.640000  9.034615 
+
+##Make new dataframes with absolute values or positive change only without splitting sets
+
+arelistfoldabs<-data.frame(arelistfold$gene,abs(arelistfold$Foldchange),arelistfold$hits)
+colnames(arelistfoldabs)<-c("gene","Foldchange","hits")
+arelistfolddrop<-arelistfold[which(arelistfold$Foldchange>=0),]
+
+##Use linear model to see if absolute foldchange is affected by proximal AREs 
+summary(lm(Foldchange~hits,arelistfoldabs))
+#
+#Call:
+#lm(formula = Foldchange ~ hits, data = arelistfoldabs)
+#
+#Residuals:
+#   Min     1Q Median     3Q    Max 
+#-6.543 -4.990 -3.715  0.685 61.685 
+#
+#Coefficients:
+#            Estimate Std. Error t value Pr(>|t|)    
+#(Intercept)   8.3147     0.9191   9.046 3.19e-15 ***
+#hits          0.3284     1.4808   0.222    0.825    
+#---
+#Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+#
+#Residual standard error: 9.583 on 120 degrees of freedom
+#Multiple R-squared:  0.0004096,	Adjusted R-squared:  -0.00792 
+#F-statistic: 0.04917 on 1 and 120 DF,  p-value: 0.8249
+
+##NO
+##Use linear model to see if positive foldchange is affected by proximal AREs 
+
+summary(lm(Foldchange~hits,arelistfolddrop))
+#
+#Call:
+#lm(formula = Foldchange ~ hits, data = arelistfolddrop)
+#
+#Residuals:
+#   Min     1Q Median     3Q    Max 
+#-7.207 -5.707 -3.907  0.893 60.893 
+#
+#Coefficients:
+#            Estimate Std. Error t value Pr(>|t|)    
+#(Intercept)    9.107      1.159   7.855 7.62e-12 ***
+#hits           0.108      1.685   0.064    0.949    
+#---
+#Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+#
+#Residual standard error: 10.5 on 91 degrees of freedom
+#Multiple R-squared:  4.513e-05,	Adjusted R-squared:  -0.01094 
+#F-statistic: 0.004107 on 1 and 91 DF,  p-value: 0.949
+
+
+##try again at 50k
+
+mbiasmatch<-pairPeak(hshit,malegff,50000,50000)
+randdraware1043<-c()
+randdrawgene1043<-c()
+
+for(i in 1:1000)
+ {
+ print(i)
+ randi<-hsgene[sample(nrow(hsgene),1043),]
+ matchrandi<-pairPeak(hshit,randi,50000,50000)
+ proxi<-length(levels(droplevels(matchrandi$Gene)))
+ randdrawgene1043<-c(randdrawgene1043,proxi)
+ numpeaki<-length(matchrandi$Gene)
+ randdraware1043<-c(randdraware1043,numpeaki)
+ }
+ randdrawgene1043[order(randdrawgene1043)]
+#   [1] 207 208 209 210 212 213 213 214 214 215 215 216 216 217 217 217 217 217
+#  [19] 218 218 218 218 219 219 219 219 219 220 220 220 220 221 221 221 221 221
+#  [37] 222 222 222 222 222 222 222 222 223 223 224 224 224 224 224 224 224 224
+#  [55] 224 224 224 224 225 225 225 225 225 225 225 225 225 225 226 226 226 226
+#  [73] 226 226 226 226 227 227 227 227 227 227 227 227 228 228 228 228 228 228
+#  [91] 228 228 228 228 228 228 228 228 229 229 229 229 229 229 229 229 229 229
+# [109] 229 229 229 229 229 229 229 229 229 230 230 230 230 230 230 230 230 230
+# [127] 230 230 230 230 230 230 230 230 230 231 231 231 231 231 231 231 231 231
+# [145] 231 231 231 231 231 231 232 232 232 232 232 232 232 232 232 232 232 232
+# [163] 232 232 232 232 232 232 233 233 233 233 233 233 233 233 233 233 233 233
+# [181] 233 233 233 233 233 233 233 233 233 233 233 233 233 233 234 234 234 234
+# [199] 234 234 234 234 234 234 234 234 234 234 234 234 234 234 235 235 235 235
+# [217] 235 235 235 235 235 235 235 235 235 235 235 235 235 235 235 235 235 236
+# [235] 236 236 236 236 236 236 236 236 236 236 236 236 236 236 236 236 236 236
+# [253] 236 236 236 236 236 236 237 237 237 237 237 237 237 237 237 237 237 237
+# [271] 237 237 237 237 237 237 237 237 237 237 237 237 237 237 237 237 237 237
+# [289] 238 238 238 238 238 238 238 238 238 238 238 238 238 238 238 238 238 238
+# [307] 238 238 238 238 238 238 238 238 238 238 238 238 239 239 239 239 239 239
+# [325] 239 239 239 239 239 239 239 239 239 239 239 239 239 239 239 239 239 239
+# [343] 240 240 240 240 240 240 240 240 240 240 240 240 240 240 240 240 240 240
+# [361] 240 240 240 240 240 240 240 240 240 240 240 241 241 241 241 241 241 241
+# [379] 241 241 241 241 241 241 241 241 241 241 241 241 241 241 241 241 241 241
+# [397] 241 241 241 241 241 241 242 242 242 242 242 242 242 242 242 242 242 242
+# [415] 242 242 242 242 242 242 242 242 242 242 242 242 243 243 243 243 243 243
+# [433] 243 243 243 243 243 243 243 243 243 243 243 243 243 243 243 243 243 243
+# [451] 243 243 243 243 243 243 244 244 244 244 244 244 244 244 244 244 244 244
+# [469] 244 244 244 244 244 244 244 244 244 244 244 244 244 244 245 245 245 245
+# [487] 245 245 245 245 245 245 245 245 245 245 245 245 245 245 245 245 245 245
+# [505] 245 245 245 245 245 245 245 245 246 246 246 246 246 246 246 246 246 246
+# [523] 246 246 246 246 246 246 246 246 246 246 246 246 246 246 246 246 246 246
+# [541] 246 246 246 246 246 246 246 247 247 247 247 247 247 247 247 247 247 247
+# [559] 247 247 247 247 247 247 247 247 247 247 247 247 247 247 247 247 247 248
+# [577] 248 248 248 248 248 248 248 248 248 248 248 248 248 248 248 248 248 248
+# [595] 248 248 248 248 248 248 249 249 249 249 249 249 249 249 249 249 249 249
+# [613] 249 249 249 249 249 249 249 249 249 249 249 249 249 250 250 250 250 250
+# [631] 250 250 250 250 250 250 250 250 250 250 250 250 250 250 250 250 251 251
+# [649] 251 251 251 251 251 251 251 251 251 251 251 251 251 251 251 251 251 251
+# [667] 251 251 251 251 251 251 251 251 251 251 252 252 252 252 252 252 252 252
+# [685] 252 252 252 252 252 252 252 252 252 252 252 252 252 252 252 252 252 252
+# [703] 252 252 253 253 253 253 253 253 253 253 253 253 253 253 253 253 253 253
+# [721] 254 254 254 254 254 254 254 254 254 254 254 254 254 254 254 254 254 254
+# [739] 254 254 254 254 254 255 255 255 255 255 255 255 255 255 255 255 255 255
+# [757] 255 255 255 255 255 255 255 255 255 255 255 255 255 256 256 256 256 256
+# [775] 256 256 256 256 256 256 256 256 256 256 256 256 257 257 257 257 257 257
+# [793] 257 257 257 257 257 257 257 257 257 257 257 257 257 257 257 257 258 258
+# [811] 258 258 258 258 258 258 258 258 258 258 258 258 258 258 258 258 258 258
+# [829] 258 259 259 259 259 259 259 259 259 259 259 259 259 259 259 259 259 260
+# [847] 260 260 260 260 260 260 260 260 260 260 260 260 261 261 261 261 261 261
+# [865] 261 261 261 261 261 261 261 261 261 261 261 262 262 262 262 262 262 262
+# [883] 262 262 262 262 262 263 263 263 263 263 263 263 263 263 263 263 263 264
+# [901] 264 264 264 264 264 264 264 264 264 264 264 264 264 265 265 265 265 265
+# [919] 265 265 265 265 265 265 265 265 265 266 266 266 266 266 266 266 266 266
+# [937] 266 266 266 267 267 267 267 267 267 267 268 268 268 268 268 268 268 269
+# [955] 269 269 269 269 269 270 270 270 270 270 271 271 271 271 271 271 272 272
+# [973] 272 272 272 272 273 273 273 273 273 274 274 275 275 275 275 276 276 276
+# [991] 276 277 278 281 281 282 282 283 285 289
+
+length(levels(droplevels(mbiasmatch$Gene)))
+#[1] 261
+
+##85.8 percentile
+
+randdraware1043[order(randdraware1043)]
+#   [1] 236 238 240 240 241 244 246 246 247 247 247 247 247 249 249 250 250 251
+#  [19] 252 253 253 253 253 254 254 254 255 255 255 255 255 255 255 255 256 256
+#  [37] 256 256 256 256 256 257 257 257 257 257 258 258 258 258 258 258 258 258
+#  [55] 259 259 259 259 259 259 259 260 260 261 261 261 261 262 262 262 262 262
+#  [73] 262 262 262 262 262 262 262 262 262 263 263 263 263 263 263 263 263 264
+#  [91] 264 264 264 264 264 264 265 265 265 265 265 265 265 265 265 265 265 265
+# [109] 265 265 266 266 266 266 266 266 266 266 266 266 266 266 266 266 266 266
+# [127] 267 267 267 267 267 267 267 267 267 267 267 267 268 268 268 268 268 268
+# [145] 268 268 268 268 268 268 268 268 268 268 268 269 269 269 269 269 269 269
+# [163] 269 269 269 269 269 269 270 270 270 270 270 270 270 270 270 270 270 270
+# [181] 271 271 271 271 271 271 271 271 271 271 271 271 271 271 271 271 271 271
+# [199] 271 271 271 272 272 272 272 272 272 272 272 272 272 272 273 273 273 273
+# [217] 273 273 273 273 273 273 273 273 273 273 273 273 273 273 273 273 273 273
+# [235] 273 273 273 273 273 274 274 274 274 274 274 274 274 274 274 275 275 275
+# [253] 275 275 275 275 275 275 275 275 275 275 275 275 275 275 275 275 275 275
+# [271] 275 275 275 275 275 275 276 276 276 276 276 276 276 276 276 276 276 276
+# [289] 276 276 276 276 276 276 276 276 276 277 277 277 277 277 277 277 277 277
+# [307] 277 277 277 277 277 277 277 277 277 277 277 277 277 277 277 277 277 277
+# [325] 277 277 277 277 277 278 278 278 278 278 278 278 278 278 278 278 278 278
+# [343] 278 278 278 278 278 278 278 279 279 279 279 279 279 279 279 279 279 279
+# [361] 279 279 279 279 279 279 279 279 279 279 279 279 280 280 280 280 280 280
+# [379] 280 280 280 280 280 280 280 280 280 280 280 280 280 281 281 281 281 281
+# [397] 281 281 281 281 281 281 281 281 281 281 281 281 281 281 281 281 281 281
+# [415] 281 281 281 281 281 281 281 282 282 282 282 282 282 282 282 282 282 282
+# [433] 282 282 282 282 282 282 282 282 282 282 282 282 282 283 283 283 283 283
+# [451] 283 283 283 283 283 283 283 283 283 284 284 284 284 284 284 284 284 284
+# [469] 284 284 284 284 284 284 284 284 284 284 284 284 284 284 284 284 284 284
+# [487] 285 285 285 285 285 285 285 285 285 285 285 285 285 285 285 285 285 285
+# [505] 285 285 285 285 285 285 285 285 285 286 286 286 286 286 286 286 286 286
+# [523] 286 286 286 286 286 286 286 286 286 286 286 286 286 287 287 287 287 287
+# [541] 287 287 287 287 287 287 287 287 287 287 287 287 287 287 287 287 287 287
+# [559] 288 288 288 288 288 288 288 288 288 288 288 288 288 288 288 288 288 288
+# [577] 288 289 289 289 289 289 289 289 289 289 289 289 289 289 289 289 289 290
+# [595] 290 290 290 290 290 290 290 290 290 290 290 290 290 290 290 290 290 290
+# [613] 290 290 290 290 290 290 291 291 291 291 291 291 291 291 291 291 291 291
+# [631] 291 291 291 291 292 292 292 292 292 292 292 292 292 292 292 292 292 292
+# [649] 292 292 292 292 292 292 292 292 292 292 292 292 292 293 293 293 293 293
+# [667] 293 293 293 293 293 293 293 293 293 293 293 293 293 293 293 293 293 294
+# [685] 294 294 294 294 294 294 294 294 294 294 294 294 294 294 294 294 295 295
+# [703] 295 295 295 295 295 295 295 295 295 295 295 295 295 295 295 295 295 295
+# [721] 295 295 295 295 296 296 296 296 296 296 296 296 296 296 296 296 296 296
+# [739] 297 297 297 297 297 297 297 297 297 297 297 297 297 297 297 297 297 297
+# [757] 298 298 298 298 298 298 298 298 298 298 298 298 298 298 298 298 298 298
+# [775] 298 298 298 298 298 299 299 299 299 299 299 299 299 299 299 299 299 299
+# [793] 299 299 299 299 299 300 300 300 300 300 300 300 300 300 300 300 300 300
+# [811] 301 301 301 301 301 301 301 301 301 301 301 302 302 302 302 302 302 302
+# [829] 302 302 302 302 302 302 303 303 303 303 303 303 303 303 303 303 303 303
+# [847] 303 303 303 304 304 304 304 304 304 304 304 304 304 304 304 305 305 305
+# [865] 305 305 305 305 305 306 306 306 306 306 306 306 306 306 306 306 307 307
+# [883] 307 307 307 307 307 307 307 307 307 307 307 308 308 308 308 308 308 308
+# [901] 308 308 308 308 309 309 309 309 309 309 309 309 309 309 310 310 310 310
+# [919] 310 310 310 310 310 310 310 310 310 310 310 310 310 310 311 311 311 311
+# [937] 311 311 311 311 311 312 312 313 313 313 313 313 313 313 313 314 314 315
+# [955] 315 315 315 315 315 315 316 316 316 316 316 316 317 317 317 318 318 319
+# [973] 320 320 320 320 320 321 322 323 323 323 323 323 324 324 324 324 325 326
+# [991] 327 327 327 328 330 330 331 331 331 342
+
+length(mbiasmatch$Gene)
+#[1] 308
+ 
+##89.4 percentile
+
+androgene<-pairPeak(hshit,aregffdedup,50000,30000)
+randdraware122<-c()
+randdrawgene122<-c()
+for(i in 1:1000)
+ {
+ print(i)
+ randi<-hsgene[sample(nrow(hsgene),122),]
+ matchrandi<-pairPeak(hshit,randi,50000,30000)
+ proxi<-length(levels(droplevels(matchrandi$Gene)))
+ randdrawgene122<-c(randdrawgene122,proxi)
+ numpeaki<-length(matchrandi$Gene)
+ randdraware122<-c(randdraware122,numpeaki)
+ } 
+randdrawgene122[order(randdrawgene122)]
+#   [1] 12 13 13 13 13 14 14 14 14 14 14 14 14 14 15 15 15 15 15 15 15 15 15 15
+#  [25] 15 15 15 15 16 16 16 16 16 16 16 16 16 16 16 16 16 16 16 16 16 16 16 16
+#  [49] 16 17 17 17 17 17 17 17 17 17 17 17 17 17 17 17 17 17 17 17 17 17 17 17
+#  [73] 17 17 17 17 17 17 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18
+#  [97] 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 18 19 19 19 19 19 19
+# [121] 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19
+# [145] 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19
+# [169] 19 19 19 19 19 19 19 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20
+# [193] 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20
+# [217] 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 21 21 21 21 21
+# [241] 21 21 21 21 21 21 21 21 21 21 21 21 21 21 21 21 21 21 21 21 21 21 21 21
+# [265] 21 21 21 21 21 21 21 21 21 21 21 21 21 21 21 21 21 21 21 21 21 21 21 21
+# [289] 21 21 21 21 21 21 21 21 21 21 21 21 21 21 21 21 21 21 21 21 21 21 21 21
+# [313] 21 21 21 21 21 21 21 21 21 21 21 21 21 21 21 21 21 21 21 22 22 22 22 22
+# [337] 22 22 22 22 22 22 22 22 22 22 22 22 22 22 22 22 22 22 22 22 22 22 22 22
+# [361] 22 22 22 22 22 22 22 22 22 22 22 22 22 22 22 22 22 22 22 22 22 22 22 22
+# [385] 22 22 22 22 22 22 22 22 22 22 22 22 22 22 22 22 22 22 22 22 22 22 22 22
+# [409] 22 22 22 22 22 22 22 22 22 22 22 22 22 22 22 22 22 22 23 23 23 23 23 23
+# [433] 23 23 23 23 23 23 23 23 23 23 23 23 23 23 23 23 23 23 23 23 23 23 23 23
+# [457] 23 23 23 23 23 23 23 23 23 23 23 23 23 23 23 23 23 23 23 23 23 23 23 23
+# [481] 23 23 23 23 23 23 23 23 23 23 23 23 23 23 23 23 23 23 23 23 23 23 23 23
+# [505] 23 23 23 23 23 23 23 23 23 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24
+# [529] 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24
+# [553] 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24
+# [577] 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24
+# [601] 24 24 24 24 24 24 24 25 25 25 25 25 25 25 25 25 25 25 25 25 25 25 25 25
+# [625] 25 25 25 25 25 25 25 25 25 25 25 25 25 25 25 25 25 25 25 25 25 25 25 25
+# [649] 25 25 25 25 25 25 25 25 25 25 25 25 25 25 25 25 25 25 25 25 25 25 25 25
+# [673] 25 25 25 25 25 25 25 25 25 25 25 25 25 25 26 26 26 26 26 26 26 26 26 26
+# [697] 26 26 26 26 26 26 26 26 26 26 26 26 26 26 26 26 26 26 26 26 26 26 26 26
+# [721] 26 26 26 26 26 26 26 26 26 26 26 26 26 26 26 26 26 26 26 26 26 26 26 26
+# [745] 26 26 26 26 26 26 26 26 26 26 26 26 26 26 26 26 26 26 26 26 26 26 26 26
+# [769] 26 26 26 27 27 27 27 27 27 27 27 27 27 27 27 27 27 27 27 27 27 27 27 27
+# [793] 27 27 27 27 27 27 27 27 27 27 27 27 27 27 27 27 27 27 27 27 27 27 27 27
+# [817] 27 27 27 27 27 27 27 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28
+# [841] 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28
+# [865] 28 28 28 28 28 28 28 28 28 28 28 28 29 29 29 29 29 29 29 29 29 29 29 29
+# [889] 29 29 29 29 29 29 29 29 29 29 29 29 29 29 29 29 29 29 29 29 29 29 29 29
+# [913] 29 29 29 29 29 29 29 29 29 29 29 30 30 30 30 30 30 30 30 30 30 30 30 30
+# [937] 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 31 31 31 31 31 31 31
+# [961] 31 31 31 31 31 31 31 31 31 32 32 32 32 32 32 32 33 33 33 33 33 33 33 34
+# [985] 34 34 34 34 35 35 35 35 35 36 36 36 36 36 37 37
+
+length(levels(droplevels(androgene$Gene)))
+#[1] 26
+
+##68.7 Percentile
+
+randdraware122[order(randdraware122)]
+#   [1] 14 14 14 14 14 15 15 15 15 15 15 15 15 15 15 15 15 16 16 16 16 16 16 16
+#  [25] 16 16 17 17 17 17 17 17 17 17 17 17 17 17 17 17 17 18 18 18 18 18 18 18
+#  [49] 18 18 18 18 18 18 18 18 18 19 19 19 19 19 19 19 19 19 19 19 19 19 19 19
+#  [73] 19 19 19 19 19 19 19 19 19 19 20 20 20 20 20 20 20 20 20 20 20 20 20 20
+#  [97] 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 21 21 21 21 21
+# [121] 21 21 21 21 21 21 21 21 21 21 21 21 21 21 21 21 21 21 21 21 21 21 21 21
+# [145] 21 21 21 21 21 21 21 21 21 21 21 21 21 21 21 21 21 21 21 21 22 22 22 22
+# [169] 22 22 22 22 22 22 22 22 22 22 22 22 22 22 22 22 22 22 22 22 22 22 22 22
+# [193] 22 22 22 22 22 22 22 22 22 22 22 22 22 22 22 22 22 22 22 22 22 22 22 22
+# [217] 22 22 22 22 22 22 22 22 22 22 23 23 23 23 23 23 23 23 23 23 23 23 23 23
+# [241] 23 23 23 23 23 23 23 23 23 23 23 23 23 23 23 23 23 23 23 23 23 23 23 23
+# [265] 23 23 23 23 23 23 23 23 23 23 23 23 23 23 23 23 23 23 24 24 24 24 24 24
+# [289] 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24
+# [313] 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24
+# [337] 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24 24 25 25 25 25 25 25
+# [361] 25 25 25 25 25 25 25 25 25 25 25 25 25 25 25 25 25 25 25 25 25 25 25 25
+# [385] 25 25 25 25 25 25 25 25 25 25 25 25 25 25 25 25 25 25 25 25 25 25 25 25
+# [409] 25 25 25 25 25 26 26 26 26 26 26 26 26 26 26 26 26 26 26 26 26 26 26 26
+# [433] 26 26 26 26 26 26 26 26 26 26 26 26 26 26 26 26 26 26 26 26 26 26 26 26
+# [457] 26 26 26 26 26 26 26 26 26 26 26 26 26 26 26 26 26 26 26 26 26 26 26 26
+# [481] 26 26 26 26 26 26 26 26 26 26 26 26 26 26 26 26 26 26 26 26 26 26 26 26
+# [505] 26 26 26 26 26 26 27 27 27 27 27 27 27 27 27 27 27 27 27 27 27 27 27 27
+# [529] 27 27 27 27 27 27 27 27 27 27 27 27 27 27 27 27 27 27 27 27 27 27 27 27
+# [553] 27 27 27 27 27 27 27 27 27 27 27 27 27 27 27 27 27 27 27 27 27 27 27 27
+# [577] 27 27 27 27 27 27 27 27 27 27 27 27 27 27 27 27 27 27 28 28 28 28 28 28
+# [601] 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28
+# [625] 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28 28
+# [649] 28 29 29 29 29 29 29 29 29 29 29 29 29 29 29 29 29 29 29 29 29 29 29 29
+# [673] 29 29 29 29 29 29 29 29 29 29 29 29 29 29 29 29 29 29 29 29 29 29 29 29
+# [697] 29 29 29 29 29 29 29 29 29 29 29 29 29 29 29 29 29 29 29 29 29 29 29 29
+# [721] 29 29 29 29 29 29 29 29 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30
+# [745] 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30
+# [769] 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 31 31 31 31 31 31
+# [793] 31 31 31 31 31 31 31 31 31 31 31 31 31 31 31 31 31 31 31 31 31 31 31 31
+# [817] 31 31 31 31 31 31 31 31 31 31 31 31 31 31 32 32 32 32 32 32 32 32 32 32
+# [841] 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32
+# [865] 32 32 32 32 32 32 32 32 32 32 32 33 33 33 33 33 33 33 33 33 33 33 33 33
+# [889] 33 33 33 33 33 33 33 33 33 33 33 33 33 33 33 33 33 33 33 33 33 34 34 34
+# [913] 34 34 34 34 34 34 34 34 34 34 34 34 34 34 34 34 34 34 34 34 35 35 35 35
+# [937] 35 35 35 35 35 35 35 35 35 35 35 35 35 35 35 35 35 35 35 36 36 36 36 36
+# [961] 36 36 36 36 36 36 36 36 37 37 37 37 37 37 37 37 37 37 37 37 37 37 37 38
+# [985] 38 38 38 39 39 39 40 40 40 41 42 42 44 44 45 48
+
+length(androgene$Gene)
+#[1] 35
+
+##93.3 Percentile
+
+##Closer proximity does a better job
+
+##Look up goterms for humans using list
+
+BiocManager::install("org.Hs.eg.db")
+goterms2<-annFUN.org("BP",feasibleGenes = rpkm_tbl$hsa_gene, "org.Hs.eg.db",ID="symbol")
+goterms3<-inverseList(goterms2)
+
+##Generate list of all genes in data set
+
+universe_genes<-rpkm_tbl$hsa_gene
+names(universe_genes)<-universe_genes
+
+##Create a variable that says whether a gene has ARE or not
+
+gene_w_score<-c()
+for(i in 1:length(universe_genes))
+	{
+	 if(universe_genes[i] %in% select_genes)
+		{
+ 		 v=1
+		}else
+		{
+		 v=0
+		}
+ 	 gene_w_score<-c(gene_w_score,v)
+	}
+names(gene_w_score)<-universe_genes
+gene_w_score<-as.factor(gene_w_score)
+
+##Create datafile for analysis
+
+godata<-new("topGOdata",ontology="BP",allGenes = gene_w_score, annot=annFUN.gene2GO, gene2GO=goterms3)
+
+##Test between two groups working from bottom up in GO terms
+
+resultFisher <- runTest(godata, algorithm = "elim", statistic = "fisher")
+
+##Extract p-values
+
+goscore<-score(resultFisher)
+
+##Select terms with a p-value less than 0.01
+
+gosig<-goscore[which(goscore <= 0.01)]
+
+## 31 GO terms pass this threshold
+## Make table of these terms
+
+gotable<-GenTable(godata,resultFisher,topNodes=31)
+write.csv(gotable,"/Users/andersond/Desktop/Primate/Evolution/Submission3/gotable.csv")
+
+##Sliding window analysis to see if AREs cluster
+
+hshits<-read.csv("HShits.csv")
+gghits<-read.csv("GGhits.csv")
+pphits<-read.csv("PPhits.csv")
+pthits<-read.csv("PThits.csv")
+mmhits<-read.csv("MMhits.csv")
+
+
+windowhs<-data.frame(Chromosome=factor(),Window=numeric(),NumARE=numeric())
+for(i in 1:length(levels(hshits$Chr)))
+	{
+	 subi<-hshits[which(hshits$Chr==i),]
+	 for(k in 0:6000)
+	 	{
+	 	 print(i)
+	 	 print(k)
+	 	 wink<-subi[which(subi$loc>=(k*50000) & subi$loc<=((k+2)*50000)),]
+	 	 hitk<-length(wink$Chr)
+	 	 if(hitk>0)
+	 	 	{
+	 	 	 windowk<-data.frame(subi$Chr[1],k*50000,hitk)
+	 	 	 colnames(windowk)<-c("Chromosome","Window","NumARE")
+	 	 	 windowhs<-rbind(windowhs,windowk)
+	 		}
+	 	}
+	}
+windowgg<-data.frame(Chromosome=factor(),Window=numeric(),NumARE=numeric())
+for(i in 1:length(levels(gghits$Chr)))
+	{
+	 subi<-gghits[which(gghits$Chr==i),]
+	 for(k in 0:6000)
+	 	{
+	 	 print(i)
+	 	 print(k)
+	 	 wink<-subi[which(subi$loc>=(k*50000) & subi$loc<=((k+2)*50000)),]
+	 	 hitk<-length(wink$Chr)
+	 	 if(hitk>0)
+	 	 	{
+	 	 	 windowk<-data.frame(subi$Chr[1],k*50000,hitk)
+	 	 	 colnames(windowk)<-c("Chromosome","Window","NumARE")
+	 	 	 windowgg<-rbind(windowgg,windowk)
+	 		}
+	 	}
+	}
+windowpp<-data.frame(Chromosome=factor(),Window=numeric(),NumARE=numeric())
+for(i in 1:length(levels(pphits$Chr)))
+	{
+	 subi<-pphits[which(pphits$Chr==i),]
+	 for(k in 0:6000)
+	 	{
+	 	 print(i)
+	 	 print(k)
+	 	 wink<-subi[which(subi$loc>=(k*50000) & subi$loc<=((k+2)*50000)),]
+	 	 hitk<-length(wink$Chr)
+	 	 if(hitk>0)
+	 	 	{
+	 	 	 windowk<-data.frame(subi$Chr[1],k*50000,hitk)
+	 	 	 colnames(windowk)<-c("Chromosome","Window","NumARE")
+	 	 	 windowpp<-rbind(windowpp,windowk)
+	 		}
+	 	}
+	}
+windowpt<-data.frame(Chromosome=factor(),Window=numeric(),NumARE=numeric())
+for(i in 1:length(levels(pthits$Chr)))
+	{
+	 subi<-pthits[which(pthits$Chr==i),]
+	 for(k in 0:6000)
+	 	{
+	 	 print(i)
+	 	 print(k)
+	 	 wink<-subi[which(subi$loc>=(k*50000) & subi$loc<=((k+2)*50000)),]
+	 	 hitk<-length(wink$Chr)
+	 	 if(hitk>0)
+	 	 	{
+	 	 	 windowk<-data.frame(subi$Chr[1],k*50000,hitk)
+	 	 	 colnames(windowk)<-c("Chromosome","Window","NumARE")
+	 	 	 windowpt<-rbind(windowpt,windowk)
+	 		}
+	 	}
+	}
+windowmm<-data.frame(Chromosome=factor(),Window=numeric(),NumARE=numeric())
+for(i in 1:length(levels(mmhits$Chr)))
+	{
+	 subi<-mmhits[which(mmhits$Chr==i),]
+	 for(k in 0:6000)
+	 	{
+	 	 print(i)
+	 	 print(k)
+	 	 wink<-subi[which(subi$loc>=(k*50000) & subi$loc<=((k+2)*50000)),]
+	 	 hitk<-length(wink$Chr)
+	 	 if(hitk>0)
+	 	 	{
+	 	 	 windowk<-data.frame(subi$Chr[1],k*50000,hitk)
+	 	 	 colnames(windowk)<-c("Chromosome","Window","NumARE")
+	 	 	 windowmm<-rbind(windowmm,windowk)
+	 		}
+	 	}
+	}
+
+
+hswin<-hist(windowhs$NumARE,breaks=c(1:15))
+> hswin
+$breaks
+ [1]  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+
+$counts
+ [1] 13435   206    18     3     0     0     0     0     0     2     0     0
+[13]     0     0
+
+$density
+ [1] 0.983240632 0.015076112 0.001317330 0.000219555 0.000000000 0.000000000
+ [7] 0.000000000 0.000000000 0.000000000 0.000146370 0.000000000 0.000000000
+[13] 0.000000000 0.000000000
+
+$mids
+ [1]  1.5  2.5  3.5  4.5  5.5  6.5  7.5  8.5  9.5 10.5 11.5 12.5 13.5 14.5
+
+$xname
+[1] "windowhs$NumARE"
+
+$equidist
+[1] TRUE
+
+attr(,"class")
+[1] "histogram"
+ppwin<-hist(windowpp$NumARE,breaks=c(1:15))
+ppwin
+$breaks
+ [1]  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+
+$counts
+ [1] 11959   169    15     1     0     0     0     0     0     0     0     0
+[13]     0     0
+
+$density
+ [1] 9.847661e-01 1.391634e-02 1.235178e-03 8.234519e-05 0.000000e+00
+ [6] 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00
+[11] 0.000000e+00 0.000000e+00 0.000000e+00 0.000000e+00
+
+$mids
+ [1]  1.5  2.5  3.5  4.5  5.5  6.5  7.5  8.5  9.5 10.5 11.5 12.5 13.5 14.5
+
+$xname
+[1] "windowpp$NumARE"
+
+$equidist
+[1] TRUE
+
+attr(,"class")
+[1] "histogram"
+ptwin<-hist(windowpt$NumARE,breaks=c(1:15))
+ptwin
+$breaks
+ [1]  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+
+$counts
+ [1] 11401   178    13     0     0     0     0     0     0     0     0     0
+[13]     0     0
+
+$density
+ [1] 0.983523119 0.015355418 0.001121463 0.000000000 0.000000000 0.000000000
+ [7] 0.000000000 0.000000000 0.000000000 0.000000000 0.000000000 0.000000000
+[13] 0.000000000 0.000000000
+
+$mids
+ [1]  1.5  2.5  3.5  4.5  5.5  6.5  7.5  8.5  9.5 10.5 11.5 12.5 13.5 14.5
+
+$xname
+[1] "windowpt$NumARE"
+
+$equidist
+[1] TRUE
+
+attr(,"class")
+[1] "histogram"
+
+ggwin<-hist(windowgg$NumARE,breaks=c(1:15))
+ggwin
+$breaks
+ [1]  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15
+
+$counts
+ [1] 11860   169    13     0     0     0     0     0     2     2     0     0
+[13]     0     0
+
+$density
+ [1] 0.9845591898 0.0140295534 0.0010791964 0.0000000000 0.0000000000
+ [6] 0.0000000000 0.0000000000 0.0000000000 0.0001660302 0.0001660302
+[11] 0.0000000000 0.0000000000 0.0000000000 0.0000000000
+
+$mids
+ [1]  1.5  2.5  3.5  4.5  5.5  6.5  7.5  8.5  9.5 10.5 11.5 12.5 13.5 14.5
+
+$xname
+[1] "windowgg$NumARE"
+
+$equidist
+[1] TRUE
+
+attr(,"class")
+[1] "histogram"
+
+
+mmwin<-hist(windowmm$NumARE,breaks=c(1:20))
+mmwin
+$breaks
+ [1]  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20
+
+$counts
+ [1] 13467   230    44    20     9     5     7     3     4     1     1     0
+[13]     2     0     0     1     0     0     0
+
+$density
+ [1] 9.762940e-01 1.667392e-02 3.189793e-03 1.449906e-03 6.524576e-04
+ [6] 3.624764e-04 5.074670e-04 2.174859e-04 2.899812e-04 7.249529e-05
+[11] 7.249529e-05 0.000000e+00 1.449906e-04 0.000000e+00 0.000000e+00
+[16] 7.249529e-05 0.000000e+00 0.000000e+00 0.000000e+00
+
+$mids
+ [1]  1.5  2.5  3.5  4.5  5.5  6.5  7.5  8.5  9.5 10.5 11.5 12.5 13.5 14.5 15.5
+[16] 16.5 17.5 18.5 19.5
+
+$xname
+[1] "windowmm$NumARE"
+
+$equidist
+[1] TRUE
+
+attr(,"class")
+[1] "histogram"	

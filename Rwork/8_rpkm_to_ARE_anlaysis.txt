@@ -1,0 +1,1031 @@
+##Dataset: Orthologous genes within primates with tissue and expression levels (Supplementary Data 1) Brawand et al. 2011: The evolution of gene expression levels in mammalian organs
+
+library(biomaRt)
+df<-read.csv("/Users/andersond/Desktop/Primate/Evolution/Submission3/NormalizedRPKM_ConstitutiveAlignedExons_Primate1to1Orthologues.csv")
+
+##Extract Gene names/symbol from ensembl ID provided
+hsmart <- useDataset("hsapiens_gene_ensembl", useMart("ensembl"))
+ptmart <- useDataset("ptroglodytes_gene_ensembl", useMart("ensembl"))
+ggmart <- useDataset("ggorilla_gene_ensembl", useMart("ensembl"))
+mmmart <- useDataset("mmulatta_gene_ensembl", useMart("ensembl"))
+hsgenes<-getBM(filter="ensembl_gene_id",attributes=c("ensembl_gene_id","hgnc_symbol","chromosome_name","start_position","end_position","strand"),values=df$hsa, hsmart)
+ptgenes<-getBM(filter="ensembl_gene_id",attributes=c("ensembl_gene_id","hgnc_symbol","chromosome_name","start_position","end_position","strand"),values=df$ptr, ptmart)
+gggenes<-getBM(filter="ensembl_gene_id",attributes=c("ensembl_gene_id","hgnc_symbol","chromosome_name","start_position","end_position","strand"),values=df$ggo, ggmart)
+mmgenes<-getBM(filter="ensembl_gene_id",attributes=c("ensembl_gene_id","hgnc_symbol","chromosome_name","start_position","end_position","strand"),values=df$mml, mmmart)
+
+##No ensembl ID provided for bonobos despite having read values
+##Exclude non-matches
+
+dftrim<-df[which(df$hsa %in% hsgenes$ensembl_gene_id),]
+dftrim1<-dftrim[which(dftrim$ptr %in% ptgenes$ensembl_gene_id),]
+dftrim2<-dftrim1[which(dftrim1$ggo %in% gggenes$ensembl_gene_id),]
+dftrim3<-dftrim2[which(dftrim2$mml %in% mmgenes$ensembl_gene_id),]
+hsgenestrim<-hsgenes[which(hsgenes$ensembl_gene_id %in% dftrim3$hsa),]
+ptgenestrim<-ptgenes[which(ptgenes$ensembl_gene_id %in% dftrim3$ptr),]
+gggenestrim<-gggenes[which(gggenes$ensembl_gene_id %in% dftrim3$ggo),]
+mmgenestrim<-mmgenes[which(mmgenes$ensembl_gene_id %in% dftrim3$mml),]
+colnames(hsgenestrim)<-c("hsa","hsa_gene","hsa_Chromosome","hsa_start","hsa_end")
+colnames(ptgenestrim)<-c("ptr","ptr_gene","ptr_Chromosome","ptr_start","ptr_end")
+colnames(gggenestrim)<-c("ggo","ggo_gene","ggo_Chromosome","ggo_start","ggo_end")
+colnames(mmgenestrim)<-c("mml","mml_gene","mml_Chromosome","mml_start","mml_end")
+
+## Generate new dataframe
+
+df<-merge(dftrim3,hsgenestrim,by="hsa")
+df<-merge(df,ptgenestrim,by="ptr")
+df<-merge(df,gggenestrim,by="ggo")
+df<-merge(df,mmgenestrim,by="mml")
+write.csv(df,"/Users/andersond/Desktop/Primate/Evolution/Submission3/RPKM_ident.csv")
+
+##calculate averages across samples and fold change using excel
+##discovered that the biomart coordinates did not correspond to the gff files!
+##since no entrez for bonobos and genes names were almost always consistent across species we use the human gene id recovered from the above step
+
+##Read in file
+rpkm<-read.csv("RPKM_ident.csv")
+
+##Read in gffs
+
+pp_gene<-read.csv("PP_gene.csv")
+gg_gene<-read.csv("GG_gene.csv")
+pt_gene<-read.csv("PT_gene.csv")
+mm_gene<-read.csv("MM_gene.csv")
+hs_gene<-read.csv("HS_gene.csv")
+
+##Find shared genes and trim data set to only include those
+
+pp_gene_samp<-pp_gene[which(pp_gene$Name %in% rpkm$hsa_gene),]
+hs_gene_samp<-hs_gene[which(hs_gene$Name %in% rpkm$hsa_gene),]
+pt_gene_samp<-pt_gene[which(pt_gene$Name %in% rpkm$hsa_gene),]
+gg_gene_samp<-gg_gene[which(gg_gene$Name %in% rpkm$hsa_gene),]
+mm_gene_samp<-mm_gene[which(mm_gene$Name %in% rpkm$hsa_gene),]
+length(mm_gene_samp$Name)
+#[1] 9271
+length(gg_gene_samp$Name)
+#[1] 8671
+length(pt_gene_samp$Name)
+#[1] 9190
+length(pp_gene_samp$Name)
+#[1] 9111
+length(hs_gene_samp$Name)
+#[1] 9596
+rpkm_samp<-rpkm[which(rpkm$hsa_gene %in% mm_gene_samp$Name),]
+rpkm_samp<-rpkm_samp[which(rpkm_samp$hsa_gene %in% gg_gene_samp$Name),]
+rpkm_samp<-rpkm_samp[which(rpkm_samp$hsa_gene %in% pt_gene_samp$Name),]
+rpkm_samp<-rpkm_samp[which(rpkm_samp$hsa_gene %in% pp_gene_samp$Name),]
+rpkm_samp<-rpkm_samp[which(rpkm_samp$hsa_gene %in% hs_gene_samp$Name),]
+length(rpkm_samp$hsa_gene)
+#[1] 8250
+mm_gene_samp<-mm_gene_samp[which(mm_gene_samp$Name %in% rpkm_samp$hsa_gene),]
+gg_gene_samp<-gg_gene_samp[which(gg_gene_samp$Name %in% rpkm_samp$hsa_gene),]
+pt_gene_samp<-pt_gene_samp[which(pt_gene_samp$Name %in% rpkm_samp$hsa_gene),]
+pp_gene_samp<-pp_gene_samp[which(pp_gene_samp$Name %in% rpkm_samp$hsa_gene),]
+hs_gene_samp<-hs_gene_samp[which(hs_gene_samp$Name %in% rpkm_samp$hsa_gene),]
+length(hs_gene_samp$Name)
+#[1] 8250
+length(pp_gene_samp$Name)
+#[1] 8250
+length(pt_gene_samp$Name)
+#[1] 8252
+length(gg_gene_samp$Name)
+#[1] 8250
+length(mm_gene_samp$Name)
+#[1] 8251
+mm_gene_samp<-mm_gene_samp[!duplicated(mm_gene_samp$Name),]
+pt_gene_samp<-pt_gene_samp[!duplicated(pt_gene_samp$Name),]
+length(pt_gene_samp$Name)
+#[1] 8250
+length(mm_gene_samp$Name)
+#[1] 8250
+
+##Read in hit locations from Get_ARE_Count_and_gff.txt
+
+hshit<-read.csv("HShits.csv")
+pthit<-read.csv("PThits.csv")
+pphit<-read.csv("PPhits.csv")
+gghit<-read.csv("GGhits.csv")
+mmhit<-read.csv("MMhits.csv")
+
+##Sort by gene name
+
+hs_gene_samp<-hs_gene_samp[order(hs_gene_samp$Name),]
+pp_gene_samp<-pp_gene_samp[order(pp_gene_samp$Name),]
+pt_gene_samp<-pt_gene_samp[order(pt_gene_samp$Name),]
+gg_gene_samp<-gg_gene_samp[order(gg_gene_samp$Name),]
+mm_gene_samp<-mm_gene_samp[order(mm_gene_samp$Name),]
+rpkm_samp<-rpkm_samp[order(rpkm_samp$hsa_gene),]
+
+##Find matches of AREs to genes
+
+hspeak<-pairPeak(hshit,hs_gene_samp,25000,10000)
+ptpeak<-pairPeak(pthit,pt_gene_samp,25000,10000)
+pppeak<-pairPeak(pphit,pp_gene_samp,25000,10000)
+ggpeak<-pairPeak(gghit,gg_gene_samp,25000,10000)
+mmpeak<-pairPeak(mmhit,mm_gene_samp,25000,10000)
+
+##Combine all hits and save
+
+allpeaks<-rbind(hspeak,ptpeak,pppeak,ggpeak,mmpeak)
+write.csv(allpeaks,"allpeaks.csv")
+
+##For each species create a vector of number of AREs proximal for each gene
+
+hscount<-c()
+for(i in 1:length(hs_gene_samp$Name))
+	{
+	 newi<-hspeak[which(as.character(hspeak$Gene)==as.character(hs_gene_samp$Name[i])),]
+	 val<-length(newi$Gene)
+	 hscount<-c(hscount,val)
+	}
+ptcount<-c()
+for(i in 1:length(pt_gene_samp$Name))
+	{
+	 newi<-ptpeak[which(as.character(ptpeak$Gene)==as.character(pt_gene_samp$Name[i])),]
+	 val<-length(newi$Gene)
+	 ptcount<-c(ptcount,val)
+	}
+ppcount<-c()
+for(i in 1:length(pp_gene_samp$Name))
+	{
+	 newi<-pppeak[which(as.character(pppeak$Gene)==as.character(pp_gene_samp$Name[i])),]
+	 val<-length(newi$Gene)
+	 ppcount<-c(ppcount,val)
+	}
+ggcount<-c()
+for(i in 1:length(gg_gene_samp$Name))
+	{
+	 newi<-ggpeak[which(as.character(ggpeak$Gene)==as.character(gg_gene_samp$Name[i])),]
+	 val<-length(newi$Gene)
+	 ggcount<-c(ggcount,val)
+	}
+mmcount<-c()
+for(i in 1:length(mm_gene_samp$Name))
+	{
+	 newi<-mmpeak[which(as.character(mmpeak$Gene)==as.character(mm_gene_samp$Name[i])),]
+	 val<-length(newi$Gene)
+	 mmcount<-c(mmcount,val)
+	}
+
+##Make new data frame with count data appended at end and save
+
+rpkm_samp<-rpkm_samp[,1:83]
+rpkm_samp<-data.frame(rpkm_samp,hscount,ptcount,ppcount,ggcount,mmcount)
+rpkm_samp<-rpkm_samp[,5:88]
+write.csv(rpkm_samp,"RPKM_count.csv")
+
+##Read in expression data with fold change and number of hits
+##Separate data by organ
+
+rpkm<-read.csv("/Users/andersond/Desktop/Primate/Evolution/Submission3/RPKM_count.csv")
+brain<-rpkm[,c(80,2,16,32,48,64,4,18,34,50,66,81:85)]
+cerebellum<-rpkm[,c(80,5,19,35,51,67,7,21,37,53,69,81:85)]
+heart<-rpkm[,c(80,8,22,38,54,70,10,24,40,56,72,81:85)]
+kidney<-rpkm[,c(80,11,25,41,57,73,13,27,43,59,75,81:85)]
+testis<-rpkm[,c(80,15,31,47,63,79,81:85)]
+
+##Select genes that meet the following criteria:
+##Fold log2 change >=2 in at least one species
+##Rpkm value >=10 in at least one species
+##ARE hit in at least one species
+##Different number of ARE hits across all species
+
+brain_select<-brain[which(apply(brain[,7:11],1,function(r) any(abs(r) >= 2.0)) & apply(brain[,2:6],1,function(r) any(r >= 10.0)) & apply(brain[,12:16],1,function(r) any(r >= 1))),]
+brain_select<-brain_select[which(!(brain_select$hscount==brain_select$ptcount & brain_select$ptcount==brain_select$ppcount & brain_select$ppcount==brain_select$ggcount & brain_select$ggcount==brain_select$mmcount)),]
+cerebellum_select<-cerebellum[which(apply(cerebellum[,7:11],1,function(r) any(abs(r) >= 2.0)) & apply(cerebellum[,2:6],1,function(r) any(r >= 10.0)) & apply(cerebellum[,12:16],1,function(r) any(r >= 1))),]
+cerebellum_select<-cerebellum_select[which(!(cerebellum_select$hscount==cerebellum_select$ptcount & cerebellum_select$ptcount==cerebellum_select$ppcount & cerebellum_select$ppcount==cerebellum_select$ggcount & cerebellum_select$ggcount==cerebellum_select$mmcount)),]
+heart_select<-heart[which(apply(heart[,7:11],1,function(r) any(abs(r) >= 2.0)) & apply(heart[,2:6],1,function(r) any(r >= 10.0)) & apply(heart[,12:16],1,function(r) any(r >= 1))),]
+heart_select<-heart_select[which(!(heart_select$hscount==heart_select$ptcount & heart_select$ptcount==heart_select$ppcount & heart_select$ppcount==heart_select$ggcount & heart_select$ggcount==heart_select$mmcount)),]
+kidney_select<-kidney[which(apply(kidney[,7:11],1,function(r) any(abs(r) >= 2.0)) & apply(kidney[,2:6],1,function(r) any(r >= 10.0)) & apply(kidney[,12:16],1,function(r) any(r >= 1))),]
+kidney_select<-kidney_select[which(!(kidney_select$hscount==kidney_select$ptcount & kidney_select$ptcount==kidney_select$ppcount & kidney_select$ppcount==kidney_select$ggcount & kidney_select$ggcount==kidney_select$mmcount)),]
+testis_select<-testis[which(apply(testis[,2:6],1,function(r) any(r >= 10.0)) & apply(testis[,7:11],1,function(r) any(r >= 1))),]
+testis_select<-testis_select[which(!(testis_select$hscount==testis_select$ptcount & testis_select$ptcount==testis_select$ppcount & testis_select$ppcount==testis_select$ggcount & testis_select$ggcount==testis_select$mmcount)),]
+
+library(phytools)
+
+##Read in tree with just five species
+
+tree<-read.nexus("/Users/andersond/Desktop/Primate/Evolution/Submission3/smalltree.nex")
+library(nlme)
+library(rr2)
+
+##Do this for each organ, but we provide specifics for brain here
+
+##Set row names as gene names
+
+row.names(brain_select)<-brain_select$hsa_gene
+
+##transpose dataframe
+
+brain_hit<-t(brain_select[2:16])
+
+##loop like that made from Linear_Model_Tests.txt
+##with convergence issues in model3 and the large number of tests we programmed a response to error message
+##Will try three different start values for model3 then will just run model3 as model2 and the anova analysis will choose model2 when results are the same
+##Also found a library (rr2) that will extract r values instead of calculating directly as in previous design
+##This run is for rpkm values
+
+brainrpkm.results<-data.frame(gene=factor(),model=factor(),correlation=numeric(),pval=numeric(),r2=numeric(),lambda=numeric())
+for(i in 1:64)
+	{
+	 genei<-colnames(brain_hit)[i]
+	 print(genei)
+	 dfi<-data.frame(brain_hit[1:5,i],brain_hit[6:10,i],brain_hit[11:15,i])
+	 colnames(dfi)<-c("rpkm","foldchange","arecount")
+	 dfi$Species<-c("Homo_sapiens","Pan_troglodytes","Pan_paniscus","Gorilla_gorilla","Macaca_mulatta")
+	 rownames(dfi)<-dfi$Species
+	 l<-phylosig(tree,resid(gls(rpkm~arecount,dfi)),method="lambda",test=T)$lambda
+	 print("nolambda")
+	 no.lambda<-gls(rpkm~arecount,method="ML",data=dfi)
+	 print("fixlambda")
+	 fix.lambda<-gls(rpkm~arecount,correlation=corPagel(l,phy=tree,form=~Species,fixed=TRUE),method="ML",data=dfi)
+	 print("testfree1")
+	 t1<-try(gls(rpkm~arecount,correlation=corPagel(l,phy=tree,form=~Species,fixed=FALSE),method="ML",dfi))
+	 loadError<-(is(t1,'try-error')|is(t1,'error'))
+	 if(loadError=="FALSE")
+	 	{
+	 	 print("testworks1")
+	 	 free.lambda<-gls(rpkm~arecount,correlation=corPagel(l,phy=tree,form=~Species,fixed=FALSE),method="ML",data=dfi)
+	 	}else
+	 	{
+	 	 print("testfree2")
+	 	 t1<-try(gls(rpkm~arecount,correlation=corPagel(1,phy=tree,form=~Species,fixed=FALSE),method="ML",data=dfi))
+	 	 loadError<-(is(t1,'try-error')|is(t1,'error'))
+		 if(loadError==F)
+	 		{
+	 		 print("testwork2")
+	 		 free.lambda<-gls(rpkm~arecount,correlation=corPagel(1,phy=tree,form=~Species,fixed=FALSE),method="ML",data=dfi)
+	 		}else
+	 		{
+	 		 print("testfree3")
+	 		 t1<-try(gls(rpkm~arecount,correlation=corPagel(0,phy=tree,form=~Species,fixed=FALSE),method="ML",data=dfi))
+	 	 	 loadError<-(is(t1,'try-error')|is(t1,'error'))
+		 	 if(loadError==F)
+	 			{
+	 		  	 print("testworks3")
+	 		  	 free.lambda<-gls(rpkm~arecount,correlation=corPagel(0,phy=tree,form=~Species,fixed=FALSE),method="ML",data=dfi)
+	 			}else
+	 			{
+	 			 print("nofree")
+	 			 free.lambda<-gls(rpkm~arecount,correlation=corPagel(l,phy=tree,form=~Species,fixed=TRUE),method="ML",data=dfi)
+	 			}
+	 	 	}
+	 	 }
+	 mod.choose<-anova(no.lambda,fix.lambda,free.lambda)
+	 model<-rownames(mod.choose)[which(min(mod.choose$AIC)==mod.choose$AIC)]
+	 model<-model[1]
+	 if(model=="free.lambda")
+	 	{
+	 	  l<-free.lambda$modelStruct$corStruct[1]
+	 	  if(l>1)
+	 	  {
+	 	  	l=1
+	 	  }
+	 	  if(l<0)
+	 	  {
+	 	  	l=0
+	 	  }
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dfi[,1:3]),vcv(tree),l)$R)[1,3]	
+	 	 p<-summary(free.lambda)$tTable[2,4]
+	 	 r<-R2.lik(free.lambda)
+	 	}
+	 if(model=="fix.lambda")
+	 	{
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dfi[,1:3]),vcv(tree),l)$R)[1,3]	
+	 	 p<-summary(fix.lambda)$tTable[2,4]
+	 	 r<-R2.lik(fix.lambda)
+	 	}
+	 if(model=="no.lambda")
+	 	{
+	 	 l=0
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dfi[,1:3]),vcv(tree),l)$R)[1,3]	
+	 	 p<-summary(no.lambda)$tTable[2,4]
+	 	 r<-R2.lik(no.lambda)
+	 	}
+	 dfaddi<-data.frame(genei,model,cor,p,r,l)
+	 colnames(dfaddi)<-c("gene","model","correlation","pval","r2","lambda")
+	 brainrpkm.results<-rbind(brainrpkm.results,dfaddi)
+	 print(i)
+	}
+
+##adjust p value for large number of tests
+
+fdr<-p.adjust(brainrpkm.results$pval,method="fdr")
+brainrpkm.results$fdr<-fdr
+brainrpkm.results<-brainrpkm.results[order(brainrpkm.results$fdr),]
+
+##Foldchange values
+
+brainfoldchange.results<-data.frame(gene=factor(),model=factor(),correlation=numeric(),pval=numeric(),r2=numeric(),lambda=numeric())
+for(i in 1:64)
+	{
+	 genei<-colnames(brain_hit)[i]
+	 print(genei)
+	 dfi<-data.frame(brain_hit[1:5,i],brain_hit[6:10,i],brain_hit[11:15,i])
+	 colnames(dfi)<-c("rpkm","foldchange","arecount")
+	 dfi$Species<-c("Homo_sapiens","Pan_troglodytes","Pan_paniscus","Gorilla_gorilla","Macaca_mulatta")
+	 rownames(dfi)<-dfi$Species
+	 l<-phylosig(tree,resid(gls(foldchange~arecount,dfi)),method="lambda",test=T)$lambda
+	 print("nolambda")
+	 no.lambda<-gls(foldchange~arecount,method="ML",data=dfi)
+	 print("fixlambda")
+	 fix.lambda<-gls(foldchange~arecount,correlation=corPagel(l,phy=tree,form=~Species,fixed=TRUE),method="ML",data=dfi)
+	 print("testfree1")
+	 t1<-try(gls(foldchange~arecount,correlation=corPagel(l,phy=tree,form=~Species,fixed=FALSE),method="ML",dfi))
+	 loadError<-(is(t1,'try-error')|is(t1,'error'))
+	 if(loadError=="FALSE")
+	 	{
+	 	 print("testworks1")
+	 	 free.lambda<-gls(foldchange~arecount,correlation=corPagel(l,phy=tree,form=~Species,fixed=FALSE),method="ML",data=dfi)
+	 	}else
+	 	{
+	 	 print("testfree2")
+	 	 t1<-try(gls(foldchange~arecount,correlation=corPagel(1,phy=tree,form=~Species,fixed=FALSE),method="ML",data=dfi))
+	 	 loadError<-(is(t1,'try-error')|is(t1,'error'))
+		 if(loadError==F)
+	 		{
+	 		 print("testwork2")
+	 		 free.lambda<-gls(foldchange~arecount,correlation=corPagel(1,phy=tree,form=~Species,fixed=FALSE),method="ML",data=dfi)
+	 		}else
+	 		{
+	 		 print("testfree3")
+	 		 t1<-try(gls(foldchange~arecount,correlation=corPagel(0,phy=tree,form=~Species,fixed=FALSE),method="ML",data=dfi))
+	 	 	 loadError<-(is(t1,'try-error')|is(t1,'error'))
+		 	 if(loadError==F)
+	 			{
+	 		  	 print("testworks3")
+	 		  	 free.lambda<-gls(foldchange~arecount,correlation=corPagel(0,phy=tree,form=~Species,fixed=FALSE),method="ML",data=dfi)
+	 			}else
+	 			{
+	 			 print("nofree")
+	 			 free.lambda<-gls(foldchange~arecount,correlation=corPagel(l,phy=tree,form=~Species,fixed=TRUE),method="ML",data=dfi)
+	 			}
+	 	 	}
+	 	 }
+	 mod.choose<-anova(no.lambda,fix.lambda,free.lambda)
+	 model<-rownames(mod.choose)[which(min(mod.choose$AIC)==mod.choose$AIC)]
+	 model<-model[1]
+	 if(model=="free.lambda")
+	 	{
+	 	  l<-free.lambda$modelStruct$corStruct[1]
+	 	  if(l>1)
+	 	  {
+	 	  	l=1
+	 	  }
+	 	  if(l<0)
+	 	  {
+	 	  	l=0
+	 	  }
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dfi[,1:3]),vcv(tree),l)$R)[2,3]	
+	 	 p<-summary(free.lambda)$tTable[2,4]
+	 	 r<-R2.lik(free.lambda)
+	 	}
+	 if(model=="fix.lambda")
+	 	{
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dfi[,1:3]),vcv(tree),l)$R)[2,3]	
+	 	 p<-summary(fix.lambda)$tTable[2,4]
+	 	 r<-R2.lik(fix.lambda)
+	 	}
+	 if(model=="no.lambda")
+	 	{
+	 	 l=0
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dfi[,1:3]),vcv(tree),l)$R)[2,3]	
+	 	 p<-summary(no.lambda)$tTable[2,4]
+	 	 r<-R2.lik(no.lambda)
+	 	}
+	 dfaddi<-data.frame(genei,model,cor,p,r,l)
+	 colnames(dfaddi)<-c("gene","model","correlation","pval","r2","lambda")
+	 brainfoldchange.results<-rbind(brainfoldchange.results,dfaddi)
+	 print(i)
+	}
+fdr<-p.adjust(brainfoldchange.results$pval,method="fdr")
+brainfoldchange.results$fdr<-fdr
+brainfoldchange.results<-brainfoldchange.results[order(brainfoldchange.results$fdr),]
+
+##Cerebellum rpkm and fold change
+
+row.names(cerebellum_select)<-cerebellum_select$hsa_gene
+cerebellum_hit<-t(cerebellum_select[2:16])
+cerebellumrpkm.results<-data.frame(gene=factor(),model=factor(),correlation=numeric(),pval=numeric(),r2=numeric(),lambda=numeric())
+for(i in 1:58)
+	{
+	 genei<-colnames(cerebellum_hit)[i]
+	 print(genei)
+	 dfi<-data.frame(cerebellum_hit[1:5,i],cerebellum_hit[6:10,i],cerebellum_hit[11:15,i])
+	 colnames(dfi)<-c("rpkm","foldchange","arecount")
+	 dfi$Species<-c("Homo_sapiens","Pan_troglodytes","Pan_paniscus","Gorilla_gorilla","Macaca_mulatta")
+	 rownames(dfi)<-dfi$Species
+	 l<-phylosig(tree,resid(gls(rpkm~arecount,dfi)),method="lambda",test=T)$lambda
+	 print("nolambda")
+	 no.lambda<-gls(rpkm~arecount,method="ML",data=dfi)
+	 print("fixlambda")
+	 fix.lambda<-gls(rpkm~arecount,correlation=corPagel(l,phy=tree,form=~Species,fixed=TRUE),method="ML",data=dfi)
+	 print("testfree1")
+	 t1<-try(gls(rpkm~arecount,correlation=corPagel(l,phy=tree,form=~Species,fixed=FALSE),method="ML",dfi))
+	 loadError<-(is(t1,'try-error')|is(t1,'error'))
+	 if(loadError=="FALSE")
+	 	{
+	 	 print("testworks1")
+	 	 free.lambda<-gls(rpkm~arecount,correlation=corPagel(l,phy=tree,form=~Species,fixed=FALSE),method="ML",data=dfi)
+	 	}else
+	 	{
+	 	 print("testfree2")
+	 	 t1<-try(gls(rpkm~arecount,correlation=corPagel(1,phy=tree,form=~Species,fixed=FALSE),method="ML",data=dfi))
+	 	 loadError<-(is(t1,'try-error')|is(t1,'error'))
+		 if(loadError==F)
+	 		{
+	 		 print("testwork2")
+	 		 free.lambda<-gls(rpkm~arecount,correlation=corPagel(1,phy=tree,form=~Species,fixed=FALSE),method="ML",data=dfi)
+	 		}else
+	 		{
+	 		 print("testfree3")
+	 		 t1<-try(gls(rpkm~arecount,correlation=corPagel(0,phy=tree,form=~Species,fixed=FALSE),method="ML",data=dfi))
+	 	 	 loadError<-(is(t1,'try-error')|is(t1,'error'))
+		 	 if(loadError==F)
+	 			{
+	 		  	 print("testworks3")
+	 		  	 free.lambda<-gls(rpkm~arecount,correlation=corPagel(0,phy=tree,form=~Species,fixed=FALSE),method="ML",data=dfi)
+	 			}else
+	 			{
+	 			 print("nofree")
+	 			 free.lambda<-gls(rpkm~arecount,correlation=corPagel(l,phy=tree,form=~Species,fixed=TRUE),method="ML",data=dfi)
+	 			}
+	 	 	}
+	 	 }
+	 mod.choose<-anova(no.lambda,fix.lambda,free.lambda)
+	 model<-rownames(mod.choose)[which(min(mod.choose$AIC)==mod.choose$AIC)]
+	 model<-model[1]
+	 if(model=="free.lambda")
+	 	{
+	 	  l<-free.lambda$modelStruct$corStruct[1]
+	 	  if(l>1)
+	 	  {
+	 	  	l=1
+	 	  }
+	 	  if(l<0)
+	 	  {
+	 	  	l=0
+	 	  }
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dfi[,1:3]),vcv(tree),l)$R)[1,3]	
+	 	 p<-summary(free.lambda)$tTable[2,4]
+	 	 r<-R2.lik(free.lambda)
+	 	}
+	 if(model=="fix.lambda")
+	 	{
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dfi[,1:3]),vcv(tree),l)$R)[1,3]	
+	 	 p<-summary(fix.lambda)$tTable[2,4]
+	 	 r<-R2.lik(fix.lambda)
+	 	}
+	 if(model=="no.lambda")
+	 	{
+	 	 l=0
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dfi[,1:3]),vcv(tree),l)$R)[1,3]	
+	 	 p<-summary(no.lambda)$tTable[2,4]
+	 	 r<-R2.lik(no.lambda)
+	 	}
+	 dfaddi<-data.frame(genei,model,cor,p,r,l)
+	 colnames(dfaddi)<-c("gene","model","correlation","pval","r2","lambda")
+	 cerebellumrpkm.results<-rbind(cerebellumrpkm.results,dfaddi)
+	 print(i)
+	}
+fdr<-p.adjust(cerebellumrpkm.results$pval,method="fdr")
+cerebellumrpkm.results$fdr<-fdr
+cerebellumrpkm.results<-cerebellumrpkm.results[order(cerebellumrpkm.results$fdr),]
+cerebellumfoldchange.results<-data.frame(gene=factor(),model=factor(),correlation=numeric(),pval=numeric(),r2=numeric(),lambda=numeric())
+for(i in 1:58)
+	{
+	 genei<-colnames(cerebellum_hit)[i]
+	 print(genei)
+	 dfi<-data.frame(cerebellum_hit[1:5,i],cerebellum_hit[6:10,i],cerebellum_hit[11:15,i])
+	 colnames(dfi)<-c("rpkm","foldchange","arecount")
+	 dfi$Species<-c("Homo_sapiens","Pan_troglodytes","Pan_paniscus","Gorilla_gorilla","Macaca_mulatta")
+	 rownames(dfi)<-dfi$Species
+	 l<-phylosig(tree,resid(gls(foldchange~arecount,dfi)),method="lambda",test=T)$lambda
+	 print("nolambda")
+	 no.lambda<-gls(foldchange~arecount,method="ML",data=dfi)
+	 print("fixlambda")
+	 fix.lambda<-gls(foldchange~arecount,correlation=corPagel(l,phy=tree,form=~Species,fixed=TRUE),method="ML",data=dfi)
+	 print("testfree1")
+	 t1<-try(gls(foldchange~arecount,correlation=corPagel(l,phy=tree,form=~Species,fixed=FALSE),method="ML",dfi))
+	 loadError<-(is(t1,'try-error')|is(t1,'error'))
+	 if(loadError=="FALSE")
+	 	{
+	 	 print("testworks1")
+	 	 free.lambda<-gls(foldchange~arecount,correlation=corPagel(l,phy=tree,form=~Species,fixed=FALSE),method="ML",data=dfi)
+	 	}else
+	 	{
+	 	 print("testfree2")
+	 	 t1<-try(gls(foldchange~arecount,correlation=corPagel(1,phy=tree,form=~Species,fixed=FALSE),method="ML",data=dfi))
+	 	 loadError<-(is(t1,'try-error')|is(t1,'error'))
+		 if(loadError==F)
+	 		{
+	 		 print("testwork2")
+	 		 free.lambda<-gls(foldchange~arecount,correlation=corPagel(1,phy=tree,form=~Species,fixed=FALSE),method="ML",data=dfi)
+	 		}else
+	 		{
+	 		 print("testfree3")
+	 		 t1<-try(gls(foldchange~arecount,correlation=corPagel(0,phy=tree,form=~Species,fixed=FALSE),method="ML",data=dfi))
+	 	 	 loadError<-(is(t1,'try-error')|is(t1,'error'))
+		 	 if(loadError==F)
+	 			{
+	 		  	 print("testworks3")
+	 		  	 free.lambda<-gls(foldchange~arecount,correlation=corPagel(0,phy=tree,form=~Species,fixed=FALSE),method="ML",data=dfi)
+	 			}else
+	 			{
+	 			 print("nofree")
+	 			 free.lambda<-gls(foldchange~arecount,correlation=corPagel(l,phy=tree,form=~Species,fixed=TRUE),method="ML",data=dfi)
+	 			}
+	 	 	}
+	 	 }
+	 mod.choose<-anova(no.lambda,fix.lambda,free.lambda)
+	 model<-rownames(mod.choose)[which(min(mod.choose$AIC)==mod.choose$AIC)]
+	 model<-model[1]
+	 if(model=="free.lambda")
+	 	{
+	 	  l<-free.lambda$modelStruct$corStruct[1]
+	 	  if(l>1)
+	 	  {
+	 	  	l=1
+	 	  }
+	 	  if(l<0)
+	 	  {
+	 	  	l=0
+	 	  }
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dfi[,1:3]),vcv(tree),l)$R)[2,3]	
+	 	 p<-summary(free.lambda)$tTable[2,4]
+	 	 r<-R2.lik(free.lambda)
+	 	}
+	 if(model=="fix.lambda")
+	 	{
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dfi[,1:3]),vcv(tree),l)$R)[2,3]	
+	 	 p<-summary(fix.lambda)$tTable[2,4]
+	 	 r<-R2.lik(fix.lambda)
+	 	}
+	 if(model=="no.lambda")
+	 	{
+	 	 l=0
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dfi[,1:3]),vcv(tree),l)$R)[2,3]	
+	 	 p<-summary(no.lambda)$tTable[2,4]
+	 	 r<-R2.lik(no.lambda)
+	 	}
+	 dfaddi<-data.frame(genei,model,cor,p,r,l)
+	 colnames(dfaddi)<-c("gene","model","correlation","pval","r2","lambda")
+	 cerebellumfoldchange.results<-rbind(cerebellumfoldchange.results,dfaddi)
+	 print(i)
+	}
+fdr<-p.adjust(cerebellumfoldchange.results$pval,method="fdr")
+cerebellumfoldchange.results$fdr<-fdr
+cerebellumfoldchange.results<-cerebellumfoldchange.results[order(cerebellumfoldchange.results$fdr),]
+
+##Kidney
+
+row.names(kidney_select)<-kidney_select$hsa_gene
+kidney_hit<-t(kidney_select[2:16])
+kidneyrpkm.results<-data.frame(gene=factor(),model=factor(),correlation=numeric(),pval=numeric(),r2=numeric(),lambda=numeric())
+for(i in 1:68)
+	{
+	 genei<-colnames(kidney_hit)[i]
+	 print(genei)
+	 dfi<-data.frame(kidney_hit[1:5,i],kidney_hit[6:10,i],kidney_hit[11:15,i])
+	 colnames(dfi)<-c("rpkm","foldchange","arecount")
+	 dfi$Species<-c("Homo_sapiens","Pan_troglodytes","Pan_paniscus","Gorilla_gorilla","Macaca_mulatta")
+	 rownames(dfi)<-dfi$Species
+	 l<-phylosig(tree,resid(gls(rpkm~arecount,dfi)),method="lambda",test=T)$lambda
+	 print("nolambda")
+	 no.lambda<-gls(rpkm~arecount,method="ML",data=dfi)
+	 print("fixlambda")
+	 fix.lambda<-gls(rpkm~arecount,correlation=corPagel(l,phy=tree,form=~Species,fixed=TRUE),method="ML",data=dfi)
+	 print("testfree1")
+	 t1<-try(gls(rpkm~arecount,correlation=corPagel(l,phy=tree,form=~Species,fixed=FALSE),method="ML",dfi))
+	 loadError<-(is(t1,'try-error')|is(t1,'error'))
+	 if(loadError=="FALSE")
+	 	{
+	 	 print("testworks1")
+	 	 free.lambda<-gls(rpkm~arecount,correlation=corPagel(l,phy=tree,form=~Species,fixed=FALSE),method="ML",data=dfi)
+	 	}else
+	 	{
+	 	 print("testfree2")
+	 	 t1<-try(gls(rpkm~arecount,correlation=corPagel(1,phy=tree,form=~Species,fixed=FALSE),method="ML",data=dfi))
+	 	 loadError<-(is(t1,'try-error')|is(t1,'error'))
+		 if(loadError==F)
+	 		{
+	 		 print("testwork2")
+	 		 free.lambda<-gls(rpkm~arecount,correlation=corPagel(1,phy=tree,form=~Species,fixed=FALSE),method="ML",data=dfi)
+	 		}else
+	 		{
+	 		 print("testfree3")
+	 		 t1<-try(gls(rpkm~arecount,correlation=corPagel(0,phy=tree,form=~Species,fixed=FALSE),method="ML",data=dfi))
+	 	 	 loadError<-(is(t1,'try-error')|is(t1,'error'))
+		 	 if(loadError==F)
+	 			{
+	 		  	 print("testworks3")
+	 		  	 free.lambda<-gls(rpkm~arecount,correlation=corPagel(0,phy=tree,form=~Species,fixed=FALSE),method="ML",data=dfi)
+	 			}else
+	 			{
+	 			 print("nofree")
+	 			 free.lambda<-gls(rpkm~arecount,correlation=corPagel(l,phy=tree,form=~Species,fixed=TRUE),method="ML",data=dfi)
+	 			}
+	 	 	}
+	 	 }
+	 mod.choose<-anova(no.lambda,fix.lambda,free.lambda)
+	 model<-rownames(mod.choose)[which(min(mod.choose$AIC)==mod.choose$AIC)]
+	 model<-model[1]
+	 if(model=="free.lambda")
+	 	{
+	 	  l<-free.lambda$modelStruct$corStruct[1]
+	 	  if(l>1)
+	 	  {
+	 	  	l=1
+	 	  }
+	 	  if(l<0)
+	 	  {
+	 	  	l=0
+	 	  }
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dfi[,1:3]),vcv(tree),l)$R)[1,3]	
+	 	 p<-summary(free.lambda)$tTable[2,4]
+	 	 r<-R2.lik(free.lambda)
+	 	}
+	 if(model=="fix.lambda")
+	 	{
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dfi[,1:3]),vcv(tree),l)$R)[1,3]	
+	 	 p<-summary(fix.lambda)$tTable[2,4]
+	 	 r<-R2.lik(fix.lambda)
+	 	}
+	 if(model=="no.lambda")
+	 	{
+	 	 l=0
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dfi[,1:3]),vcv(tree),l)$R)[1,3]	
+	 	 p<-summary(no.lambda)$tTable[2,4]
+	 	 r<-R2.lik(no.lambda)
+	 	}
+	 dfaddi<-data.frame(genei,model,cor,p,r,l)
+	 colnames(dfaddi)<-c("gene","model","correlation","pval","r2","lambda")
+	 kidneyrpkm.results<-rbind(kidneyrpkm.results,dfaddi)
+	 print(i)
+	}
+fdr<-p.adjust(kidneyrpkm.results$pval,method="fdr")
+kidneyrpkm.results$fdr<-fdr
+kidneyrpkm.results<-kidneyrpkm.results[order(kidneyrpkm.results$fdr),]
+kidneyfoldchange.results<-data.frame(gene=factor(),model=factor(),correlation=numeric(),pval=numeric(),r2=numeric(),lambda=numeric())
+for(i in 1:68)
+	{
+	 genei<-colnames(kidney_hit)[i]
+	 print(genei)
+	 dfi<-data.frame(kidney_hit[1:5,i],kidney_hit[6:10,i],kidney_hit[11:15,i])
+	 colnames(dfi)<-c("rpkm","foldchange","arecount")
+	 dfi$Species<-c("Homo_sapiens","Pan_troglodytes","Pan_paniscus","Gorilla_gorilla","Macaca_mulatta")
+	 rownames(dfi)<-dfi$Species
+	 l<-phylosig(tree,resid(gls(foldchange~arecount,dfi)),method="lambda",test=T)$lambda
+	 print("nolambda")
+	 no.lambda<-gls(foldchange~arecount,method="ML",data=dfi)
+	 print("fixlambda")
+	 fix.lambda<-gls(foldchange~arecount,correlation=corPagel(l,phy=tree,form=~Species,fixed=TRUE),method="ML",data=dfi)
+	 print("testfree1")
+	 t1<-try(gls(foldchange~arecount,correlation=corPagel(l,phy=tree,form=~Species,fixed=FALSE),method="ML",dfi))
+	 loadError<-(is(t1,'try-error')|is(t1,'error'))
+	 if(loadError=="FALSE")
+	 	{
+	 	 print("testworks1")
+	 	 free.lambda<-gls(foldchange~arecount,correlation=corPagel(l,phy=tree,form=~Species,fixed=FALSE),method="ML",data=dfi)
+	 	}else
+	 	{
+	 	 print("testfree2")
+	 	 t1<-try(gls(foldchange~arecount,correlation=corPagel(1,phy=tree,form=~Species,fixed=FALSE),method="ML",data=dfi))
+	 	 loadError<-(is(t1,'try-error')|is(t1,'error'))
+		 if(loadError==F)
+	 		{
+	 		 print("testwork2")
+	 		 free.lambda<-gls(foldchange~arecount,correlation=corPagel(1,phy=tree,form=~Species,fixed=FALSE),method="ML",data=dfi)
+	 		}else
+	 		{
+	 		 print("testfree3")
+	 		 t1<-try(gls(foldchange~arecount,correlation=corPagel(0,phy=tree,form=~Species,fixed=FALSE),method="ML",data=dfi))
+	 	 	 loadError<-(is(t1,'try-error')|is(t1,'error'))
+		 	 if(loadError==F)
+	 			{
+	 		  	 print("testworks3")
+	 		  	 free.lambda<-gls(foldchange~arecount,correlation=corPagel(0,phy=tree,form=~Species,fixed=FALSE),method="ML",data=dfi)
+	 			}else
+	 			{
+	 			 print("nofree")
+	 			 free.lambda<-gls(foldchange~arecount,correlation=corPagel(l,phy=tree,form=~Species,fixed=TRUE),method="ML",data=dfi)
+	 			}
+	 	 	}
+	 	 }
+	 mod.choose<-anova(no.lambda,fix.lambda,free.lambda)
+	 model<-rownames(mod.choose)[which(min(mod.choose$AIC)==mod.choose$AIC)]
+	 model<-model[1]
+	 if(model=="free.lambda")
+	 	{
+	 	  l<-free.lambda$modelStruct$corStruct[1]
+	 	  if(l>1)
+	 	  {
+	 	  	l=1
+	 	  }
+	 	  if(l<0)
+	 	  {
+	 	  	l=0
+	 	  }
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dfi[,1:3]),vcv(tree),l)$R)[2,3]	
+	 	 p<-summary(free.lambda)$tTable[2,4]
+	 	 r<-R2.lik(free.lambda)
+	 	}
+	 if(model=="fix.lambda")
+	 	{
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dfi[,1:3]),vcv(tree),l)$R)[2,3]	
+	 	 p<-summary(fix.lambda)$tTable[2,4]
+	 	 r<-R2.lik(fix.lambda)
+	 	}
+	 if(model=="no.lambda")
+	 	{
+	 	 l=0
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dfi[,1:3]),vcv(tree),l)$R)[2,3]	
+	 	 p<-summary(no.lambda)$tTable[2,4]
+	 	 r<-R2.lik(no.lambda)
+	 	}
+	 dfaddi<-data.frame(genei,model,cor,p,r,l)
+	 colnames(dfaddi)<-c("gene","model","correlation","pval","r2","lambda")
+	 kidneyfoldchange.results<-rbind(kidneyfoldchange.results,dfaddi)
+	 print(i)
+	}
+fdr<-p.adjust(kidneyfoldchange.results$pval,method="fdr")
+kidneyfoldchange.results$fdr<-fdr
+kidneyfoldchange.results<-kidneyfoldchange.results[order(kidneyfoldchange.results$fdr),]
+
+##Heart
+
+row.names(heart_select)<-heart_select$hsa_gene
+heart_hit<-t(heart_select[2:16])
+heartrpkm.results<-data.frame(gene=factor(),model=factor(),correlation=numeric(),pval=numeric(),r2=numeric(),lambda=numeric())
+
+for(i in 1:151)
+	{
+	 genei<-colnames(heart_hit)[i]
+	 print(genei)
+	 dfi<-data.frame(heart_hit[1:5,i],heart_hit[6:10,i],heart_hit[11:15,i])
+	 colnames(dfi)<-c("rpkm","foldchange","arecount")
+	 dfi$Species<-c("Homo_sapiens","Pan_troglodytes","Pan_paniscus","Gorilla_gorilla","Macaca_mulatta")
+	 rownames(dfi)<-dfi$Species
+	 l<-phylosig(tree,resid(gls(rpkm~arecount,dfi)),method="lambda",test=T)$lambda
+	 print("nolambda")
+	 no.lambda<-gls(rpkm~arecount,method="ML",data=dfi)
+	 print("fixlambda")
+	 fix.lambda<-gls(rpkm~arecount,correlation=corPagel(l,phy=tree,form=~Species,fixed=TRUE),method="ML",data=dfi)
+	 print("testfree1")
+	 t1<-try(gls(rpkm~arecount,correlation=corPagel(l,phy=tree,form=~Species,fixed=FALSE),method="ML",dfi))
+	 loadError<-(is(t1,'try-error')|is(t1,'error'))
+	 if(loadError=="FALSE")
+	 	{
+	 	 print("testworks1")
+	 	 free.lambda<-gls(rpkm~arecount,correlation=corPagel(l,phy=tree,form=~Species,fixed=FALSE),method="ML",data=dfi)
+	 	}else
+	 	{
+	 	 print("testfree2")
+	 	 t1<-try(gls(rpkm~arecount,correlation=corPagel(1,phy=tree,form=~Species,fixed=FALSE),method="ML",data=dfi))
+	 	 loadError<-(is(t1,'try-error')|is(t1,'error'))
+		 if(loadError==F)
+	 		{
+	 		 print("testwork2")
+	 		 free.lambda<-gls(rpkm~arecount,correlation=corPagel(1,phy=tree,form=~Species,fixed=FALSE),method="ML",data=dfi)
+	 		}else
+	 		{
+	 		 print("testfree3")
+	 		 t1<-try(gls(rpkm~arecount,correlation=corPagel(0,phy=tree,form=~Species,fixed=FALSE),method="ML",data=dfi))
+	 	 	 loadError<-(is(t1,'try-error')|is(t1,'error'))
+		 	 if(loadError==F)
+	 			{
+	 		  	 print("testworks3")
+	 		  	 free.lambda<-gls(rpkm~arecount,correlation=corPagel(0,phy=tree,form=~Species,fixed=FALSE),method="ML",data=dfi)
+	 			}else
+	 			{
+	 			 print("nofree")
+	 			 free.lambda<-gls(rpkm~arecount,correlation=corPagel(l,phy=tree,form=~Species,fixed=TRUE),method="ML",data=dfi)
+	 			}
+	 	 	}
+	 	 }
+	 mod.choose<-anova(no.lambda,fix.lambda,free.lambda)
+	 model<-rownames(mod.choose)[which(min(mod.choose$AIC)==mod.choose$AIC)]
+	 model<-model[1]
+	 if(model=="free.lambda")
+	 	{
+	 	  l<-free.lambda$modelStruct$corStruct[1]
+	 	  if(l>1)
+	 	  {
+	 	  	l=1
+	 	  }
+	 	  if(l<0)
+	 	  {
+	 	  	l=0
+	 	  }
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dfi[,1:3]),vcv(tree),l)$R)[1,3]	
+	 	 p<-summary(free.lambda)$tTable[2,4]
+	 	 r<-R2.lik(free.lambda)
+	 	}
+	 if(model=="fix.lambda")
+	 	{
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dfi[,1:3]),vcv(tree),l)$R)[1,3]	
+	 	 p<-summary(fix.lambda)$tTable[2,4]
+	 	 r<-R2.lik(fix.lambda)
+	 	}
+	 if(model=="no.lambda")
+	 	{
+	 	 l=0
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dfi[,1:3]),vcv(tree),l)$R)[1,3]	
+	 	 p<-summary(no.lambda)$tTable[2,4]
+	 	 r<-R2.lik(no.lambda)
+	 	}
+	 dfaddi<-data.frame(genei,model,cor,p,r,l)
+	 colnames(dfaddi)<-c("gene","model","correlation","pval","r2","lambda")
+	 heartrpkm.results<-rbind(heartrpkm.results,dfaddi)
+	 print(i)
+	}
+fdr<-p.adjust(heartrpkm.results$pval,method="fdr")
+heartrpkm.results$fdr<-fdr
+heartrpkm.results<-heartrpkm.results[order(heartrpkm.results$fdr),]
+heartfoldchange.results<-data.frame(gene=factor(),model=factor(),correlation=numeric(),pval=numeric(),r2=numeric(),lambda=numeric())
+for(i in 1:151)
+	{
+	 genei<-colnames(heart_hit)[i]
+	 print(genei)
+	 dfi<-data.frame(heart_hit[1:5,i],heart_hit[6:10,i],heart_hit[11:15,i])
+	 colnames(dfi)<-c("rpkm","foldchange","arecount")
+	 dfi$Species<-c("Homo_sapiens","Pan_troglodytes","Pan_paniscus","Gorilla_gorilla","Macaca_mulatta")
+	 rownames(dfi)<-dfi$Species
+	 l<-phylosig(tree,resid(gls(foldchange~arecount,dfi)),method="lambda",test=T)$lambda
+	 print("nolambda")
+	 no.lambda<-gls(foldchange~arecount,method="ML",data=dfi)
+	 print("fixlambda")
+	 fix.lambda<-gls(foldchange~arecount,correlation=corPagel(l,phy=tree,form=~Species,fixed=TRUE),method="ML",data=dfi)
+	 print("testfree1")
+	 t1<-try(gls(foldchange~arecount,correlation=corPagel(l,phy=tree,form=~Species,fixed=FALSE),method="ML",dfi))
+	 loadError<-(is(t1,'try-error')|is(t1,'error'))
+	 if(loadError=="FALSE")
+	 	{
+	 	 print("testworks1")
+	 	 free.lambda<-gls(foldchange~arecount,correlation=corPagel(l,phy=tree,form=~Species,fixed=FALSE),method="ML",data=dfi)
+	 	}else
+	 	{
+	 	 print("testfree2")
+	 	 t1<-try(gls(foldchange~arecount,correlation=corPagel(1,phy=tree,form=~Species,fixed=FALSE),method="ML",data=dfi))
+	 	 loadError<-(is(t1,'try-error')|is(t1,'error'))
+		 if(loadError==F)
+	 		{
+	 		 print("testwork2")
+	 		 free.lambda<-gls(foldchange~arecount,correlation=corPagel(1,phy=tree,form=~Species,fixed=FALSE),method="ML",data=dfi)
+	 		}else
+	 		{
+	 		 print("testfree3")
+	 		 t1<-try(gls(foldchange~arecount,correlation=corPagel(0,phy=tree,form=~Species,fixed=FALSE),method="ML",data=dfi))
+	 	 	 loadError<-(is(t1,'try-error')|is(t1,'error'))
+		 	 if(loadError==F)
+	 			{
+	 		  	 print("testworks3")
+	 		  	 free.lambda<-gls(foldchange~arecount,correlation=corPagel(0,phy=tree,form=~Species,fixed=FALSE),method="ML",data=dfi)
+	 			}else
+	 			{
+	 			 print("nofree")
+	 			 free.lambda<-gls(foldchange~arecount,correlation=corPagel(l,phy=tree,form=~Species,fixed=TRUE),method="ML",data=dfi)
+	 			}
+	 	 	}
+	 	 }
+	 mod.choose<-anova(no.lambda,fix.lambda,free.lambda)
+	 model<-rownames(mod.choose)[which(min(mod.choose$AIC)==mod.choose$AIC)]
+	 model<-model[1]
+	 if(model=="free.lambda")
+	 	{
+	 	  l<-free.lambda$modelStruct$corStruct[1]
+	 	  if(l>1)
+	 	  {
+	 	  	l=1
+	 	  }
+	 	  if(l<0)
+	 	  {
+	 	  	l=0
+	 	  }
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dfi[,1:3]),vcv(tree),l)$R)[2,3]	
+	 	 p<-summary(free.lambda)$tTable[2,4]
+	 	 r<-R2.lik(free.lambda)
+	 	}
+	 if(model=="fix.lambda")
+	 	{
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dfi[,1:3]),vcv(tree),l)$R)[2,3]	
+	 	 p<-summary(fix.lambda)$tTable[2,4]
+	 	 r<-R2.lik(fix.lambda)
+	 	}
+	 if(model=="no.lambda")
+	 	{
+	 	 l=0
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dfi[,1:3]),vcv(tree),l)$R)[2,3]	
+	 	 p<-summary(no.lambda)$tTable[2,4]
+	 	 r<-R2.lik(no.lambda)
+	 	}
+	 dfaddi<-data.frame(genei,model,cor,p,r,l)
+	 colnames(dfaddi)<-c("gene","model","correlation","pval","r2","lambda")
+	 heartfoldchange.results<-rbind(heartfoldchange.results,dfaddi)
+	 print(i)
+	}
+fdr<-p.adjust(heartfoldchange.results$pval,method="fdr")
+heartfoldchange.results$fdr<-fdr
+heartfoldchange.results<-heartfoldchange.results[order(heartfoldchange.results$fdr),]
+
+##Testes
+##There is no fold change data since no female testis expression
+
+row.names(testis_select)<-testis_select$hsa_gene
+testis_hit<-t(testis_select[2:11])
+testisrpkm.results<-data.frame(gene=factor(),model=factor(),correlation=numeric(),pval=numeric(),r2=numeric(),lambda=numeric())
+for(i in 1:847)
+	{
+	 genei<-colnames(testis_hit)[i]
+	 print(genei)
+	 dfi<-data.frame(testis_hit[1:5,i],testis_hit[6:10,i])
+	 colnames(dfi)<-c("rpkm","arecount")
+	 dfi$Species<-c("Homo_sapiens","Pan_troglodytes","Pan_paniscus","Gorilla_gorilla","Macaca_mulatta")
+	 rownames(dfi)<-dfi$Species
+	 l<-phylosig(tree,resid(gls(rpkm~arecount,dfi)),method="lambda",test=T)$lambda
+	 print("nolambda")
+	 no.lambda<-gls(rpkm~arecount,method="ML",data=dfi)
+	 print("fixlambda")
+	 fix.lambda<-gls(rpkm~arecount,correlation=corPagel(l,phy=tree,form=~Species,fixed=TRUE),method="ML",data=dfi)
+	 print("testfree1")
+	 t1<-try(gls(rpkm~arecount,correlation=corPagel(l,phy=tree,form=~Species,fixed=FALSE),method="ML",dfi))
+	 loadError<-(is(t1,'try-error')|is(t1,'error'))
+	 if(loadError=="FALSE")
+	 	{
+	 	 print("testworks1")
+	 	 free.lambda<-gls(rpkm~arecount,correlation=corPagel(l,phy=tree,form=~Species,fixed=FALSE),method="ML",data=dfi)
+	 	}else
+	 	{
+	 	 print("testfree2")
+	 	 t1<-try(gls(rpkm~arecount,correlation=corPagel(1,phy=tree,form=~Species,fixed=FALSE),method="ML",data=dfi))
+	 	 loadError<-(is(t1,'try-error')|is(t1,'error'))
+		 if(loadError==F)
+	 		{
+	 		 print("testwork2")
+	 		 free.lambda<-gls(rpkm~arecount,correlation=corPagel(1,phy=tree,form=~Species,fixed=FALSE),method="ML",data=dfi)
+	 		}else
+	 		{
+	 		 print("testfree3")
+	 		 t1<-try(gls(rpkm~arecount,correlation=corPagel(0,phy=tree,form=~Species,fixed=FALSE),method="ML",data=dfi))
+	 	 	 loadError<-(is(t1,'try-error')|is(t1,'error'))
+		 	 if(loadError==F)
+	 			{
+	 		  	 print("testworks3")
+	 		  	 free.lambda<-gls(rpkm~arecount,correlation=corPagel(0,phy=tree,form=~Species,fixed=FALSE),method="ML",data=dfi)
+	 			}else
+	 			{
+	 			 print("nofree")
+	 			 free.lambda<-gls(rpkm~arecount,correlation=corPagel(l,phy=tree,form=~Species,fixed=TRUE),method="ML",data=dfi)
+	 			}
+	 	 	}
+	 	 }
+	 mod.choose<-anova(no.lambda,fix.lambda,free.lambda)
+	 model<-rownames(mod.choose)[which(min(mod.choose$AIC)==mod.choose$AIC)]
+	 model<-model[1]
+	 if(model=="free.lambda")
+	 	{
+	 	  l<-free.lambda$modelStruct$corStruct[1]
+	 	  if(l>1)
+	 	  {
+	 	  	l=1
+	 	  }
+	 	  if(l<0)
+	 	  {
+	 	  	l=0
+	 	  }
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dfi[,1:2]),vcv(tree),l)$R)[1,2]	
+	 	 p<-summary(free.lambda)$tTable[2,4]
+	 	 r<-R2.lik(free.lambda)
+	 	}
+	 if(model=="fix.lambda")
+	 	{
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dfi[,1:2]),vcv(tree),l)$R)[1,2]	
+	 	 p<-summary(fix.lambda)$tTable[2,4]
+	 	 r<-R2.lik(fix.lambda)
+	 	}
+	 if(model=="no.lambda")
+	 	{
+	 	 l=0
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dfi[,1:2]),vcv(tree),l)$R)[1,2]	
+	 	 p<-summary(no.lambda)$tTable[2,4]
+	 	 r<-R2.lik(no.lambda)
+	 	}
+	 dfaddi<-data.frame(genei,model,cor,p,r,l)
+	 colnames(dfaddi)<-c("gene","model","correlation","pval","r2","lambda")
+	 testisrpkm.results<-rbind(testisrpkm.results,dfaddi)
+	 print(i)
+	}
+fdr<-p.adjust(testisrpkm.results$pval,method="fdr")
+testisrpkm.results$fdr<-fdr
+testisrpkm.results<-testisrpkm.results[order(testisrpkm.results$fdr),]
+
+##Write out results
+
+write.csv(brainrpkm.results,"/Users/andersond/Desktop/Primate/Evolution/Submission3/data/brainrpkm.csv")
+write.csv(brainfoldchange.results,"/Users/andersond/Desktop/Primate/Evolution/Submission3/data/brainfoldchange.csv")
+write.csv(cerebellumrpkm.results,"/Users/andersond/Desktop/Primate/Evolution/Submission3/data/cerebellumrpkm.csv")
+write.csv(cerebellumfoldchange.results,"/Users/andersond/Desktop/Primate/Evolution/Submission3/data/cerebellumfoldchange.csv")
+write.csv(heartrpkm.results,"/Users/andersond/Desktop/Primate/Evolution/Submission3/data/heartrpkm.csv")
+write.csv(heartfoldchange.results,"/Users/andersond/Desktop/Primate/Evolution/Submission3/data/heartfoldchange.csv")
+write.csv(kidneyrpkm.results,"/Users/andersond/Desktop/Primate/Evolution/Submission3/data/kidneyrpkm.csv")
+write.csv(kidneyfoldchange.results,"/Users/andersond/Desktop/Primate/Evolution/Submission3/data/kidneyfoldchange.csv")
+write.csv(testisrpkm.results,"/Users/andersond/Desktop/Primate/Evolution/Submission3/data/testisrpkm.csv")

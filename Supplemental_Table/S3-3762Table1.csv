@@ -1,0 +1,106 @@
+﻿GeneSymbol,24Change,48Change,Accession,Description,GO
+HPGD,25,41.3,NM_000860,hydroxyprostaglandin dehydrogenase,Metabolism
+PPAP2A,7.6,9,NM_003711,phosphatidic acid  phosphatase 2A,Metabolism
+SCD,5.9,4.5,NM_005063,stearoyl-CoA desaturase,Metabolism
+SORD,4.5,5.4,NM_003104,sorbitol dehydrogenase,Metabolism
+DHCR24,4.5,6,NM_014762,24-dehydrocholesterol reductase/Seladin,Metabolism
+SMS,3.9,5.8,NM_004595,spermine synthase,Metabolism
+LOC51171,3.7,3.6,NM_016246,dehydrogenase/reductase retSDR3,Metabolism
+ALDH1A3,3.7,5.2,NM_000693,"aldehyde dehydrogenase 1, member A3",Metabolism
+SAT,3.7,7.3,NM_002970,spermidine/spermine N1-acetyltransferase,Metabolism
+HMGCS1,3.5,2.7,NM_002130,3-hydroxy-3-methylglutaryl-Coenzyme A syn 1,Metabolism
+DBI,3.4,4,NM_020548,diazepam binding inhibitor,Metabolism
+B4GALT1,3.3,3.3,NM_001497,"betaGlcNAc beta  1,4- galactosyltransferase",Metabolism
+PHYH,3.1,4.4,NM_06214,phytanoyl-CoA hydroxylase,Metabolism
+IDI1,3.1,2.7,NM_004508,isopentenyl-diphosphate delta  isomerase,Metabolism
+HELO1,3,3.2,NM_021814,long  chain polyunsaturated FA elongation,Metabolism
+UGDH,2.9,4,NM_003359,UDP-glucose dehydrogenase,Metabolism
+FACL3,2.7,3.7,NM_004457,"fatty-acid-Coenzyme A ligase, long-chain 3",Metabolism
+DDC,-2.6,-4.1,NM_000790,dopa decarboxylase,Metabolism
+MAF,14.7,16.6,NM_005360,v-maf fibrosarcoma oncogene homolog,Proliferation
+NDRG1,13.7,14.8,NM_006096,N-myc downstream regulated,Proliferation
+ELL2,11.8,6.3,NM_012081,"RNA  Polymerase II, elongation factor",Proliferation
+GG2-1,4.9,5.1,NM_014350,TNF-induced protein,Proliferation
+CDC14,3,3.1,NM_003671,cell division cycle 14 homolog B,Proliferation
+B,2.5,3.5,NM_002166,inhibitor of differentiation 2,Proliferation
+ID2,1.6,3.8,NM_018645,Hes6 neuronal differentiation gene ortholog,Proliferation
+HES6,-3.4,-3.5,NM_001328,C-terminal binding protein 1,Proliferation
+CTBP1,-3.6,-3.4,NM_001260,cyclin-dependent kinase 8,Proliferation
+CDK8,-3.7,-5.1,NM_000465,BRCA1 associated RING domain 1,Proliferation
+FKBP5,24.4,25.4,NM_004117,FK506 binding protein 5,Transport
+UNC13,7.3,9.5,NM_006377,unc-13-like (C. elegans),Transport
+ABCC4,5.5,7.8,NM_005845,"ATP-binding cassette, sub-family C",Transport
+ANKH,5.3,6.3,NM_019847,"ankylosis, progressive (mouse) homolog",Transport
+KIAA1382,4.8,4.7,NM_018976,amino acid  transporter 2,Transport
+SNAP25,3.9,5.2,NM_003081,"synaptosomal-associated protein, 25kD",Transport
+APPBP2,3.2,3,NM_006380,amyloid beta  precursor protein binding protein 2,Transport
+AZGP1,3.3,5.6,NM_001185,"alpha-2-glycoprotein 1, zinc",Transport
+LMAN1,3.1,2.7,NM_005570,"lectin, mannose-binding, 1",Transport
+RAB4,3,2.3,NM_004578,"member, Ras  oncogene family",Transport
+SRP19,3,2.3,NM_003135,signal recognition particle 19kD,Transport
+SLC26A2,3,2.2,NM_000112,"solute carrier family 26, member 2",Transport
+SEC24D,3,2.6,NM_014822,"SEC24 related gene family, member D",Transport
+VAPA,2.7,4,NM_003574,vesicle-associated membrane protein-associated,Transport
+SCNN1A,-3.2,-2.5,NM_001038,"sodium channel, nonvoltage-gated 1 alpha",Transport
+SLC29A,-5.1,-2.1,NM_004955,solute carrier family 29,Transport
+NKX3A,14.9,14.1,NM_006167,NK3  transcription factor homolog A (Drosophila),TranscriptionRegulation
+PDEF,4.4,3.5,NM_012391,prostate epithelium-specific Ets transcription factor,TranscriptionRegulation
+RINZF,4,3.2,NM_023929,zinc finger protein RINZF,TranscriptionRegulation
+DDXBP1,3.9,3.4,NM_016166,DEAD/H (Asp-Glu-Ala-Asp/His) box binding protein 1,TranscriptionRegulation
+TSC22,3.5,5.4,NM_006022,TGF  beta-stimulated protein TSC-22,TranscriptionRegulation
+MRF2-hom,2.8,3.7,XM_058394,modulator recognition factor 2 homolog,TranscriptionRegulation
+KLF4,2.3,3,NM_004235,Kruppel-like factor 4,TranscriptionRegulation
+MYC,-2.7,-2.8,NM_002467,v-myc myelocytomatosis viral  oncogene homolog,TranscriptionRegulation
+TMPRSS2,15.5,18.3,NM_005656,"transmembranprotease, serine 2",Protease
+KLK2,8.8,9,NM_005551,"kallikrein 2, prostatic",Protease
+KLK3,7.9,10.2,NM_001648,"kallikrein 3, prostate specific antigen",Protease
+KLK4,3.7,4.6,NM_004917,"kallikrein 4 (prostase, EMSP1)",Protease
+CPD,2.6,4.9,NM_001304,carboxypeptidase D,Protease
+SERPIN1,-3.5,-2.1,NM_005025,serine (or cysteine) proteinase inhibitor,Protease
+LIFR,7.8,7.5,N_002310,leukemia inhibitory factor receptor,Singal
+IQGAP2,4.3,6.8,NM_006633,IQ motif   GTPase activating protein 2,Signal
+AGM1,3.7,4.2,NM_015599,N-acetylglucosamine-phosphate mutase,Signal
+HOMER-2B,3.5,3.3,NM_004839,"neuronal immediate early  gene, 2",Signal
+AKAP12,3.5,5.1,NM_005100,A kinase (PRKA) anchor protein (gravin) 12,Signal
+TPD52,3.5,2.9,NM_005079,tumor protein D52,Signal
+LIM,3.5,2.7,NM_006457,LIM protein,Signal
+CAMKK2,3.3,1.9,NM_006549,"ca/calmodulin kinase kinase 2, beta",Signal
+PTPN21,3,4,NM_007039,"protein tyrosine phosphatase, type  21",Signal
+GUCY1A3,2.9,3.3,NM_000856,"guanylate cyclase 1, soluble, alpha 3",Signal
+INPP4B,2.3,4.6,NM_003866,"inositol polyphosphate-4-phosphatase, type  II",Signal
+MERTK,2.3,3.4,Hs.117078,c-mer proto-oncogene tyrosine kinase,Signal
+AKAP2,1.7,4.4,NM_007203,A kinase (PRKA) anchor protein 2,Signal
+BCHE,-3,-4.9,NM_000055,butyrylcholinesterase,Signal
+PRKCM,-3,-2.5,NM_002742,"protein kinase C, mu",Signal
+SDC4,-3.1,-2.7,NM_002999,syndecan 4,Signal
+PEG3,-3.2,-4,Hs.139033,paternally expressed 3,Signal
+TUSP,-3.5,-2.1,NM_020245,tubby super-family protein,Signal
+PIK3R3,-3.8,-3.6,NM_003629,"phosphoinositide-3-kinase, regulatory subunit",Signal
+RDC1,-7.8,-4.5,XM_051522,G protein-coupled receptor,Signal
+KRT8,5,4.3,NM_002273,keratin 8,Structure
+ADRM1,3.7,5.9,NM_007002,adhesion regulating molecule 1,Structure
+ACTN1,3.6,2.9,NM_001102,"actinin, alpha 1",Structure
+ITGAV,3.1,3,NM_002210,"integrin, alpha V,CD51",Structure
+KRT19,3.1,3.6,NM_002276,keratin 19,Structure
+H1F0,2.9,3.2,NM_007234,"histone family, member 0",Structure
+DCTN3,2.1,3.4,NM_005318,dynactin 3,Structure
+MLCB,2,3.2,NM_006471,"myosin, light  polypeptide, regulatory",Structure
+MMP16,-2.3,-3.3,NM_005941,matrix metalloproteinase 16,Structure
+FN1,-2.5,-4.4,NM_002026,fibronectin 1,Structure
+ORM1,5.3,8.1,NM_000608,orosomucoid 1,Stress
+SEPP1,4.9,5.5,NM_005410,"selenoprotein P, plasma, 1",Stress
+GSR,4.5,3.1,NM_000637,glutathione reductase,Stress
+SGK,4.4,2.4,NM_005627,serum/glucocorticoid regulated kinase,Stress
+SPAK,4,4.9,NM_013233,Ste-20 related kinase,Stress
+DNAJB9,4,3.6,NM_012328,"DnaJ (Hsp40) homolog, subfamily B",Stress
+TMEPAI,9.2,8.6,NM_020182,"transmembrane, prostate androgen induced",Other
+B2M,7.6,7.8,NM_004048,beta-2-microglobulin,Other
+TCRG/TARP,5.2,5.5,NM_030806,T cell receptor gamma locus/ (TARP),Other
+HERC3,5.1,6.6,NM_014606,hect  domain and RLD  3,Other
+FLJ23153,5,4.6,NM_024636,TNF-alpha-induced adipose-related (ortholog),Other
+ADAMTS,4,2.6,NM_006988,disintegrin-like metalloprotease,Other
+HS1-2,3.7,4.6,NM_007011,putative transmembrane protein,Other
+RBM10 ,3.3,2.9,NM_005676,RNA  binding motif  protein 10,Other
+UAP1,3,3.1,NM_003115,UDP-N-acteylglucosamine pyrophosphorylase,Other
+ST7,-2.7,-4.2,NM_018412,suppression of tumorigenicity 7,Other
+DPH2L1,-3,-4.4,NM_001383,diptheria toxin  resistance protein like 1,Other

@@ -1,0 +1,214 @@
+##investigate multidimensional analysis
+##use dataframe from Linear_Model_Tests.txt
+#split data into ARE and trait
+#cannot use species with missing data in testis
+
+hre.set<-dtfnoT[,4:21]
+trait.set<-dtfnoT[,1:3]
+
+#phylogenic canonical correlation
+
+cca.phy<-phyl.cca(treenoT,trait.set,hre.set,fixed=FALSE)
+cca.phy
+#
+#Object of class "phyl.cca" from a phylogenetic canonical
+#   correlation analysis.
+#
+#Summary of results:
+#     correlation       X^2  P-value
+#CC:1    0.996977 100.58423 0.000123
+#CC:2    0.967650  44.37423 0.109717
+#CC:3    0.849640  14.07706 0.592973
+#
+#Assumed or estimated value of lambda:
+#      lambda         logL 
+#    0.000066 -1578.172372 
+#
+#Canonical x coefficients:
+#              CA1        CA2        CA3
+#Testes   3.267920   1.939911   6.172044
+#Mass   -25.810512 -18.175614  16.791691
+#Canine  -1.640213  19.154134 -10.570834
+#
+#Canonical y coefficients:
+#               CA1          CA2          CA3
+#cARE   0.023949+0i -0.364880+0i  0.320368+0i
+#aARE   0.263901+0i -0.122856+0i -0.066851+0i
+#aSRE  -0.041130+0i -0.026155+0i  0.187915+0i
+#cSRE   0.228777+0i  0.461456+0i -0.572253+0i
+#c3     1.249805+0i  0.647852+0i  0.291863+0i
+#ccnd1  0.001143+0i -0.016189+0i -0.026890+0i
+#hk2   -0.082124+0i  0.092490+0i -0.029532+0i
+#hklk   0.006669+0i  0.018627+0i  0.073282+0i
+#mvdp  -0.023736+0i -0.076175+0i -0.017052+0i
+#p21    0.538834+0i  0.427354+0i  0.248300+0i
+#pb2    0.426557+0i -0.101856+0i -0.064233+0i
+#pem1   0.339734+0i  0.358899+0i -0.103252+0i
+#pem2  -0.289499+0i  0.149468+0i -0.289623+0i
+#psa1  -0.049676+0i -0.122514+0i  0.133278+0i
+#psa3  -0.135154+0i  0.289226+0i -0.110279+0i
+#sc12   0.048017+0i  0.442894+0i -0.004385+0i
+#slp2   0.064329+0i -0.267673+0i  0.204311+0i
+#slp3  -0.048370+0i -0.134725+0i  0.027499+0i
+
+## Significance tests indicates all three axes explain variation, but axes 2 and 3 cannot on their own
+##noticed lambda is close to zero and many of ARE do not have phylogenic correlations independently
+
+##use vegan package to do correlation analysis for easier time manipulating data
+
+veg.ccora<-CCorA(hre.set,trait.set, stand.X = TRUE, stand.Y = TRUE, permutations = 10000)
+veg.ccora
+#Canonical Correlation Analysis
+#
+#Call:
+#CCorA(Y = hre.set, X = trait.set, stand.Y = TRUE, stand.X = TRUE,      permutations = 10000) 
+#
+#              Y X
+#Matrix Ranks 18 3
+#
+#Pillai's trace:  2.652214 
+#
+#Significance of Pillai's trace:
+#from F-distribution:   0.15943 
+#based on permutations: 0.1384862 
+#Permutation: free
+#Number of permutations: 10000
+# 
+#                       CanAxis1 CanAxis2 CanAxis3
+#Canonical Correlations  0.99698  0.96765   0.8496
+#
+#                     Y | X  X | Y
+#RDA R squares      0.26775 0.8942
+#adj. RDA R squares 0.15213 0.4179
+
+##notice that lack of phylogenetic consideration loses significance
+
+##CCorA AREs
+
+library(NbClust)
+nb <- NbClust(as.matrix(veg.ccora$corr.Y.Cx[,1:2]), diss=NULL, distance = "euclidean", min.nc=2, max.nc=10, method = "kmeans", index = "all", alphaBeale = 0.1)
+#*** : The Hubert index is a graphical method of determining the number of clusters.
+#                In the plot of Hubert index, we seek a significant knee that corresponds to a 
+#                significant increase of the value of the measure i.e the significant peak in Hubert
+#                index second differences plot. 
+# 
+#*** : The D index is a graphical method of determining the number of clusters. 
+#                In the plot of D index, we seek a significant knee (the significant peak in Dindex
+#                second differences plot) that corresponds to a significant increase of the value of
+#                the measure. 
+# 
+#******************************************************************* 
+#* Among all indices:                                                
+#* 5 proposed 2 as the best number of clusters 
+#* 5 proposed 3 as the best number of clusters 
+#* 6 proposed 4 as the best number of clusters 
+#* 1 proposed 6 as the best number of clusters 
+#* 4 proposed 9 as the best number of clusters 
+#* 3 proposed 10 as the best number of clusters 
+#
+#                   ***** Conclusion *****                            
+# 
+#* According to the majority rule, the best number of clusters is  4 
+# 
+# 
+#******************************************************************* 
+
+wss <- sapply(1:16, function(k){kmeans(veg.ccora$corr.Y.Cx[,1:2], k, nstart=50,iter.max = 16 )$tot.withinss})
+wss
+#[1] 2.619629453 0.697476591 0.346470088 0.161838767 0.111261495 0.070430600 0.057926909 0.033903383 0.023767341 0.017268079 0.012481914  0.008502522 0.007508205 0.003874105 0.002879788 0.001351555
+
+library(mclust)
+d_clust <- Mclust(as.matrix(veg.ccora$corr.Y.Cx[,1:2]), G=1:8, modelNames = mclust.options("emModelNames"))
+d_clust$BIC
+#Bayesian Information Criterion (BIC): 
+#          EII        VII        EEI       VEI        EVI       VVI         EEE       EVE       VEE       VVE        EEV        VEV       EVV        VVV
+#1 -16.4971915 -16.497191 -7.8226287 -7.822629 -7.8226287 -7.822629  -8.7379429 -8.737943 -8.737943 -8.737943  -8.737943 -8.7379429 -8.737943 -8.7379429
+#2   0.4857534  -8.627414 -8.4168125  5.759087 -0.4534936  5.599665 -10.1211875  5.658389  3.481151  3.583495   7.652112  0.6120243  8.917638  0.7056934
+#3   1.3350955  10.093248  2.8442506 13.821995  5.2203832  9.959956   3.4252092  2.385180 12.401971  6.707057   4.280451  6.3943522  1.929653  5.5991150
+#4  10.9744358         NA 13.5681966        NA         NA        NA  10.6981112        NA        NA        NA   6.330682         NA        NA         NA
+#5  12.9420710         NA 14.3404794        NA         NA        NA  11.4962460        NA        NA        NA   0.560938         NA        NA         NA
+#6  11.2782358         NA  9.9652468        NA         NA        NA   9.4323884        NA        NA        NA   2.815631         NA        NA         NA
+#7   5.8823240         NA  6.6120735        NA         NA        NA   4.1144592        NA        NA        NA  -7.360153         NA        NA         NA
+#8  -2.6075030         NA -0.9416662        NA         NA        NA   0.8406347        NA        NA        NA -18.921360         NA        NA         NA
+#
+#Top 3 models based on the BIC criterion: 
+#   EEI,5    VEI,3    EEI,4 
+#14.34048 13.82199 13.56820 
+
+##looks like 4 is the optimal number
+##generate a clustering with 4 groups
+
+k.ccora.hre<-kmeans(veg.ccora$corr.Y.Cx[,1:2],centers=4,iter.max=1000,nstart=25)
+
+##repeat for species in CCorA
+
+nb <- NbClust(as.matrix(veg.ccora$Cx[,1:2]), diss=NULL, distance = "euclidean", min.nc=2, max.nc=10, method = "kmeans", index = "all", alphaBeale = 0.1)
+#*** : The Hubert index is a graphical method of determining the number of clusters.
+#                In the plot of Hubert index, we seek a significant knee that corresponds to a 
+#                significant increase of the value of the measure i.e the significant peak in Hubert
+#                index second differences plot. 
+# 
+#*** : The D index is a graphical method of determining the number of clusters. 
+#                In the plot of D index, we seek a significant knee (the significant peak in Dindex
+#                second differences plot) that corresponds to a significant increase of the value of
+#                the measure. 
+# 
+#******************************************************************* 
+#* Among all indices:                                                
+#* 5 proposed 2 as the best number of clusters 
+#* 4 proposed 3 as the best number of clusters 
+#* 2 proposed 4 as the best number of clusters 
+#* 5 proposed 5 as the best number of clusters 
+#* 3 proposed 6 as the best number of clusters 
+#* 2 proposed 9 as the best number of clusters 
+#* 2 proposed 10 as the best number of clusters 
+#
+#                   ***** Conclusion *****                            
+# 
+#* According to the majority rule, the best number of clusters is  2 
+# 
+# 
+#******************************************************************* 
+ 
+wss <- sapply(1:16, function(k){kmeans(veg.ccora$Cx[,1:2], k, nstart=50,iter.max = 16 )$tot.withinss})
+wss
+# [1] 44.0000000 27.2727142 14.7339836  8.8177430  5.3882111  3.8530819  2.9613519  2.3412544  1.8941619  1.4554248  1.1665974  0.9495238  0.7577662  0.5720314  0.4701012  0.2951809
+
+d_clust <- Mclust(as.matrix(veg.ccora$Cx[,1:2]), G=1:8, modelNames = mclust.options("emModelNames"))
+d_clust$BIC
+#Bayesian Information Criterion (BIC): 
+#        EII       VII       EEI       VEI       EVI       VVI       EEE       EVE       VEE       VVE       EEV       VEV       EVV       VVV
+#1 -137.9040 -137.9040 -141.0395 -141.0395 -141.0395 -141.0395 -144.1750 -144.1750 -144.1750 -144.1750 -144.1750 -144.1750 -144.1750 -144.1750
+#2 -145.5538 -145.9271 -147.6561 -150.7938 -148.6359 -149.5351 -146.3861 -144.8822 -146.6621 -146.7289 -135.4856 -137.9495 -137.0377 -139.2142
+#3 -144.0170 -145.9501 -150.3186 -155.5614 -150.1194 -153.4534 -151.1859 -145.3277 -151.1262 -155.0281 -143.3055 -146.0073 -152.7434 -151.1383
+#4 -148.6550 -155.7525 -144.9533 -155.9429 -153.5861 -157.1236 -146.2530 -152.7579 -151.4564        NA -144.5025 -149.7876 -153.2006 -158.2276
+#5 -148.7195 -158.7028 -149.3876 -160.7937 -157.7177 -167.5425 -151.4590 -154.6293 -161.7683 -162.3986 -150.2198 -157.9985 -155.2893 -166.1946
+#6 -153.0406 -164.9444 -155.6372 -168.0801 -167.0058 -163.5066 -158.6599 -161.1217 -169.8099 -174.1785 -160.3563 -166.9528 -162.8145 -163.1699
+#7 -154.9998        NA -158.0694        NA        NA        NA -158.0633        NA        NA        NA -166.5706        NA        NA        NA
+#8 -161.0129        NA -163.8119        NA        NA        NA -166.5354        NA        NA        NA -178.2288        NA        NA        NA
+#
+#Top 3 models based on the BIC criterion: 
+#    EEV,2     EVV,2     EII,1 
+#-135.4856 -137.0377 -137.9040 
+
+##looks like 2 clusters is best
+
+k.ccora.sp<-kmeans(veg.ccora$Cx[,1:2],centers=2,iter.max=1000,nstart=25)
+
+
+##generate CCA plot
+
+par(mfrow=c(1,2),mar=c(12,3.8,0.5,0.5))
+plot(veg.ccora$corr.X.Cx[,1],veg.ccora$corr.X.Cx[,2],col="white",xlab="CCorA1",ylab="CCorA2",xlim=c(-0.8,1.1),ylim=c(-0.75,.9))
+abline(h=0,lty=2,col="gray65")
+abline(v=0,lty=2,col="gray65")
+text(rownames(veg.ccora$Cx),x=veg.ccora$Cx[,1]*.45,y=veg.ccora$Cx[,2]*.45, cex = 0.4, col = spcol)
+text("A",x=-0.7,y=0.85,cex=2.5)
+arrows(x0=0,y0=0,x1=veg.ccora$corr.X.Cx[,1],y1=veg.ccora$corr.X.Cx[,2],length = .08, angle = 15, lwd = 3)
+text(rownames(veg.ccora$corr.X.Cx),x=veg.ccora$corr.X.Cx[,1],y=veg.ccora$corr.X.Cx[,2]+0.07,cex =1.25)
+plot(veg.ccora$corr.Y.Cy[,1],veg.ccora$corr.Y.Cy[,2],col="white",xlab="CCorA1",ylab="CCorA2",xlim=c(-.4,.4))
+abline(h=0,lty=2,col="gray65")
+abline(v=0,lty=2,col="gray65")
+text(rownames(veg.ccora$Cy),x=veg.ccora$Cy[,1]*.16,y=veg.ccora$Cy[,2]*.29, cex = 0.4, col = spcol)
+text(rownames(veg.ccora$corr.Y.Cy),x=veg.ccora$corr.Y.Cy[,1],y=veg.ccora$corr.Y.Cy[,2], cex = sigsiz*.6, col = sigcol)
+text("B",x=-0.375,y=0.65,cex=2.5)

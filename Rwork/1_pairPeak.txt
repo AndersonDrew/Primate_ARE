@@ -1,0 +1,89 @@
+pairPeak<-function(peak,gff,updist,downdist)
+	{
+	 output<-data.frame(Species=factor(),Gene=factor(),Chromosome=factor(),HREloc=integer(),GeneDirection=factor(),GeneStart=integer(),GeneStop=integer(),Distance=integer(),Proxy=factor(),HRE=factor(),Info=factor())
+	 for(i in 1:length(levels(peak$Chr)))
+		{
+		 gffi<-subset(gff,levels(peak$Chr)[i]==gff$Chromosome)
+		 peaki<-subset(peak,levels(peak$Chr)[i]==peak$Chr)
+		 gffif<-subset(gffi,GeneDirection=="+")
+		 gffir<-subset(gffi,GeneDirection=="-")
+		 if(length(peaki$Chr)>=1)
+			{
+			 for(j in 1:length(peaki$Chr))
+				{
+				 startj<-gffif$Start-peaki$loc[j]
+				 frontj<-subset(startj,startj<updist & startj>0)
+				 find_frontj<-which(startj %in% frontj)				 
+				 if(length(frontj)!=0)
+					{					 
+					 pointj<-data.frame(gffif$Species[find_frontj],gffif$Name[find_frontj],peaki$Chr[j],peaki$loc[j],gffif$GeneDirection[find_frontj],gffif$Start[find_frontj],gffif$Stop[find_frontj],frontj,"Up",peaki$motif[j],gffif$Info[find_frontj])
+					 colnames(pointj)<-c("Species","Gene","Chromosome","HREloc","GeneDirection","GeneStart","GeneStop","Distance","Proxy","HRE","Info")
+					 output<-rbind(output,pointj)
+					}
+				}
+			for(k in 1:length(peaki$Chr))
+				{
+				 startk<-gffir$Start-peaki$loc[k]
+				 frontk<-subset(startk,startk<downdist & startk>0)
+				 find_frontk<-which(startk %in% frontk) 
+				 if(length(frontk)!=0)
+					{ 
+					 pointk<-data.frame(gffir$Species[find_frontk],gffir$Name[find_frontk],peaki$Chr[k],peaki$loc[k],gffir$GeneDirection[find_frontk],gffir$Stop[find_frontk],gffir$Start[find_frontk],frontk,"Down",peaki$motif[k],gffir$Info[find_frontk])
+					 colnames(pointk)<-c("Species","Gene","Chromosome","HREloc","GeneDirection","GeneStart","GeneStop","Distance","Proxy","HRE","Info")
+					 output<-rbind(output,pointk)
+					}
+				}
+			 for(l in 1:length(peaki$Chr))
+				{
+				 stopl<-peaki$loc[l]-gffif$Stop
+				 backl<-subset(stopl,stopl<downdist & stopl>0)
+				 find_backl<-which(stopl %in% backl)
+				 if(length(backl)!=0)
+					{
+					 pointl<-data.frame(gffif$Species[find_backl],gffif$Name[find_backl],peaki$Chr[l],peaki$loc[l],gffif$GeneDirection[find_backl],gffif$Start[find_backl],gffif$Stop[find_backl],backl,"Down",peaki$motif[l],gffif$Info[find_backl])
+			 	 	 colnames(pointl)<-c("Species","Gene","Chromosome","HREloc","GeneDirection","GeneStart","GeneStop","Distance","Proxy","HRE","Info")
+					 output<-rbind(output,pointl)
+					}
+				}
+			 for(m in 1:length(peaki$Chr))
+				{
+				 stopm<-peaki$loc[m]-gffir$Stop
+				 backm<-subset(stopm,stopm<updist & stopm>0)
+				 find_backm<-which(stopm %in% backm)
+				 if(length(backm)!=0)
+					{
+					 pointm<-data.frame(gffir$Species[find_backm],gffir$Name[find_backm],peaki$Chr[m],peaki$loc[m],gffir$GeneDirection[find_backm],gffir$Stop[find_backm],gffir$Start[find_backm],backm,"Up",peaki$motif[m],gffir$Info[find_backm])
+			 	 	 colnames(pointm)<-c("Species","Gene","Chromosome","HREloc","GeneDirection","GeneStart","GeneStop","Distance","Proxy","HRE","Info")
+					 output<-rbind(output,pointm)
+					}
+				}
+			for(p in 1:length(peaki$Chr))
+				{
+				 hitp<-data.frame(gffif$Start-peaki$loc[p],peaki$loc[p]-gffif$Stop)
+				 midp<-subset(hitp,hitp[,1]<0 & hitp[,2]<0 &hitp[,1]>downdist)[,1]
+				 find_midp<-which(hitp[,1] %in% midp)
+				 if(length(midp)!=0)
+					{
+					 pointp<-data.frame(gffif$Species[find_midp],gffif$Name[find_midp],peaki$Chr[p],peaki$loc[p],gffif$GeneDirection[find_midp],gffif$Start[find_midp],gffif$Stop[find_midp],hitp[find_midp,1],"Intra",peaki$motif[p],gffif$Info[find_midp])
+				 	 colnames(pointp)<-c("Species","Gene","Chromosome","HREloc","GeneDirection","GeneStart","GeneStop","Distance","Proxy","HRE","Info")
+					 output<-rbind(output,pointp)
+					}
+				}
+			for(q in 1:length(peaki$Chr))
+				{
+				 hitq<-data.frame(gffir$Start-peaki$loc[q],peaki$loc[q]-gffir$Stop)
+				 midq<-subset(hitq,hitq[,1]<0 & hitq[,2]<0 &hitq[,2]>downdist)[,1]
+				 find_midq<-which(hitq[,1] %in% midq)
+				 if(length(midq)!=0)
+					{
+					 pointq<-data.frame(gffir$Species[find_midq],gffir$Name[find_midq],peaki$Chr[q],peaki$loc[q],gffir$GeneDirection[find_midq],gffir$Stop[find_midq],gffir$Start[find_midq],hitq[find_midq,2],"Intra",peaki$motif[q],gffir$Info[find_midq])
+				 	 colnames(pointq)<-c("Species","Gene","Chromosome","HREloc","GeneDirection","GeneStart","GeneStop","Distance","Proxy","HRE","Info")
+					 output<-rbind(output,pointq)
+					}
+				}
+			}
+		}
+		output<-output[order(output[,3],output[,7],output[,4]),]
+	 return(output)
+	}
+	

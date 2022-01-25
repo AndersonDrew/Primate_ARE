@@ -1,0 +1,12 @@
+#NEXUS
+[created by the 10kTree Website - http://10kTrees.fas.harvard.edu]
+BEGIN TREES;
+translate
+1 Gorilla_gorilla,
+2 Homo_sapiens,
+3 Pan_paniscus,
+4 Pan_troglodytes,
+5 Macaca_mulatta;
+tree consensus_5species = (5:30.000000,(1:8.652233,(2:6.175880,(3:2.333553,4:2.333553):3.842326):2.476353):21.347768);
+END;<br />
+<b>Warning</b>:  session_write_close() expects exactly 0 parameters, 1 given in <b>/var/www/10ktrees.nunn-lab.org/sendTreesToUser.php</b> on line <b>98</b><br />

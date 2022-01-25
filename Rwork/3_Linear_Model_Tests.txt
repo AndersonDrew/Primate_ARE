@@ -1,0 +1,733 @@
+##Added species names and raw measures of phenotypes to dataframe as well as column names for AREs--all done in Excel
+
+df<-read.csv("~/primdfall.csv")
+
+## read in tree 
+
+library(phytools)
+tree<-read.nexus("~/treeall.nex")
+
+## read in tree with species without testes data removed
+
+treenoT<-read.nexus("~/treenoT.nex")
+
+##get residuals from log-log plot to account for increasing size
+
+Mass<-resid(lm(log(massm)~log(massf),df))
+Canine<-resid(lm(log(k9m)~log(k9f),df))
+Testes<-resid(lm(log(testes)~log(masst),na.action=na.exclude,df))
+
+##remove na set
+
+TestesnoT<-Testes[complete.cases(Testes)]
+dtf<-data.frame(Testes,Mass,Canine,df[,8:25])
+rownames(dtf)<-df$Species
+
+##Find PCA with positive loadings to simplify all AREs
+
+hre<-prcomp(dtf[,4:21])
+hre
+#Standard deviations (1, .., p=18):
+# [1] 127.131611  81.153206  56.541907  38.678523  31.842364  27.510930  18.851771  18.397214  15.799642  14.241452  10.040519   8.647329   6.632864   5.692171   4.430478   4.289115   2.661870   1.892039
+#
+#Rotation (n x k) = (18 x 18):
+#               PC1          PC2          PC3          PC4          PC5         PC6          PC7          PC8          PC9        PC10         PC11         PC12         PC13         PC14        PC15          PC16         PC17        PC18
+#cARE   0.170356251 -0.143299399 -0.061944434  0.197756943 -0.496904698 -0.34731991  0.101592685 -0.133588565  0.371365162 -0.15461279 -0.330249541 -0.054091202 -0.141746292  0.304228089 -0.32850653 -0.0429817549  0.083310359 -0.09288481
+#aARE   0.072738889 -0.040788785  0.007033448  0.161017182 -0.069049353 -0.21748089 -0.007482473 -0.154834774  0.044768638 -0.18406784  0.746867308  0.137537972 -0.400510121 -0.251434657 -0.07487731 -0.1543328255  0.047973397 -0.15167956
+#aSRE   0.177348518 -0.167892284 -0.152669142 -0.154986544 -0.077098954  0.13766280  0.360503300  0.236033437 -0.159688641  0.48914500 -0.034486426  0.188449812 -0.539245039  0.040585070 -0.12181870  0.2383756682 -0.125928279  0.03228458
+#cSRE  -0.035272171  0.159041722 -0.062073264 -0.007082941  0.012951653 -0.12226265  0.171270822  0.035366943  0.206822862 -0.18927063 -0.115519915 -0.183251793 -0.411536703  0.095036309  0.75121528 -0.0511253981  0.025296830  0.22882374
+#c3     0.004019459  0.028986748  0.004953259  0.028187775  0.031193279 -0.06059348 -0.255565778 -0.058304461 -0.149378015  0.06038048 -0.039544614  0.126204147 -0.156228972  0.002197528 -0.20588290 -0.0844171940  0.520593608  0.73251058
+#ccnd1  0.862672761  0.228651869  0.356412550 -0.188534267  0.165459916 -0.01799504 -0.003906430 -0.070739915  0.018338276 -0.02560960 -0.029347513  0.005826334  0.048099171  0.010795923  0.03293444 -0.0374006326  0.027582460 -0.02563255
+#hk2    0.112316650 -0.067247526 -0.095267096  0.236258259  0.018520213 -0.02907912  0.282920084  0.260113624 -0.452706353 -0.57149023 -0.019653477  0.395997555  0.131178171  0.205862563  0.04417218  0.1253871960 -0.007559785  0.05491497
+#hklk   0.154262873  0.006613813 -0.120952640  0.488132662 -0.152838390  0.59772934  0.194738324 -0.453990359 -0.156721623  0.07348896 -0.027507281 -0.178032701  0.001733811 -0.043383918  0.09050183 -0.1050329226  0.122039276 -0.01304423
+#mvdp   0.089585225  0.261519023 -0.687130798 -0.473001823 -0.101274499 -0.13752742  0.142026284 -0.321401726 -0.123645458 -0.06205814 -0.007460398  0.057901305  0.155412958 -0.130696156 -0.01721468 -0.0821329136  0.060089604 -0.02503506
+#p21    0.007554947 -0.020246625 -0.006995803 -0.009905709  0.020463641  0.04548515  0.068553497 -0.002624451 -0.005640087  0.02274710  0.037969758  0.051852070  0.014646564  0.174828006 -0.12272957 -0.6677756827 -0.613681266  0.34516846
+#pb2    0.065366989 -0.102878108 -0.056895194 -0.029275973 -0.091986479 -0.02475109  0.306606043  0.510311223 -0.022906468  0.15427147  0.161089072 -0.293475543  0.225043889  0.010740016  0.03430085 -0.4566196408  0.453929973 -0.12106868
+#pem1   0.092905986 -0.005766782 -0.063835875 -0.046781231 -0.136682247  0.03908233  0.155828833  0.070861188  0.108352426 -0.10419323  0.411857381 -0.499501234  0.212467464  0.134900367 -0.13284011  0.4540603015 -0.196847853  0.40978896
+#pem2   0.125245223 -0.002844935 -0.033301473  0.279742084 -0.244462196 -0.49711302 -0.255141410 -0.015222930 -0.528441042  0.33065114 -0.028172175 -0.207559784  0.088049339 -0.061120688  0.23112632  0.0339842508 -0.184439203 -0.01391128
+#psa1  -0.086399743  0.804558811  0.004783196  0.113697038 -0.316483807  0.18635104 -0.165744392  0.332241187 -0.023891983 -0.01525897  0.025529838  0.022770756 -0.140693157  0.053834880 -0.15890412 -0.0009876627 -0.046667307 -0.08619835
+#psa3   0.102369480 -0.027552770 -0.070745510  0.177166727  0.001293743 -0.03928340  0.113916836  0.227965475  0.125967716 -0.17500443 -0.297886117 -0.095930999 -0.015177317 -0.820923173 -0.13243934  0.0104643447 -0.153429423  0.16158406
+#sc12   0.100693685  0.091135129 -0.154307509  0.303919847 -0.048067252 -0.08189163  0.070910267  0.056341344  0.444226839  0.35785365  0.156913034  0.513019649  0.382432409 -0.018908299  0.23318613  0.0998976119 -0.007257790  0.15469370
+#slp2  -0.128369849  0.332658077 -0.026743506  0.306031131  0.601952360 -0.33025617  0.390424144 -0.138563103 -0.009587860  0.13972629 -0.056018467 -0.163105438 -0.049968750  0.109858379 -0.25965773  0.0309946346  0.033822895 -0.04465025
+#slp3   0.266688737 -0.141997056 -0.554995573  0.212122703  0.357424063  0.11730739 -0.490780088  0.255626101  0.137658024 -0.06346298  0.002726925 -0.142570367 -0.136880649  0.173864730 -0.03883988 -0.0083790996 -0.039761554 -0.11197782
+
+summary(hre)
+#Importance of components:
+#                            PC1     PC2     PC3     PC4      PC5      PC6      PC7      PC8      PC9     PC10     PC11    PC12    PC13    PC14    PC15   PC16    PC17    PC18
+#Standard deviation     127.1316 81.1532 56.5419 38.6785 31.84236 27.51093 18.85177 18.39721 15.79964 14.24145 10.04052 8.64733 6.63286 5.69217 4.43048 4.2891 2.66187 1.89204
+#Proportion of Variance   0.5272  0.2148  0.1043  0.0488  0.03307  0.02469  0.01159  0.01104  0.00814  0.00662  0.00329 0.00244 0.00143 0.00106 0.00064 0.0006 0.00023 0.00012
+#Cumulative Proportion    0.5272  0.7420  0.8462  0.8951  0.92812  0.95280  0.96440  0.97544  0.98358  0.99019  0.99348 0.99592 0.99736 0.99841 0.99905 0.9997 0.99988 1.00000
+
+##add PC1 into dataframe
+
+PC_ARE<-hre$x[,1]
+dtf<-data.frame(dtf,PC_ARE)
+
+##add Species names to dataframe
+
+dtf$Species<-df$Species
+rownames(dtf)<-dtf$Species
+
+##remove na
+
+dtfnoT<-dtf[complete.cases(dtf),]
+
+##model testing for each pairwise model
+##AIC used to choose model
+##extract values from chosen model
+##in some cases the third model failed to reach convergence so it was not run
+library(nlme)
+
+## Testes
+
+testes.results<-data.frame(are=factor(),model=factor(),correlation=numeric(),pval=numeric(),r2=numeric(),lambda=numeric())
+for(i in 2)
+	{
+	 print(i)
+	 namei<-colnames(dtfnoT)[i]
+	 v<-dtfnoT[,i]
+	 l<-phylosig(treenoT,resid(gls(v~Testes,dtfnoT)),method="lambda",test=T)$lambda
+	 fix.lambda<-gls(v~TestesnoT,correlation=corPagel(l,phy=treenoT,form=~Species,fixed=TRUE),method="ML",dtfnoT)
+	 print("mod2")
+	 no.lambda<-gls(v~TestesnoT,method="ML",dtfnoT)
+	 print("mod3")
+	 mod.choose<-anova(fix.lambda,no.lambda)
+	 model<-rownames(mod.choose)[which(min(mod.choose$AIC)==mod.choose$AIC)]
+	 if(model=="free.lambda")
+	 	{
+	 	  l<-attr(free.lambda$apVar,"Pars")[1]
+	 	  if(l>1)
+	 	  {
+	 	  	l=1
+	 	  }
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dtfnoT[,1:22]),vcv(treenoT),l)$R)[1,i]	
+	 	 p<-summary(free.lambda)$tTable[2,4]
+	 	 aov.free<-aov(free.lambda)
+	 	 RSS<-summary(aov.free)[[1]]["Residuals", "Sum Sq"]
+	 	 TSS<-summary(aov.free)[[1]]["TestesnoT", "Sum Sq"]+RSS
+	 	 r<-1-RSS/TSS
+	 	}
+	 if(model=="fix.lambda")
+	 	{
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dtfnoT[,1:22]),vcv(treenoT),l)$R)[1,i]	
+	 	 p<-summary(fix.lambda)$tTable[2,4]
+	 	 aov.fix<-aov(fix.lambda)
+	 	 RSS<-summary(aov.fix)[[1]]["Residuals", "Sum Sq"]
+	 	 TSS<-summary(aov.fix)[[1]]["TestesnoT", "Sum Sq"]+RSS
+	 	 r<-1-RSS/TSS
+	 	}
+	 if(model=="no.lambda")
+	 	{
+	 	 l=0
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dtfnoT[,1:22]),vcv(treenoT),l)$R)[1,i]	
+	 	 p<-summary(no.lambda)$tTable[2,4]
+	 	 aov.no<-aov(no.lambda)
+	 	 RSS<-summary(aov.no)[[1]]["Residuals", "Sum Sq"]
+	 	 TSS<-summary(aov.no)[[1]]["TestesnoT", "Sum Sq"]+RSS
+	 	 r<-1-RSS/TSS
+	 	}
+	 dfi<-data.frame(namei,model,cor,p,r,l)
+	 colnames(dfi)<-c("are","model","correlation","pval","r2","lambda")
+	 testes.results<-rbind(testes.results,dfi)
+	 print(i)
+	}
+for(i in 3:11)
+	{
+	 print(i)
+	 namei<-colnames(dtfnoT)[i]
+	 v<-dtfnoT[,i]
+	 l<-phylosig(treenoT,resid(gls(v~Testes,dtfnoT)),method="lambda",test=T)$lambda
+	 free.lambda<-gls(v~TestesnoT,correlation=corPagel(l,phy=treenoT,form=~Species,fixed=FALSE),method="ML",dtfnoT)
+	 print("mod1")
+	 fix.lambda<-gls(v~TestesnoT,correlation=corPagel(l,phy=treenoT,form=~Species,fixed=TRUE),method="ML",dtfnoT)
+	 print("mod2")
+	 no.lambda<-gls(v~TestesnoT,method="ML",dtfnoT)
+	 print("mod3")
+	 mod.choose<-anova(free.lambda,fix.lambda,no.lambda)
+	 model<-rownames(mod.choose)[which(min(mod.choose$AIC)==mod.choose$AIC)]
+	 if(model=="free.lambda")
+	 	{
+	 	  l<-attr(free.lambda$apVar,"Pars")[1]
+	 	  if(l>1)
+	 	  {
+	 	  	l=1
+	 	  }
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dtfnoT[,1:22]),vcv(treenoT),l)$R)[1,i]	
+	 	 p<-summary(free.lambda)$tTable[2,4]
+	 	 aov.free<-aov(free.lambda)
+	 	 RSS<-summary(aov.free)[[1]]["Residuals", "Sum Sq"]
+	 	 TSS<-summary(aov.free)[[1]]["TestesnoT", "Sum Sq"]+RSS
+	 	 r<-1-RSS/TSS
+	 	}
+	 if(model=="fix.lambda")
+	 	{
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dtfnoT[,1:22]),vcv(treenoT),l)$R)[1,i]	
+	 	 p<-summary(fix.lambda)$tTable[2,4]
+	 	 aov.fix<-aov(fix.lambda)
+	 	 RSS<-summary(aov.fix)[[1]]["Residuals", "Sum Sq"]
+	 	 TSS<-summary(aov.fix)[[1]]["TestesnoT", "Sum Sq"]+RSS
+	 	 r<-1-RSS/TSS
+	 	}
+	 if(model=="no.lambda")
+	 	{
+	 	 l=0
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dtfnoT[,1:22]),vcv(treenoT),l)$R)[1,i]	
+	 	 p<-summary(no.lambda)$tTable[2,4]
+	 	 aov.no<-aov(no.lambda)
+	 	 RSS<-summary(aov.no)[[1]]["Residuals", "Sum Sq"]
+	 	 TSS<-summary(aov.no)[[1]]["TestesnoT", "Sum Sq"]+RSS
+	 	 r<-1-RSS/TSS
+	 	}
+	 dfi<-data.frame(namei,model,cor,p,r,l)
+	 colnames(dfi)<-c("are","model","correlation","pval","r2","lambda")
+	 testes.results<-rbind(testes.results,dfi)
+	 print(i)
+	}
+for(i in 12)
+	{
+	 print(i)
+	 namei<-colnames(dtfnoT)[i]
+	 v<-dtfnoT[,i]
+	 l<-phylosig(treenoT,resid(gls(v~Testes,dtfnoT)),method="lambda",test=T)$lambda
+	 fix.lambda<-gls(v~TestesnoT,correlation=corPagel(l,phy=treenoT,form=~Species,fixed=TRUE),method="ML",dtfnoT)
+	 print("mod2")
+	 no.lambda<-gls(v~TestesnoT,method="ML",dtfnoT)
+	 print("mod3")
+	 mod.choose<-anova(fix.lambda,no.lambda)
+	 model<-rownames(mod.choose)[which(min(mod.choose$AIC)==mod.choose$AIC)]
+	 if(model=="free.lambda")
+	 	{
+	 	  l<-attr(free.lambda$apVar,"Pars")[1]
+	 	  if(l>1)
+	 	  {
+	 	  	l=1
+	 	  }
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dtfnoT[,1:22]),vcv(treenoT),l)$R)[1,i]	
+	 	 p<-summary(free.lambda)$tTable[2,4]
+	 	 aov.free<-aov(free.lambda)
+	 	 RSS<-summary(aov.free)[[1]]["Residuals", "Sum Sq"]
+	 	 TSS<-summary(aov.free)[[1]]["TestesnoT", "Sum Sq"]+RSS
+	 	 r<-1-RSS/TSS
+	 	}
+	 if(model=="fix.lambda")
+	 	{
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dtfnoT[,1:22]),vcv(treenoT),l)$R)[1,i]	
+	 	 p<-summary(fix.lambda)$tTable[2,4]
+	 	 aov.fix<-aov(fix.lambda)
+	 	 RSS<-summary(aov.fix)[[1]]["Residuals", "Sum Sq"]
+	 	 TSS<-summary(aov.fix)[[1]]["TestesnoT", "Sum Sq"]+RSS
+	 	 r<-1-RSS/TSS
+	 	}
+	 if(model=="no.lambda")
+	 	{
+	 	 l=0
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dtfnoT[,1:22]),vcv(treenoT),l)$R)[1,i]	
+	 	 p<-summary(no.lambda)$tTable[2,4]
+	 	 aov.no<-aov(no.lambda)
+	 	 RSS<-summary(aov.no)[[1]]["Residuals", "Sum Sq"]
+	 	 TSS<-summary(aov.no)[[1]]["TestesnoT", "Sum Sq"]+RSS
+	 	 r<-1-RSS/TSS
+	 	}
+	 dfi<-data.frame(namei,model,cor,p,r,l)
+	 colnames(dfi)<-c("are","model","correlation","pval","r2","lambda")
+	 testes.results<-rbind(testes.results,dfi)
+	 print(i)
+	}
+for(i in 13:22)
+	{
+	 print(i)
+	 namei<-colnames(dtfnoT)[i]
+	 v<-dtfnoT[,i]
+	 l<-phylosig(treenoT,resid(gls(v~Testes,dtfnoT)),method="lambda",test=T)$lambda
+	 free.lambda<-gls(v~TestesnoT,correlation=corPagel(l,phy=treenoT,form=~Species,fixed=FALSE),method="ML",dtfnoT)
+	 print("mod1")
+	 fix.lambda<-gls(v~TestesnoT,correlation=corPagel(l,phy=treenoT,form=~Species,fixed=TRUE),method="ML",dtfnoT)
+	 print("mod2")
+	 no.lambda<-gls(v~TestesnoT,method="ML",dtfnoT)
+	 print("mod3")
+	 mod.choose<-anova(free.lambda,fix.lambda,no.lambda)
+	 model<-rownames(mod.choose)[which(min(mod.choose$AIC)==mod.choose$AIC)]
+	 if(model=="free.lambda")
+	 	{
+	 	  l<-attr(free.lambda$apVar,"Pars")[1]
+	 	  if(l>1)
+	 	  {
+	 	  	l=1
+	 	  }
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dtfnoT[,1:22]),vcv(treenoT),l)$R)[1,i]	
+	 	 p<-summary(free.lambda)$tTable[2,4]
+	 	 aov.free<-aov(free.lambda)
+	 	 RSS<-summary(aov.free)[[1]]["Residuals", "Sum Sq"]
+	 	 TSS<-summary(aov.free)[[1]]["TestesnoT", "Sum Sq"]+RSS
+	 	 r<-1-RSS/TSS
+	 	}
+	 if(model=="fix.lambda")
+	 	{
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dtfnoT[,1:22]),vcv(treenoT),l)$R)[1,i]	
+	 	 p<-summary(fix.lambda)$tTable[2,4]
+	 	 aov.fix<-aov(fix.lambda)
+	 	 RSS<-summary(aov.fix)[[1]]["Residuals", "Sum Sq"]
+	 	 TSS<-summary(aov.fix)[[1]]["TestesnoT", "Sum Sq"]+RSS
+	 	 r<-1-RSS/TSS
+	 	}
+	 if(model=="no.lambda")
+	 	{
+	 	 l=0
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dtfnoT[,1:22]),vcv(treenoT),l)$R)[1,i]	
+	 	 p<-summary(no.lambda)$tTable[2,4]
+	 	 aov.no<-aov(no.lambda)
+	 	 RSS<-summary(aov.no)[[1]]["Residuals", "Sum Sq"]
+	 	 TSS<-summary(aov.no)[[1]]["TestesnoT", "Sum Sq"]+RSS
+	 	 r<-1-RSS/TSS
+	 	}
+	 dfi<-data.frame(namei,model,cor,p,r,l)
+	 colnames(dfi)<-c("are","model","correlation","pval","r2","lambda")
+	 testes.results<-rbind(testes.results,dfi)
+	 print(i)
+	}
+
+##Mass
+
+mass.results<-data.frame(are=factor(),model=factor(),correlation=numeric(),pval=numeric(),r2=numeric(),lambda=numeric())
+for(i in 3:11)
+	{
+	 print(i)
+	 namei<-colnames(dtf)[i]
+	 v<-dtf[,i]
+	 l<-phylosig(tree,resid(gls(v~Mass,dtf)),method="lambda",test=T)$lambda
+	 free.lambda<-gls(v~Mass,correlation=corPagel(l,phy=tree,form=~Species,fixed=FALSE),method="ML",dtf)
+	 print("mod1")
+	 fix.lambda<-gls(v~Mass,correlation=corPagel(l,phy=tree,form=~Species,fixed=TRUE),method="ML",dtf)
+	 print("mod2")
+	 no.lambda<-gls(v~Mass,method="ML",dtf)
+	 print("mod3")
+	 mod.choose<-anova(free.lambda,fix.lambda,no.lambda)
+	 model<-rownames(mod.choose)[which(min(mod.choose$AIC)==mod.choose$AIC)]
+	 if(model=="free.lambda")
+	 	{
+	 	  l<-attr(free.lambda$apVar,"Pars")[1]
+	 	  if(l>1)
+	 	  {
+	 	  	l=1
+	 	  }
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dtf[,2:22]),vcv(tree),l)$R)[1,i-1]	
+	 	 p<-summary(free.lambda)$tTable[2,4]
+	 	 aov.free<-aov(free.lambda)
+	 	 RSS<-summary(aov.free)[[1]]["Residuals", "Sum Sq"]
+	 	 TSS<-summary(aov.free)[[1]]["Mass", "Sum Sq"]+RSS
+	 	 r<-1-RSS/TSS
+	 	}
+	 if(model=="fix.lambda")
+	 	{
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dtf[,2:22]),vcv(tree),l)$R)[1,i-1]	
+	 	 p<-summary(fix.lambda)$tTable[2,4]
+	 	 aov.fix<-aov(fix.lambda)
+	 	 RSS<-summary(aov.fix)[[1]]["Residuals", "Sum Sq"]
+	 	 TSS<-summary(aov.fix)[[1]]["Mass", "Sum Sq"]+RSS
+	 	 r<-1-RSS/TSS
+	 	}
+	 if(model=="no.lambda")
+	 	{
+	 	 l=0
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dtf[,2:22]),vcv(tree),l)$R)[1,i-1]	
+	 	 p<-summary(no.lambda)$tTable[2,4]
+	 	 aov.no<-aov(no.lambda)
+	 	 RSS<-summary(aov.no)[[1]]["Residuals", "Sum Sq"]
+	 	 TSS<-summary(aov.no)[[1]]["Mass", "Sum Sq"]+RSS
+	 	 r<-1-RSS/TSS
+	 	}
+	 dfi<-data.frame(namei,model,cor,p,r,l)
+	 colnames(dfi)<-c("are","model","correlation","pval","r2","lambda")
+	 mass.results<-rbind(mass.results,dfi)
+	 print(i)
+	}
+for(i in 12)
+	{
+	 print(i)
+	 namei<-colnames(dtf)[i]
+	 v<-dtf[,i]
+	 l<-phylosig(tree,resid(gls(v~Mass,dtf)),method="lambda",test=T)$lambda
+	 fix.lambda<-gls(v~Mass,correlation=corPagel(l,phy=tree,form=~Species,fixed=TRUE),method="ML",dtf)
+	 print("mod2")
+	 no.lambda<-gls(v~Mass,method="ML",dtf)
+	 print("mod3")
+	 mod.choose<-anova(free.lambda,fix.lambda,no.lambda)
+	 model<-rownames(mod.choose)[which(min(mod.choose$AIC)==mod.choose$AIC)]
+	 if(model=="free.lambda")
+	 	{
+	 	  l<-attr(free.lambda$apVar,"Pars")[1]
+	 	  if(l>1)
+	 	  {
+	 	  	l=1
+	 	  }
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dtf[,2:22]),vcv(tree),l)$R)[1,i-1]	
+	 	 p<-summary(free.lambda)$tTable[2,4]
+	 	 aov.free<-aov(free.lambda)
+	 	 RSS<-summary(aov.free)[[1]]["Residuals", "Sum Sq"]
+	 	 TSS<-summary(aov.free)[[1]]["Mass", "Sum Sq"]+RSS
+	 	 r<-1-RSS/TSS
+	 	}
+	 if(model=="fix.lambda")
+	 	{
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dtf[,2:22]),vcv(tree),l)$R)[1,i-1]	
+	 	 p<-summary(fix.lambda)$tTable[2,4]
+	 	 aov.fix<-aov(fix.lambda)
+	 	 RSS<-summary(aov.fix)[[1]]["Residuals", "Sum Sq"]
+	 	 TSS<-summary(aov.fix)[[1]]["Mass", "Sum Sq"]+RSS
+	 	 r<-1-RSS/TSS
+	 	}
+	 if(model=="no.lambda")
+	 	{
+	 	 l=0
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dtf[,2:22]),vcv(tree),l)$R)[1,i-1]	
+	 	 p<-summary(no.lambda)$tTable[2,4]
+	 	 aov.no<-aov(no.lambda)
+	 	 RSS<-summary(aov.no)[[1]]["Residuals", "Sum Sq"]
+	 	 TSS<-summary(aov.no)[[1]]["Mass", "Sum Sq"]+RSS
+	 	 r<-1-RSS/TSS
+	 	}
+	 dfi<-data.frame(namei,model,cor,p,r,l)
+	 colnames(dfi)<-c("are","model","correlation","pval","r2","lambda")
+	 mass.results<-rbind(mass.results,dfi)
+	 print(i)
+	}
+for(i in 13:22)
+	{
+	 print(i)
+	 namei<-colnames(dtf)[i]
+	 v<-dtf[,i]
+	 l<-phylosig(tree,resid(gls(v~Mass,dtf)),method="lambda",test=T)$lambda
+	 free.lambda<-gls(v~Mass,correlation=corPagel(l,phy=tree,form=~Species,fixed=FALSE),method="ML",dtf)
+	 print("mod1")
+	 fix.lambda<-gls(v~Mass,correlation=corPagel(l,phy=tree,form=~Species,fixed=TRUE),method="ML",dtf)
+	 print("mod2")
+	 no.lambda<-gls(v~Mass,method="ML",dtf)
+	 print("mod3")
+	 mod.choose<-anova(free.lambda,fix.lambda,no.lambda)
+	 model<-rownames(mod.choose)[which(min(mod.choose$AIC)==mod.choose$AIC)]
+	 if(model=="free.lambda")
+	 	{
+	 	  l<-attr(free.lambda$apVar,"Pars")[1]
+	 	  if(l>1)
+	 	  {
+	 	  	l=1
+	 	  }
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dtf[,2:22]),vcv(tree),l)$R)[1,i-1]	
+	 	 p<-summary(free.lambda)$tTable[2,4]
+	 	 aov.free<-aov(free.lambda)
+	 	 RSS<-summary(aov.free)[[1]]["Residuals", "Sum Sq"]
+	 	 TSS<-summary(aov.free)[[1]]["Mass", "Sum Sq"]+RSS
+	 	 r<-1-RSS/TSS
+	 	}
+	 if(model=="fix.lambda")
+	 	{
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dtf[,2:22]),vcv(tree),l)$R)[1,i-1]	
+	 	 p<-summary(fix.lambda)$tTable[2,4]
+	 	 aov.fix<-aov(fix.lambda)
+	 	 RSS<-summary(aov.fix)[[1]]["Residuals", "Sum Sq"]
+	 	 TSS<-summary(aov.fix)[[1]]["Mass", "Sum Sq"]+RSS
+	 	 r<-1-RSS/TSS
+	 	}
+	 if(model=="no.lambda")
+	 	{
+	 	 l=0
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dtf[,2:22]),vcv(tree),l)$R)[1,i-1]	
+	 	 p<-summary(no.lambda)$tTable[2,4]
+	 	 aov.no<-aov(no.lambda)
+	 	 RSS<-summary(aov.no)[[1]]["Residuals", "Sum Sq"]
+	 	 TSS<-summary(aov.no)[[1]]["Mass", "Sum Sq"]+RSS
+	 	 r<-1-RSS/TSS
+	 	}
+	 dfi<-data.frame(namei,model,cor,p,r,l)
+	 colnames(dfi)<-c("are","model","correlation","pval","r2","lambda")
+	 mass.results<-rbind(mass.results,dfi)
+	 print(i)
+	}
+
+##Canine size
+
+canine.results<-data.frame(are=factor(),model=factor(),correlation=numeric(),pval=numeric(),r2=numeric(),lambda=numeric())
+for(i in 4:17)
+	{
+	 print(i)
+	 namei<-colnames(dtf)[i]
+	 v<-dtf[,i]
+	 l<-phylosig(tree,resid(gls(v~Canine,dtf)),method="lambda",test=T)$lambda
+	 free.lambda<-gls(v~Canine,correlation=corPagel(l,phy=tree,form=~Species,fixed=FALSE),method="ML",dtf)
+	 print("mod1")
+	 fix.lambda<-gls(v~Canine,correlation=corPagel(l,phy=tree,form=~Species,fixed=TRUE),method="ML",dtf)
+	 print("mod2")
+	 no.lambda<-gls(v~Canine,method="ML",dtf)
+	 print("mod3")
+	 mod.choose<-anova(free.lambda,fix.lambda,no.lambda)
+	 model<-rownames(mod.choose)[which(min(mod.choose$AIC)==mod.choose$AIC)]
+	 if(model=="free.lambda")
+	 	{
+	 	  l<-attr(free.lambda$apVar,"Pars")[1]
+	 	  if(l>1)
+	 	  {
+	 	  	l=1
+	 	  }
+	 	  if(l<0)
+	 	  {
+	 	  	l=0
+	 	  }
+	 	  cor<-cov2cor(phyl.vcv(as.matrix(dtf[,2:22]),vcv(tree),l)$R)[2,i-1]	
+	 	 p<-summary(free.lambda)$tTable[2,4]
+	 	 aov.free<-aov(free.lambda)
+	 	 RSS<-summary(aov.free)[[1]]["Residuals", "Sum Sq"]
+	 	 TSS<-summary(aov.free)[[1]]["Canine", "Sum Sq"]+RSS
+	 	 r<-1-RSS/TSS
+	 	}
+	 if(model=="fix.lambda")
+	 	{
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dtf[,2:22]),vcv(tree),l)$R)[2,i-1]	
+	 	 p<-summary(fix.lambda)$tTable[2,4]
+	 	 aov.fix<-aov(fix.lambda)
+	 	 RSS<-summary(aov.fix)[[1]]["Residuals", "Sum Sq"]
+	 	 TSS<-summary(aov.fix)[[1]]["Canine", "Sum Sq"]+RSS
+	 	 r<-1-RSS/TSS
+	 	}
+	 if(model=="no.lambda")
+	 	{
+	 	 l=0
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dtf[,2:22]),vcv(tree),l)$R)[2,i-1]	
+	 	 p<-summary(no.lambda)$tTable[2,4]
+	 	 aov.no<-aov(no.lambda)
+	 	 RSS<-summary(aov.no)[[1]]["Residuals", "Sum Sq"]
+	 	 TSS<-summary(aov.no)[[1]]["Canine", "Sum Sq"]+RSS
+	 	 r<-1-RSS/TSS
+	 	}
+	 dfi<-data.frame(namei,model,cor,p,r,l)
+	 colnames(dfi)<-c("are","model","correlation","pval","r2","lambda")
+	 canine.results<-rbind(canine.results,dfi)
+	 print(i)
+	}
+for(i in 18)
+	{
+	 print(i)
+	 namei<-colnames(dtf)[i]
+	 v<-dtf[,i]
+	 l<-phylosig(tree,resid(gls(v~Canine,dtf)),method="lambda",test=T)$lambda
+	 fix.lambda<-gls(v~Canine,correlation=corPagel(l,phy=tree,form=~Species,fixed=TRUE),method="ML",dtf)
+	 print("mod2")
+	 no.lambda<-gls(v~Canine,method="ML",dtf)
+	 print("mod3")
+	 mod.choose<-anova(free.lambda,fix.lambda,no.lambda)
+	 model<-rownames(mod.choose)[which(min(mod.choose$AIC)==mod.choose$AIC)]
+	 if(model=="free.lambda")
+	 	{
+	 	  l<-attr(free.lambda$apVar,"Pars")[1]
+	 	  if(l>1)
+	 	  {
+	 	  	l=1
+	 	  }
+	 	  if(l<0)
+	 	  {
+	 	  	l=0
+	 	  }
+	 	  cor<-cov2cor(phyl.vcv(as.matrix(dtf[,2:22]),vcv(tree),l)$R)[2,i-1]	
+	 	 p<-summary(free.lambda)$tTable[2,4]
+	 	 aov.free<-aov(free.lambda)
+	 	 RSS<-summary(aov.free)[[1]]["Residuals", "Sum Sq"]
+	 	 TSS<-summary(aov.free)[[1]]["Canine", "Sum Sq"]+RSS
+	 	 r<-1-RSS/TSS
+	 	}
+	 if(model=="fix.lambda")
+	 	{
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dtf[,2:22]),vcv(tree),l)$R)[2,i-1]	
+	 	 p<-summary(fix.lambda)$tTable[2,4]
+	 	 aov.fix<-aov(fix.lambda)
+	 	 RSS<-summary(aov.fix)[[1]]["Residuals", "Sum Sq"]
+	 	 TSS<-summary(aov.fix)[[1]]["Canine", "Sum Sq"]+RSS
+	 	 r<-1-RSS/TSS
+	 	}
+	 if(model=="no.lambda")
+	 	{
+	 	 l=0
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dtf[,2:22]),vcv(tree),l)$R)[2,i-1]	
+	 	 p<-summary(no.lambda)$tTable[2,4]
+	 	 aov.no<-aov(no.lambda)
+	 	 RSS<-summary(aov.no)[[1]]["Residuals", "Sum Sq"]
+	 	 TSS<-summary(aov.no)[[1]]["Canine", "Sum Sq"]+RSS
+	 	 r<-1-RSS/TSS
+	 	}
+	 dfi<-data.frame(namei,model,cor,p,r,l)
+	 colnames(dfi)<-c("are","model","correlation","pval","r2","lambda")
+	 canine.results<-rbind(canine.results,dfi)
+	 print(i)
+	}
+for(i in 19:22)
+	{
+	 print(i)
+	 namei<-colnames(dtf)[i]
+	 v<-dtf[,i]
+	 l<-phylosig(tree,resid(gls(v~Canine,dtf)),method="lambda",test=T)$lambda
+	 free.lambda<-gls(v~Canine,correlation=corPagel(l,phy=tree,form=~Species,fixed=FALSE),method="ML",dtf)
+	 print("mod1")
+	 fix.lambda<-gls(v~Canine,correlation=corPagel(l,phy=tree,form=~Species,fixed=TRUE),method="ML",dtf)
+	 print("mod2")
+	 no.lambda<-gls(v~Canine,method="ML",dtf)
+	 print("mod3")
+	 mod.choose<-anova(free.lambda,fix.lambda,no.lambda)
+	 model<-rownames(mod.choose)[which(min(mod.choose$AIC)==mod.choose$AIC)]
+	 if(model=="free.lambda")
+	 	{
+	 	  l<-attr(free.lambda$apVar,"Pars")[1]
+	 	  if(l>1)
+	 	  {
+	 	  	l=1
+	 	  }
+	 	  if(l<0)
+	 	  {
+	 	  	l=0
+	 	  }
+	 	  cor<-cov2cor(phyl.vcv(as.matrix(dtf[,2:22]),vcv(tree),l)$R)[2,i-1]	
+	 	 p<-summary(free.lambda)$tTable[2,4]
+	 	 aov.free<-aov(free.lambda)
+	 	 RSS<-summary(aov.free)[[1]]["Residuals", "Sum Sq"]
+	 	 TSS<-summary(aov.free)[[1]]["Canine", "Sum Sq"]+RSS
+	 	 r<-1-RSS/TSS
+	 	}
+	 if(model=="fix.lambda")
+	 	{
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dtf[,2:22]),vcv(tree),l)$R)[2,i-1]	
+	 	 p<-summary(fix.lambda)$tTable[2,4]
+	 	 aov.fix<-aov(fix.lambda)
+	 	 RSS<-summary(aov.fix)[[1]]["Residuals", "Sum Sq"]
+	 	 TSS<-summary(aov.fix)[[1]]["Canine", "Sum Sq"]+RSS
+	 	 r<-1-RSS/TSS
+	 	}
+	 if(model=="no.lambda")
+	 	{
+	 	 l=0
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dtf[,2:22]),vcv(tree),l)$R)[2,i-1]	
+	 	 p<-summary(no.lambda)$tTable[2,4]
+	 	 aov.no<-aov(no.lambda)
+	 	 RSS<-summary(aov.no)[[1]]["Residuals", "Sum Sq"]
+	 	 TSS<-summary(aov.no)[[1]]["Canine", "Sum Sq"]+RSS
+	 	 r<-1-RSS/TSS
+	 	}
+	 dfi<-data.frame(namei,model,cor,p,r,l)
+	 colnames(dfi)<-c("are","model","correlation","pval","r2","lambda")
+	 canine.results<-rbind(canine.results,dfi)
+	 print(i)
+	}
+
+##model results
+testes.results
+      are       model correlation          pval           r2     lambda
+#1    Mass   no.lambda  0.24831874  2.532503e-01 6.166220e-02 0.00000000
+#2  Canine  fix.lambda  0.36624054  9.813823e-01 9.977055e-02 0.85460497
+#3    cARE  fix.lambda  0.26258618  8.000107e-01 7.233390e-02 0.97510692
+#4    aARE  fix.lambda  0.32390015  1.588541e-01 8.808389e-02 0.99889996
+#5    aSRE  fix.lambda  0.19850943  8.393008e-01 1.619266e-02 0.83042988
+#6    cSRE  fix.lambda -0.27790741  5.065714e-01 5.251671e-02 0.82971545
+#7      c3  fix.lambda  0.08049954  4.029936e-01 1.906770e-02 0.99993389
+#8   ccnd1  fix.lambda  0.25510921  3.966586e-01 5.520727e-02 0.09716815
+#9     hk2  fix.lambda  0.21128277  9.855799e-01 3.510041e-02 0.52985762
+#10   hklk  fix.lambda  0.62404101  5.936714e-03 3.778012e-01 0.22414545
+#11   mvdp   no.lambda -0.19624585  3.694799e-01 3.851243e-02 0.00000000
+#12    p21  fix.lambda  0.38438759  8.574858e-02 1.129021e-01 0.26612207
+#13    pb2  fix.lambda  0.07279559  9.089259e-01 3.604864e-06 0.90231007
+#14   pem1  fix.lambda  0.19748476  7.867111e-01 1.873790e-02 0.99993389
+#15   pem2  fix.lambda  0.12028514  4.628417e-01 1.367970e-02 0.91708466
+#16   psa1  fix.lambda  0.12132931  6.550054e-01 4.802335e-05 0.99486720
+#17   psa3 free.lambda  0.28370881  3.669915e-88 6.800040e-02 1.00000000
+#18   sc12  fix.lambda  0.47714924  2.972065e-01 1.844972e-01 0.92767156
+#19   slp2  fix.lambda -0.12988625  8.168817e-01 7.864662e-03 0.98657461
+#20   slp3  fix.lambda  0.20377884  6.673392e-01 4.284472e-02 0.85979814
+#21    HRE free.lambda  0.27870871 1.475855e-100 6.955835e-02 1.00000000
+
+mass.results
+#             are       model   correlation          pval           r2     lambda
+#1         Canine  fix.lambda  0.6414825331  7.854516e-04 3.954188e-01  0.8297608
+#2           cARE  fix.lambda  0.2528891174  5.109620e-01 4.799184e-02  0.9484304
+#3           aARE  fix.lambda -0.2422812757  2.023541e-02 3.552060e-02  0.9508757
+#4           aSRE  fix.lambda  0.1182164463  8.958765e-01 1.156268e-03  0.8619233
+#5           cSRE  fix.lambda -0.1455111440  2.303068e-01 2.177551e-02  0.8665989
+#6             c3  fix.lambda -0.0523906783  1.931246e-01 4.267827e-03  0.9999339
+#7          ccnd1  fix.lambda -0.0070370844  6.915790e-01 5.655531e-05  0.2539229
+#8            hk2  fix.lambda  0.1152952009  9.147711e-01 1.336842e-02  0.5636760
+#9           hklk  fix.lambda  0.4071783560  1.533620e-01 1.794064e-01  0.5435541
+#corStruct   mvdp free.lambda -0.0763323517  9.126147e-01 1.075371e-02 -0.3463507
+#11           p21  fix.lambda -0.1351305147  3.122271e-01 3.131936e-02  0.3304714
+#12           pb2  fix.lambda -0.0143929866  5.913870e-01 1.768988e-02  0.9076940
+#13          pem1  fix.lambda -0.1914781522  2.401724e-01 1.159450e-02  0.9999339
+#14          pem2  fix.lambda  0.2471026252  6.563172e-01 3.259240e-02  0.9204856
+#15          psa1  fix.lambda -0.0009366342  1.806331e-01 8.637235e-04  0.9869744
+#16          psa3 free.lambda  0.2731476840 5.132015e-100 4.111712e-02  1.0000000
+#17          sc12  fix.lambda  0.2901508835  6.052020e-01 4.296692e-02  0.9641839
+#18          slp2  fix.lambda -0.0357517354  5.762147e-01 4.367111e-03  0.9815988
+#19          slp3  fix.lambda  0.0714398740  4.034097e-01 2.194854e-05  0.8846707
+#110          HRE  fix.lambda  0.0279192393  6.542926e-01 1.052862e-03  0.5012105
+
+canine.results
+            are       model correlation          pval           r2    lambda
+#corStruct  cARE free.lambda  0.68761804  6.022157e-01 0.3683749906 0.9595374
+#1          aARE free.lambda  0.38099563  5.709036e-02 0.1175399684 1.0000000
+#11         aSRE  fix.lambda  0.34519813  4.311171e-01 0.1053765063 0.8510527
+#12         cSRE free.lambda -0.18528050 1.148646e-122 0.0991934902 1.0000000
+#13           c3  fix.lambda  0.13277538  6.121062e-01 0.0003409197 0.9999339
+#14        ccnd1 free.lambda  0.41715081  4.213188e-08 0.1740148001 0.0000000
+#15          hk2  fix.lambda  0.49220512  4.734865e-02 0.2277783396 0.1386819
+#16         hklk free.lambda  0.58939665  1.883261e-24 0.3473884065 0.0000000
+#17         mvdp free.lambda -0.20236148  6.312467e-01 0.0409501673 0.0000000
+#18          p21  fix.lambda -0.02267599  6.445268e-01 0.0027612329 0.2809304
+#19          pb2  fix.lambda  0.35483399  4.548669e-01 0.0762042828 0.9032921
+#110        pem1  fix.lambda  0.18261536  9.351080e-01 0.0977217901 0.9999339
+#111        pem2  fix.lambda  0.63928051  1.996590e-01 0.3377621429 0.8038515
+#112        psa1  fix.lambda  0.03701851  6.432327e-01 0.0240051773 0.9999339
+#113        psa3 free.lambda  0.70005733  4.731793e-01 0.3994623605 1.0000000
+#114        sc12  fix.lambda  0.62411261  5.400685e-01 0.2346014808 0.9016925
+#115        slp2  fix.lambda -0.23414965  3.549315e-01 0.1255604336 0.9795818
+#116        slp3  fix.lambda  0.40291969  9.123547e-01 0.0975760524 0.8910362
+#117         HRE free.lambda  0.49383810  1.138678e-18 0.2438760659 0.0000000
+
+##binomial test for more positive correlations than expected by chance
+binom.test(14,18)
+#
+#	Exact binomial test
+#
+#data:  14 and 18
+#number of successes = 14, number of trials = 18, p-value = 0.03088
+#alternative hypothesis: true probability of success is not equal to 0.5
+#95 percent confidence interval:
+# 0.5236272 0.9359080
+#sample estimates:
+#probability of success 
+#             0.7777778 
+
+binom.test(15,18)
+#
+#	Exact binomial test
+#
+#data:  15 and 18
+#number of successes = 15, number of trials = 18, p-value = 0.007538
+#alternative hypothesis: true probability of success is not equal to 0.5
+#95 percent confidence interval:
+# 0.5858225 0.9642149
+#sample estimates:
+#probability of success 
+#             0.8333333 
+
+binom.test(8,18)
+#
+#	Exact binomial test
+#
+#data:  8 and 18
+#number of successes = 8, number of trials = 18, p-value = 0.8145
+#alternative hypothesis: true probability of success is not equal to 0.5
+#95 percent confidence interval:
+# 0.2153015 0.6924283
+#sample estimates:
+#probability of success 
+#             0.4444444 
+
+
+##plot heatmap of values in order of interest using viridis color scheme
+library(viridis)
+setEPS()
+postscript("/Users/andersond/Desktop/Primate/heatmapfig.eps")
+phylo.heatmap(tree,dtf[,c(1,3,22,11,10,18,9,4,19,16,5,21,6,8,14,15,17,13,20,12,7,2)],fsize = c(.8,.5,1),standardize = TRUE,col=magma(100))
+dev.off()

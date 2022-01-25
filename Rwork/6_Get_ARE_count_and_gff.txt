@@ -1,0 +1,388 @@
+## function to use count each motif and reverse complement using seqinr
+
+library(seqinr)
+
+hrecount<-function(seq)
+	{
+	 hklkf<-"GGAACANNNAGTGCT"
+	 hklkr<-"AGCACTNNNTGTTCC"
+	 mvdpf<-"TGAAGTNNNTGTTCT"
+	 mvdpr<-"AGAACANNNACTTCA"
+	 p21f<-"AGCACGNNNGGTTCC"
+	 p21r<-"GGAACCNNNCGTGCT"
+	 c3f<-"AGTACGNNNTGTTCT"
+	 c3r<-"AGAACANNNCGTACT"
+	 pb2f<-"GGTTCTNNNAGTACT"
+	 pb2r<-"AGTACTNNNAGAACC"
+	 pem1f<-"AGATCTNNNTGTTCC"
+	 pem1r<-"GGAACANNNAGATCT"
+	 pem2f<-"AGCACANNNTGCTCA"
+	 pem2r<-"TGAGCANNNTGTGCT"
+	 psa1f<-"AGAACANNNAGTGCT"
+	 psa1r<-"AGCACTNNNTGTTCT"
+	 psa3f<-"GGAACANNNTGTATC"
+	 psa3r<-"GATACANNNTGTTCC"
+	 sc12f<-"GGCTCTNNNAGTTCT"
+	 sc12r<-"AGAACTNNNAGAGCC"
+	 slp2f<-"TGGTCANNNAGTTCT"
+	 slp2r<-"AGAACTNNNTGACCA"
+	 slp3f<-"GAAACANNNTGTTCT"
+	 slp3r<-"AGAACANNNTGTTTC"
+	 asref<-"GGAACANNNTGTTCT"
+	 asrer<-"AGAACANNNTGTTCC"
+	 csref<-"GGTACANNNTGTTCT"
+	 csrer<-"AGAACANNNTGTACC"
+	 ccnd1f<-"TGCTAANNNAGTTCT"
+	 ccnd1r<-"AGAACTNNNTTAGCA"
+	 hk2f<-"GGAACANNNTGTATT"
+	 hk2r<-"AATACANNNTGTTCC"
+	 care<-"AGAACANNNTGTTCT"
+	 aare<-"GGAACANNNTGTTCC"
+	 patrn<-c(hklkf,hklkr,mvdpf,mvdpr,p21f,p21r,c3f,c3r,pb2f,pb2r,pem1f,pem1r,pem2f,pem2r,psa1f,psa1r,psa3f,psa3r,sc12f,sc12r,slp2f,slp2r,slp3f,slp3r,asref,asrer,csref,csrer,ccnd1f,ccnd1r,hk2f,hk2r,care,aare)
+	 nms<-c("hklkf","hklkr","mvdpf","mvdpr","p21f","p21r","c3f","c3r","pb2f","pb2r","pem1f","pem1r","pem2f","pem2r","psa1f","psa1r","psa3f","psa3r","sc12f","sc12r","slp2f","slp2r","slp3f","slp3r","asref","asrer","csref","csrer","ccnd1f","ccnd1r","hk2f","hk2r","care","aare")	
+	 df<-data.frame(loc=numeric(),motif=factor())
+	 for (i in 1:length(patrn))
+		{
+		 heri<-patrn[i]
+		 print(nms[i])
+		 findi<-matchPattern(heri,seq,fixed="subject")
+		 hiti<-start(findi)
+		 if(length(hiti)>0)
+		 	{
+		 	 dfi<-data.frame(hiti,nms[i])
+		 	 colnames(dfi)<-c("loc","motif")
+		  	 df<-rbind(df,dfi)
+			}
+		}	 
+	 return(df)
+	}
+
+## Read in files with chromosome sequence and count number of hits
+## Humans
+
+HShits<-data.frame(Chr=factor(),loc=numeric(),motif=factor())
+HSChrom<-c("10","11","12","13","14","15","16","17","18","19","1","20","21","22","2","3","4","5","6","7","8","9","X","Y")
+mylist<-list.files("HSgen/")
+for(i in 1:length(mylist))
+	{
+	 print(HSChrom[i])
+	 seqi<-readDNAStringSet(paste0("HSgen/",mylist[i]))
+	 seqi<-seqi[[1]]
+	 dfi<-hrecount(seqi)
+	 dfi<-data.frame(HSChrom[i],dfi)
+	 colnames(dfi)<-c("Chr","loc","motif")
+	 dfi<-dfi[order(dfi$loc),]
+	 HShits<-rbind(HShits,dfi)
+	}
+write.csv(HShits,"HShits.csv")
+
+## Gorillas
+
+GGhits<-data.frame(Chr=factor(),loc=numeric(),motif=factor())
+GGChrom<-c("10","11","12","13","14","15","16","17","18","19","1","20","21","22","2A","2B","3","4","5","6","7","8","9","X")
+mylist<-list.files("GGgen/")
+for(i in 1:length(mylist))
+	{
+	 print(GGChrom[i])
+	 seqi<-readDNAStringSet(paste0("GGgen/",mylist[i]))
+	 seqi<-seqi[[1]]
+	 dfi<-hrecount(seqi)
+	 dfi<-data.frame(GGChrom[i],dfi)
+	 colnames(dfi)<-c("Chr","loc","motif")
+	 dfi<-dfi[order(dfi$loc),]
+	 GGhits<-rbind(GGhits,dfi)
+	}
+write.csv(GGhits,"GGhits.csv")
+
+## Chimpanzees
+
+PThits<-data.frame(Chr=factor(),loc=numeric(),motif=factor())
+PTChrom<-c("10","11","12","13","14","15","16","17","18","19","1","20","21","22","2A","2B","3","4","5","6","7","8","9","X","Y")
+mylist<-list.files("PTgen/")
+for(i in 1:length(mylist))
+	{
+	 print(PTChrom[i])
+	 seqi<-readDNAStringSet(paste0("PTgen/",mylist[i]))
+	 seqi<-seqi[[1]]
+	 dfi<-hrecount(seqi)
+	 dfi<-data.frame(PTChrom[i],dfi)
+	 colnames(dfi)<-c("Chr","loc","motif")
+	 dfi<-dfi[order(dfi$loc),]
+	 PThits<-rbind(PThits,dfi)
+	}
+write.csv(PThits,"PThits.csv")
+
+## Rhesus Monkey
+
+MMhits<-data.frame(Chr=factor(),loc=numeric(),motif=factor())
+MMChrom<-c("10","11","12","13","14","15","16","17","18","19","1","20","2","3","4","5","6","7","8","9","X","Y")
+mylist<-list.files("MMgen/")
+for(i in 1:length(mylist))
+	{
+	 print(MMChrom[i])
+	 seqi<-readDNAStringSet(paste0("MMgen/",mylist[i]))
+	 seqi<-seqi[[1]]
+	 dfi<-hrecount(seqi)
+	 dfi<-data.frame(MMChrom[i],dfi)
+	 colnames(dfi)<-c("Chr","loc","motif")
+	 dfi<-dfi[order(dfi$loc),]
+	 MMhits<-rbind(MMhits,dfi)
+	}
+write.csv(MMhits,"MMhits.csv")
+
+## Bonobos
+
+PPhits<-data.frame(Chr=factor(),loc=numeric(),motif=factor())
+PPChrom<-c("10","11","12","13","14","15","16","17","18","19","1","20","21","22","2A","2B","3","4","5","6","7","8","9","X")
+mylist<-list.files("PPgen/")
+for(i in 1:length(mylist))
+	{
+	 print(PPChrom[i])
+	 seqi<-readDNAStringSet(paste0("PPgen/",mylist[i]))
+	 seqi<-seqi[[1]]
+	 dfi<-hrecount(seqi)
+	 dfi<-data.frame(PPChrom[i],dfi)
+	 colnames(dfi)<-c("Chr","loc","motif")
+	 dfi<-dfi[order(dfi$loc),]
+	 PPhits<-rbind(PPhits,dfi)
+	}
+write.csv(PPhits,"PPhits.csv")
+
+## Take a standard gff file and make a workable csv
+## Each step annotated for Humans
+## Humans
+
+gene <- read.delim("HS.gff", header=F, comment.char="#")
+
+## Extract only reads with calls from chromosomes
+
+gene<-gene[c(grep("NC_",gene[,1])),]
+
+## Find only full genes (e.g. exclude exons or short reads)
+
+gene<-subset(gene,gene[,3]=="gene")
+
+## Found the call for the mitochondrial genome and removed
+
+gene<-subset(gene,gene[,1]!="NC_012920.1")
+
+## Relevel
+
+Chr<-droplevels(gene[,1])
+
+## Extract necessary columns of data and rename
+
+gene<-data.frame(Chr,gene[,3],gene[,4],gene[,5],gene[,7],gene[,9])
+gene<-data.frame(gene[,1],gene[,3:6])
+colnames(gene)<-c("Chromosome","Start","Stop","GeneDirection","Info")
+
+## Assign values 1-# of chromosomes. Correct issues from the X and Y designations (in other primates correct for 2A and 2B designation)
+
+levels(gene[,1])<-c(1:length(levels(gene[,1])))
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "23") "X" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "24") "Y" else y })
+gene$Chromosome<-as.factor(gene$Chromosome)
+
+## Extract gene names
+
+name<-vector(mode="character")
+for(i in 1:length(gene$Info))
+ {
+     rowi<-gene$Info[i]
+     namei<-substr(rowi,regexpr("gene=",rowi)[1]+5,regexpr(";gene_",rowi)[1]-1)
+     name<-append(name,namei)
+ }
+
+## Add species column for later and write file out
+
+hs_gene<-data.frame("Homo_sapiens",name,gene)
+colnames(hs_gene)<-c("Species","Name","Chromosome","Start","Stop","GeneDirection","Info")
+write.csv(hs_gene,"HS_gene.csv")
+
+## Gorilla
+
+gene <- read.delim("GG.gff", header=F, comment.char="#")
+gene<-gene[c(grep("NC_",gene[,1])),]
+gene<-subset(gene,gene[,3]=="gene")
+gene<-subset(gene,gene[,1]!="NC_011120.1")
+Chr<-droplevels(gene[,1])
+gene<-data.frame(Chr,gene[,3],gene[,4],gene[,5],gene[,7],gene[,9])
+gene<-data.frame(gene[,1],gene[,3:6])
+colnames(gene)<-c("Chromosome","Start","Stop","GeneDirection","Info")
+levels(gene[,1])<-c(1:length(levels(gene[,1])))
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "2") "2a" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "3") "2b" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "4") "3" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "5") "4" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "6") "5" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "7") "6" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "8") "7" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "9") "8" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "10") "9" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "11") "10" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "12") "11" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "13") "12" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "14") "13" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "15") "14" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "16") "15" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "17") "16" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "18") "17" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "19") "18" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "20") "19" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "21") "20" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "22") "21" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "23") "22" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "24") "X" else y })
+gene$Chromosome<-as.factor(gene$Chromosome)
+name<-vector(mode="character")
+for(i in 1:length(gene$Info))
+{
+    rowi<-gene$Info[i]
+    namei<-substr(rowi,regexpr("gene=",rowi)[1]+5,regexpr(";gene_",rowi)[1]-1)
+    name<-append(name,namei)
+}
+gg_gene<-data.frame("Gorilla_gorilla",name,gene)
+colnames(gg_gene)<-c("Species","Name","Chromosome","Start","Stop","GeneDirection","Info")
+write.csv(gg_gene,"GG_gene.csv")
+
+## Chimpanzee
+
+gene <- read.delim("PTR.gff", header=F, comment.char="#")
+gene<-gene[c(grep("NC_",gene[,1])),]
+gene<-subset(gene,gene[,3]=="gene")
+gene<-subset(gene,gene[,1]!="NC_001643.1")
+Chr<-droplevels(gene[,1])
+gene<-data.frame(Chr,gene[,3],gene[,4],gene[,5],gene[,7],gene[,9])
+gene<-data.frame(gene[,1],gene[,3:6])
+colnames(gene)<-c("Chromosome","Start","Stop","GeneDirection","Info")
+levels(gene[,1])<-c(1:length(levels(gene[,1])))
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "1") "Y" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "2") "1" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "3") "2a" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "4") "2b" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "5") "3" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "6") "4" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "7") "5" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "8") "6" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "9") "7" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "10") "8" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "11") "9" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "12") "10" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "13") "11" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "14") "12" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "15") "13" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "16") "14" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "17") "15" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "18") "16" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "19") "17" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "20") "18" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "21") "19" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "22") "20" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "23") "21" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "24") "22" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "25") "X" else y })
+gene$Chromosome<-as.factor(gene$Chromosome)
+name<-vector(mode="character")
+for(i in 1:length(gene$Info))
+{
+    rowi<-gene$Info[i]
+    namei<-substr(rowi,regexpr("gene=",rowi)[1]+5,regexpr(";gene_",rowi)[1]-1)
+    name<-append(name,namei)
+}
+pt_gene<-data.frame("Pan_troglodytes",name,gene)
+colnames(pt_gene)<-c("Species","Name","Chromosome","Start","Stop","GeneDirection","Info")
+write.csv(pt_gene,"PT_gene.csv")
+
+## Bonobo
+
+gene <- read.delim("PP.gff", header=F, comment.char="#")
+gene<-gene[c(grep("NC_",gene[,1])),]
+gene<-subset(gene,gene[,3]=="gene")
+gene<-subset(gene,gene[,1]!="NC_001644.1")
+Chr<-droplevels(gene[,1])
+gene<-data.frame(Chr,gene[,3],gene[,4],gene[,5],gene[,7],gene[,9])
+gene<-data.frame(gene[,1],gene[,3:6])
+colnames(gene)<-c("Chromosome","Start","Stop","GeneDirection","Info")
+levels(gene[,1])<-c(1:length(levels(gene[,1])))
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "2") "2a" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "3") "2b" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "4") "3" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "5") "4" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "6") "5" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "7") "6" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "8") "7" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "9") "8" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "10") "9" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "11") "10" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "12") "11" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "13") "12" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "14") "13" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "15") "14" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "16") "15" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "17") "16" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "18") "17" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "19") "18" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "20") "19" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "21") "20" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "22") "21" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "23") "22" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "24") "X" else y })
+gene$Chromosome<-as.factor(gene$Chromosome)
+name<-vector(mode="character")
+for(i in 1:length(gene$Info))
+{
+    rowi<-gene$Info[i]
+    namei<-substr(rowi,regexpr("gene=",rowi)[1]+5,regexpr(";gene_",rowi)[1]-1)
+    name<-append(name,namei)
+}
+pp_gene<-data.frame("Pan_paniscus",name,gene)
+colnames(pp_gene)<-c("Species","Name","Chromosome","Start","Stop","GeneDirection","Info")
+write.csv(pp_gene,"PP_gene.csv")
+
+## Rhesus
+
+gene <- read.delim("MM.gff", header=F, comment.char="#")
+gene<-gene[c(grep("NC_",gene[,1])),]
+gene<-subset(gene,gene[,3]=="gene")
+gene<-subset(gene,gene[,1]!="NC_005943.1")
+Chr<-droplevels(gene[,1])
+gene<-data.frame(Chr,gene[,3],gene[,4],gene[,5],gene[,7],gene[,9])
+gene<-data.frame(gene[,1],gene[,3:6])
+colnames(gene)<-c("Chromosome","Start","Stop","GeneDirection","Info")
+levels(gene[,1])<-c(1:length(levels(gene[,1])))
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "1") "Y" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "2") "1" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "3") "2" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "4") "3" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "5") "4" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "6") "5" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "7") "6" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "8") "7" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "9") "8" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "10") "9" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "11") "10" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "12") "11" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "13") "12" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "14") "13" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "15") "14" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "16") "15" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "17") "16" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "18") "17" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "19") "18" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "20") "19" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "21") "20" else y })
+gene$Chromosome <- sapply(gene$Chromosome, function(y) { if (y == "22") "X" else y })
+gene$Chromosome<-as.factor(gene$Chromosome)
+name<-vector(mode="character")
+for(i in 1:length(gene$Info))
+ {
+     rowi<-gene$Info[i]
+     namei<-substr(rowi,regexpr("gene=",rowi)[1]+5,regexpr(";gene_",rowi)[1]-1)
+     name<-append(name,namei)
+ }
+mm_gene<-data.frame("Macaca_mulatta",name,gene)
+colnames(mm_gene)<-c("Species","Name","Chromosome","Start","Stop","GeneDirection","Info")
+write.csv(mm_gene,"MM_gene.csv")
+
+sexbias<-read.csv("SexbiasHuman.csv")
+sexbiasM<-sexbias[which(sexbias$sex.bias=="M"),]

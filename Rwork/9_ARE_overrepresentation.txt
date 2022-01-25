@@ -1,0 +1,298 @@
+##ARE motifs overrepresented in changing samples
+##Continuation of rpkm_to_ARE_anlaysis.txt
+##Read in allhits data
+
+allpeaks<-read.csv("/Users/andersond/Desktop/Primate/Evolution/Submission3/allpeaks.csv")
+
+##Find genes with at least one ARE in one species
+
+rpkm_no0<-rpkm[which(apply(rpkm[,81:85],1,function(r) any(r >= 1))),]
+
+##Combine all results to get list of genes that pass the filter in at least one organ
+genelistsig<-rbind(testisrpkm.results,brainfoldchange.results,brainrpkm.results,cerebellumfoldchange.results,cerebellumrpkm.results,heartfoldchange.results,heartrpkm.results,kidneyfoldchange.results,kidneyrpkm.results)
+
+##Pull out genes with significant correlation
+
+genelistfdr<-genelistsig[which(genelistsig$fdr<=0.05),]
+
+##Remove duplicate genes
+
+genelistsig<-genelistsig[!(duplicated(genelistsig$gene)),]
+genelistfdr<-genelistfdr[!(duplicated(genelistfdr$gene)),]
+
+##946 genes out of the 1312 with at least one ARE and passed filter for at least one organ
+##431 genes with at least one significant correlation to ARE number and rpkm or foldchange
+
+##Find the name of the ARE associated with each gene.
+##Most are shared motif across species
+##If motif changes across species for gene both are counted
+##If two or motifs are proximal, all are counted
+
+arehits<-c()
+for(i in 1:length(rpkm_no0$hsa_gene))
+	{
+     genei<-allpeaks[which(allpeaks$Gene==rpkm_no0$hsa_gene[i]),]
+     hrei<-levels(as.factor(genei$HRE))
+     arehits<-c(arehits,hrei)
+	}
+
+##See count of each ARE
+
+table(arehits)
+#arehits
+# aare  asre    c3  care ccnd1  csre   hk2  hklk  mvdp   p21   pb2  pem1  pem2  psa1  psa3 sc12  slp2  slp3 
+#   52   116    13    90    85    67    82    91   140    17    41    58   102   107    52   91    91   149 
+
+##Averaged raw count of all 5 species for each motif
+
+mean_genome<-c(220.8,601.8,48.4,559.4,553.8,338.2,529.2,466.2,1048.6,57.6,222.2,358.2,483.8,716.4,265.4,437.6,446.4,954)
+
+##Write out table result
+
+hits_are<-c(52,116,13,90,85,67,82,91,140,17,41,58,102,107,52,91,91,149)
+
+##Name for vectors
+
+arenames<-c("aare","asre","c3","care","ccnd1","csre","hk2","hklk","mvdp","p21","pb2","pem1","pem2","psa1","psa3","sc12","slp2","slp3")
+names(mean_genome)<-arenames
+names(hits_are)<-arenames
+
+##Make dataframe
+
+select_df<-data.frame(mean_genome,hits_are)
+
+Chi-Square test
+
+chisq<-chisq.test(select_df)
+chisq
+#
+#	Pearson's Chi-squared test
+#
+#data:  select_df
+#X-squared = 35.989, df = 17, p-value = 0.004602
+
+##It's significant... what about each motif?
+
+chisq$residuals[order(chisq$residuals[,2]),]
+#      mean_genome   hits_are
+#mvdp    1.1312704 -2.7135077
+#psa1    0.5634286 -1.3514610
+#slp3    0.4672656 -1.1208009
+#ccnd1   0.4110243 -0.9858984
+#hk2     0.3725751 -0.8936727
+#care    0.2618110 -0.6279896
+#pem1    0.1926515 -0.4621012
+#pb2    -0.1353926  0.3247578
+#psa3   -0.3041788  0.7296148
+#csre   -0.3768193  0.9038530
+#hklk   -0.3898650  0.9351449
+#asre   -0.3928124  0.9422147
+#slp2   -0.5340036  1.2808811
+#c3     -0.5403931  1.2962073
+#sc12   -0.5998335  1.4387831
+#pem2   -0.6830600  1.6384134
+#p21    -0.7468347  1.7913859
+#aare   -0.7612994  1.8260814
+
+##Not a clear pattern but mvdp stands out as possible strong culprit.
+##Check influence of each motif
+
+contrib <- 100*chisq$residuals^2/chisq$statistic
+contrib
+#      mean_genome   hits_are
+#aare   1.61041428  9.2654583
+#asre   0.42874303  2.4667570
+#c3     0.81142104  4.6684806
+#care   0.19045934  1.0958007
+#ccnd1  0.46942007  2.7007908
+#csre   0.39454177  2.2699813
+#hk2    0.38570420  2.2191347
+#hklk   0.42233318  2.4298782
+#mvdp   3.55598133 20.4592056
+#p21    1.54979991  8.9167158
+#pb2    0.05093504  0.2930528
+#pem1   0.10312678  0.5933361
+#pem2   1.29641582  7.4588799
+#psa1   0.88207273  5.0749724
+#psa3   0.25708968  1.4791558
+#sc12   0.99974215  5.7519791
+#slp2   0.79234623  4.5587344
+#slp3   0.60667245  3.4904673
+
+##mvdp influences differences with its undercount by a lot (20%)
+##run without mvdp and see what happens
+
+chisq_drop<-chisq.test(select_df[c(1:8,10:18),])
+chisq_drop
+#
+#	Pearson's Chi-squared test
+#
+#data:  select_df[c(1:8, 10:18), ]
+#X-squared = 25.551, df = 16, p-value = 0.06068
+
+##Yep mvdp is the culprit
+
+##Look at genes that passed filter
+
+arehitssig<-c()
+for(i in 1:length(genelistsig$gene))
+	{
+     genei<-allpeaks[which(allpeaks$Gene==genelistsig$gene[i]),]
+     hrei<-levels(as.factor(genei$HRE))
+     arehitssig<-c(arehitssig,hrei)
+	}
+table(arehitssig)
+arehitssig
+# aare  asre    c3  care ccnd1  csre   hk2  hklk  mvdp   p21   pb2  pem1  pem2  psa1  psa3  sc12  slp2  slp3 
+#   37    83     9    66    57    52    63    60    98    15    34    42    71    85    37    73    55   106 
+hits_aresig<-c(37,83,9,66,57,52,63,60,98,15,34,42,71,85,37,73,55,106)
+names(hits_aresig)<-arenames
+sig_df<-data.frame(mean_genome,hits_aresig)
+chisq_sig<-chisq.test(sig_df)
+chisq_sig
+#
+#	Pearson's Chi-squared test
+#
+#data:  sig_df
+#X-squared = 33.279, df = 17, p-value = 0.01039
+chisq_sig$residuals[order(chisq_sig$residuals[,2]),]
+#      mean_genome hits_aresig
+#mvdp   0.93649957  -2.6431005
+#ccnd1  0.47769004  -1.3481936
+#slp3   0.39856312  -1.1248722
+#psa1   0.16441777  -0.4640394
+#care   0.15935840  -0.4497602
+#pem1   0.13989219  -0.3948204
+#hk2    0.13311254  -0.3756860
+#slp2   0.04385384  -0.1237695
+#hklk  -0.06050545   0.1707657
+#psa3  -0.19953693   0.5631568
+#asre  -0.26831038   0.7572575
+#pb2   -0.35949276   1.0146032
+#c3    -0.36375469   1.0266317
+#pem2  -0.41069864   1.1591225
+#csre  -0.45530936   1.2850282
+#aare  -0.54480949   1.5376261
+#sc12  -0.75347371   2.1265431
+#p21   -0.85941892   2.4255543
+contrib <- 100*chisq_sig$residuals^2/chisq_sig$statistic
+contrib
+#      mean_genome hits_aresig
+#aare  0.891918047  7.10455910
+#asre  0.216326926  1.72314871
+#c3    0.397605907  3.16712356
+#care  0.076310719  0.60785183
+#ccnd1 0.685690284  5.46185511
+#csre  0.622943687  4.96204808
+#hk2   0.053244356  0.42411708
+#hklk  0.011000808  0.08762676
+#mvdp  2.635425809 20.99244259
+#p21   2.219450431 17.67899730
+#pb2   0.388343393  3.09334316
+#pem1  0.058806128  0.46841928
+#pem2  0.506853149  4.03733074
+#psa1  0.081233125  0.64706117
+#psa3  0.119641593  0.95300322
+#sc12  1.705971737 13.58889088
+#slp2  0.005778977  0.04603235
+#slp3  0.477342209  3.80226181
+chisq_drop_sig<-chisq.test(sig_df[c(1:8,10:18),])
+chisq_drop_sig
+#
+#	Pearson's Chi-squared test
+#
+#data:  sig_df[c(1:8, 10:18), ]
+#X-squared = 23.644, df = 16, p-value = 0.09756
+
+##Same story although now p21 (low count) and sc12 (more prevalent despite negative correlations) have strong influence
+
+arehitsfdr<-c()
+for(i in 1:length(genelistfdr$gene))
+	{
+     genei<-allpeaks[which(allpeaks$Gene==genelistfdr$gene[i]),]
+     hrei<-levels(as.factor(genei$HRE))
+     arehitsfdr<-c(arehitsfdr,hrei)
+	}
+table(arehitsfdr)
+arehitsfdr
+ aare  asre    c3  care ccnd1  csre   hk2  hklk  mvdp   p21   pb2  pem1  pem2  psa1  psa3  sc12  slp2  slp3 
+   13    40     1    25    28    24    32    30    58    11    11    21    28    33    20   35    22    43 
+
+hits_arefdr<-c(13,40,1,25,28,24,32,30,58,11,11,21,28,33,20,35,22,43)
+names(hits_arefdr)<-arenames
+fdr_df<-data.frame(mean_genome,hits_arefdr)
+chisq_fdr<-chisq.test(fdr_df)
+chisq_fdr
+#	Pearson's Chi-squared test
+#
+#data:  fdr_df
+#X-squared = 30.203, df = 17, p-value = 0.02492
+#
+chisq_fdr$residuals[order(chisq_fdr$residuals[,2]),]
+#     mean_genome hits_arefdr
+#slp3   0.35557279 -1.48706500
+#psa1   0.28277807 -1.18262529
+#care   0.28094125 -1.17494340
+#c3     0.24454121 -1.02271235
+#slp2   0.15829076 -0.66199849
+#ccnd1  0.14769292 -0.61767656
+#pb2    0.10852687 -0.45387756
+#mvdp   0.05708376 -0.23873387
+#pem2  -0.01458731  0.06100658
+#aare  -0.02391768  0.10002776
+#pem1  -0.02598851  0.10868831
+#hk2   -0.07158466  0.29937905
+#hklk  -0.14607255  0.61089990
+#asre  -0.21471204  0.89796175
+#csre  -0.23833849  0.99677150
+#psa3  -0.27783922  1.16197019
+#sc12  -0.44652189  1.86742939
+#p21   -0.90497836  3.78477122
+contrib <- 100*chisq_fdr$residuals^2/chisq_fdr$statistic
+contrib
+#      mean_genome hits_arefdr
+#aare  0.0018940480  0.03312790
+#asre  0.1526390344  2.66973705
+#c3    0.1979962343  3.46305835
+#care  0.2613267250  4.57074196
+#ccnd1 0.0722224424  1.26320853
+#csre  0.1880793691  3.28960716
+#hk2   0.0169665187  0.29675334
+#hklk  0.0706464001  1.23564272
+#mvdp  0.0107889212  0.18870391
+#p21   2.7116222993 47.42770118
+#pb2   0.0389966551  0.68207202
+#pem1  0.0022362254  0.03911276
+#pem2  0.0007045362  0.01232271
+#psa1  0.2647550524  4.63070521
+#psa3  0.2555876746  4.47036295
+#sc12  0.6601434362 11.54625614
+#slp2  0.0829590805  1.45099798
+#slp3  0.4186102302  7.32171325
+chisq_drop_fdr<-chisq.test(fdr_df[c(1:9,11:18),])
+chisq_drop_fdr
+#
+#	Pearson's Chi-squared test
+#
+#data:  fdr_df[c(1:9, 11:18), ]
+#X-squared = 15.161, df = 16, p-value = 0.5128
+
+##p21 has incredibly strong influence.
+
+##GO Analysis
+
+BiocManager::install("topGO")
+library(topGO)
+rpkm<-read.csv("/Users/andersond/Desktop/Primate/Evolution/Submission3/RPKM_count.csv")
+
+##reading as tibble works over the dataframe
+
+library(tibble)
+rpkm_tbl<-as_tibble(rpkm)
+
+##find genes with at least one ARE in one species
+
+select_genes<-rpkm_tbl$hsa_gene[which(apply(rpkm_tbl[,81:85],1,function(r) any(r >= 1)))]
+
+#1312 Genes have an ARE in one of the 5 species
+

@@ -1,0 +1,270 @@
+##in Biostrings package...
+##AREs are searched both forward and reverse to find on sense and antisense strand--palindromic motifs are only read one direction
+##sequence files are broken into four parts with less data to successfully load into R 
+
+hrecount<-function(seq)
+	{
+	 hklkf<-"GGAACANNNAGTGCT"
+	 hklkr<-"AGCACTNNNTGTTCC"
+	 mvdpf<-"TGAAGTNNNTGTTCT"
+	 mvdpr<-"AGAACANNNACTTCA"
+	 p21f<-"AGCACGNNNGGTTCC"
+	 p21r<-"GGAACCNNNCGTGCT"
+	 c3f<-"AGTACGNNNTGTTCT"
+	 c3r<-"AGAACANNNCGTACT"
+	 pb2f<-"GGTTCTNNNAGTACT"
+	 pb2r<-"AGTACTNNNAGAACC"
+	 pem1f<-"AGATCTNNNTGTTCC"
+	 pem1r<-"GGAACANNNAGATCT"
+	 pem2f<-"AGCACANNNTGCTCA"
+	 pem2r<-"TGAGCANNNTGTGCT"
+	 psa1f<-"AGAACANNNAGTGCT"
+	 psa1r<-"AGCACTNNNTGTTCT"
+	 psa3f<-"GGAACANNNTGTATC"
+	 psa3r<-"GATACANNNTGTTCC"
+	 sc12f<-"GGCTCTNNNAGTTCT"
+	 sc12r<-"AGAACTNNNAGAGCC"
+	 slp2f<-"TGGTCANNNAGTTCT"
+	 slp2r<-"AGAACTNNNTGACCA"
+	 slp3f<-"GAAACANNNTGTTCT"
+	 slp3r<-"AGAACANNNTGTTTC"
+	 sre1f<-"GGAACANNNTGTTCT"
+	 sre1r<-"AGAACANNNTGTTCC"
+	 sre2f<-"GGTACANNNTGTTCT"
+	 sre2r<-"AGAACANNNTGTACC"
+	 ccnd1f<-"TGCTAANNNAGTTCT"
+	 ccnd1r<-"AGAACTNNNTTAGCA"
+	 hk2f<-"GGAACANNNTGTATT"
+	 hk2r<-"AATACANNNTGTTCC"
+	 are<-"AGAACANNNTGTTCT"
+	 selare<-"GGAACANNNTGTTCC"
+	 patrn<-c(hklkf,hklkr,mvdpf,mvdpr,p21f,p21r,c3f,c3r,pb2f,pb2r,pem1f,pem1r,pem2f,pem2r,psa1f,psa1r,psa3f,psa3r,sc12f,sc12r,slp2f,slp2r,slp3f,slp3r,sre1f,sre1r,sre2f,sre2r,ccnd1f,ccnd1r,hk2f,hk2r,are,selare)
+	 nms<-c("hklkf","hklkr","mvdpf","mvdpr","p21f","p21r","c3f","c3r","pb2f","pb2r","pem1f","pem1r","pem2f","pem2r","psa1f","psa1r","psa3f","psa3r","sc12f","sc12r","slp2f","slp2r","slp3f","slp3r","sre1f","sre1r","sre2f","sre2r","ccnd1f","ccnd1r","hk2f","hk2r","are","selare")	
+	 total<-c()
+	 for (i in 1:length(patrn))
+		{
+		 heri<-patrn[i]
+		 print(nms[i])
+		 vector<-c()
+		 for (j in 1:length(seq))
+		 	{
+			 seqj<-seq[[j]]
+		 	 stringj<-DNAString(c2s(seqj),start=1,nchar=NA)
+		 	 findj<-countPattern(heri,stringj,fixed="subject")
+			 vector<-c(vector,findj)
+			 }
+		 vali<-sum(vector)
+		 total<-c(total,vali)
+		}
+	 names(total)<-nms	 
+	 return(total)
+	}
+seq<-read.fasta("~/Aotus_nancymaae/seq1.fasta")
+ana1<-hrecount(seq)
+seq<-read.fasta("~/Aotus_nancymaae/seq2.fasta")
+ana2<-hrecount(seq)
+seq<-read.fasta("~/Aotus_nancymaae/seq3.fasta")
+ana3<-hrecount(seq)
+seq<-read.fasta("~/Aotus_nancymaae/seq4.fasta")
+ana4<-hrecount(seq)
+seq<-read.fasta("~/Callithrix_jacchus/seq1.fasta")
+cja1<-hrecount(seq)
+seq<-read.fasta("~/Callithrix_jacchus/seq2.fasta")
+cja2<-hrecount(seq)
+seq<-read.fasta("~/Callithrix_jacchus/seq3.fasta")
+cja3<-hrecount(seq)
+seq<-read.fasta("~/Callithrix_jacchus/seq4.fasta")
+cja4<-hrecount(seq)
+seq<-read.fasta("~/Cebus_capucinus/seq1.fasta")
+cca1<-hrecount(seq)
+seq<-read.fasta("~/Cebus_capucinus/seq2.fasta")
+cca2<-hrecount(seq)
+seq<-read.fasta("~/Cebus_capucinus/seq3.fasta")
+cca3<-hrecount(seq)
+seq<-read.fasta("~/Cebus_capucinus/seq4.fasta")
+cca4<-hrecount(seq)
+seq<-read.fasta("~/Cercocebus_atys/seq1.fasta")
+cat1<-hrecount(seq)
+seq<-read.fasta("~/Cercocebus_atys/seq2.fasta")
+cat2<-hrecount(seq)
+seq<-read.fasta("~/Cercocebus_atys/seq3.fasta")
+cat3<-hrecount(seq)
+seq<-read.fasta("~/Cercocebus_atys/seq4.fasta")
+cat4<-hrecount(seq)
+seq<-read.fasta("~/Chlorocebus_sabaeus/seq1.fasta")
+csa1<-hrecount(seq)
+seq<-read.fasta("~/Chlorocebus_sabaeus/seq2.fasta")
+csa2<-hrecount(seq)
+seq<-read.fasta("~/Chlorocebus_sabaeus/seq3.fasta")
+csa3<-hrecount(seq)
+seq<-read.fasta("~/Chlorocebus_sabaeus/seq4.fasta")
+csa4<-hrecount(seq)
+seq<-read.fasta("~/Colobus_angolensis/seq1.fasta")
+can1<-hrecount(seq)
+seq<-read.fasta("~/Colobus_angolensis/seq2.fasta")
+can2<-hrecount(seq)
+seq<-read.fasta("~/Colobus_angolensis/seq3.fasta")
+can3<-hrecount(seq)
+seq<-read.fasta("~/Colobus_angolensis/seq4.fasta")
+can4<-hrecount(seq)
+seq<-read.fasta("~/Gorilla_gorilla/seq1.fasta")
+ggo1<-hrecount(seq)
+seq<-read.fasta("~/Gorilla_gorilla/seq2.fasta")
+ggo2<-hrecount(seq)
+seq<-read.fasta("~/Gorilla_gorilla/seq3.fasta")
+ggo3<-hrecount(seq)
+seq<-read.fasta("~/Gorilla_gorilla/seq4.fasta")
+ggo4<-hrecount(seq)
+seq<-read.fasta("~/Homo_sapiens/seq1.fasta")
+hsa1<-hrecount(seq)
+seq<-read.fasta("~/Homo_sapiens/seq2.fasta")
+hsa2<-hrecount(seq)
+seq<-read.fasta("~/Homo_sapiens/seq3.fasta")
+hsa3<-hrecount(seq)
+seq<-read.fasta("~/Homo_sapiens/seq4.fasta")
+hsa4<-hrecount(seq)
+seq<-read.fasta("~/Hylobates_moloch/seq1.fasta")
+hmo1<-hrecount(seq)
+seq<-read.fasta("~/Hylobates_moloch/seq2.fasta")
+hmo2<-hrecount(seq)
+seq<-read.fasta("~/Hylobates_moloch/seq3.fasta")
+hmo3<-hrecount(seq)
+seq<-read.fasta("~/Hylobates_moloch/seq4.fasta")
+hmo4<-hrecount(seq)
+seq<-read.fasta("~/Macaca_fascicularis/seq1.fasta")
+mfa1<-hrecount(seq)
+seq<-read.fasta("~/Macaca_fascicularis/seq2.fasta")
+mfa2<-hrecount(seq)
+seq<-read.fasta("~/Macaca_fascicularis/seq3.fasta")
+mfa3<-hrecount(seq)
+seq<-read.fasta("~/Macaca_fascicularis/seq4.fasta")
+mfa4<-hrecount(seq)
+seq<-read.fasta("~/Macaca_fuscata/seq1.fasta")
+mfu1<-hrecount(seq)
+seq<-read.fasta("~/Macaca_fuscata/seq2.fasta")
+mfu2<-hrecount(seq)
+seq<-read.fasta("~/Macaca_fuscata/seq3.fasta")
+mfu3<-hrecount(seq)
+seq<-read.fasta("~/Macaca_fuscata/seq4.fasta")
+mfu4<-hrecount(seq)
+seq<-read.fasta("~/Macaca_mulatta/seq1.fasta")
+mmu1<-hrecount(seq)
+seq<-read.fasta("~/Macaca_mulatta/seq2.fasta")
+mmu2<-hrecount(seq)
+seq<-read.fasta("~/Macaca_mulatta/seq3.fasta")
+mmu3<-hrecount(seq)
+seq<-read.fasta("~/Macaca_mulatta/seq4.fasta")
+mmu4<-hrecount(seq)
+seq<-read.fasta("~/Macaca_nemestrina/seq1.fasta")
+mne1<-hrecount(seq)
+seq<-read.fasta("~/Macaca_nemestrina/seq2.fasta")
+mne2<-hrecount(seq)
+seq<-read.fasta("~/Macaca_nemestrina/seq3.fasta")
+mne3<-hrecount(seq)
+seq<-read.fasta("~/Macaca_nemestrina/seq4.fasta")
+mne4<-hrecount(seq)
+seq<-read.fasta("~/Mandrillus_leucophaeus/seq1.fasta")
+mle1<-hrecount(seq)
+seq<-read.fasta("~/Mandrillus_leucophaeus/seq2.fasta")
+mle2<-hrecount(seq)
+seq<-read.fasta("~/Mandrillus_leucophaeus/seq3.fasta")
+mle3<-hrecount(seq)
+seq<-read.fasta("~/Mandrillus_leucophaeus/seq4.fasta")
+mle4<-hrecount(seq)
+seq<-read.fasta("~/Mandrillus_sphinx/seq1.fasta")
+msp1<-hrecount(seq)
+seq<-read.fasta("~/Mandrillus_sphinx/seq2.fasta")
+msp2<-hrecount(seq)
+seq<-read.fasta("~/Mandrillus_sphinx/seq3.fasta")
+msp3<-hrecount(seq)
+seq<-read.fasta("~/Mandrillus_sphinx/seq4.fasta")
+msp4<-hrecount(seq)
+seq<-read.fasta("~/Nomascus_leucogenys/seq1.fasta")
+nle1<-hrecount(seq)
+seq<-read.fasta("~/Nomascus_leucogenys/seq2.fasta")
+nle2<-hrecount(seq)
+seq<-read.fasta("~/Nomascus_leucogenys/seq3.fasta")
+nle3<-hrecount(seq)
+seq<-read.fasta("~/Nomascus_leucogenys/seq4.fasta")
+nle4<-hrecount(seq)
+seq<-read.fasta("~/Pan_paniscus/seq1.fasta")
+ppn1<-hrecount(seq)
+seq<-read.fasta("~/Pan_paniscus/seq2.fasta")
+ppn2<-hrecount(seq)
+seq<-read.fasta("~/Pan_paniscus/seq3.fasta")
+ppn3<-hrecount(seq)
+seq<-read.fasta("~/Pan_paniscus/seq4.fasta")
+ppn4<-hrecount(seq)
+seq<-read.fasta("~/Pan_troglodytes/seq1.fasta")
+ptr1<-hrecount(seq)
+seq<-read.fasta("~/Pan_troglodytes/seq2.fasta")
+ptr2<-hrecount(seq)
+seq<-read.fasta("~/Pan_troglodytes/seq3.fasta")
+ptr3<-hrecount(seq)
+seq<-read.fasta("~/Pan_troglodytes/seq4.fasta")
+ptr4<-hrecount(seq)
+seq<-read.fasta("~/Papio_anubis/seq1.fasta")
+pan1<-hrecount(seq)
+seq<-read.fasta("~/Papio_anubis/seq2.fasta")
+pan2<-hrecount(seq)
+seq<-read.fasta("~/Papio_anubis/seq3.fasta")
+pan3<-hrecount(seq)
+seq<-read.fasta("~/Papio_anubis/seq4.fasta")
+pan4<-hrecount(seq)
+seq<-read.fasta("~/Pongo_abelii/seq1.fasta")
+pab1<-hrecount(seq)
+seq<-read.fasta("~/Pongo_abelii/seq2.fasta")
+pab2<-hrecount(seq)
+seq<-read.fasta("~/Pongo_abelii/seq3.fasta")
+pab3<-hrecount(seq)
+seq<-read.fasta("~/Pongo_abelii/seq4.fasta")
+pab4<-hrecount(seq)
+seq<-read.fasta("~/Saimiri_boliviensis/seq1.fasta")
+sbo1<-hrecount(seq)
+seq<-read.fasta("~/Saimiri_boliviensis/seq2.fasta")
+sbo2<-hrecount(seq)
+seq<-read.fasta("~/Saimiri_boliviensis/seq3.fasta")
+sbo3<-hrecount(seq)
+seq<-read.fasta("~/Saimiri_boliviensis/seq4.fasta")
+sbo4<-hrecount(seq)
+seq<-read.fasta("~/Theropithecus_gelada/seq1.fasta")
+tge1<-hrecount(seq)
+seq<-read.fasta("~/Theropithecus_gelada/seq2.fasta")
+tge2<-hrecount(seq)
+seq<-read.fasta("~/Theropithecus_gelada/seq3.fasta")
+tge3<-hrecount(seq)
+seq<-read.fasta("~/Theropithecus_gelada/seq4.fasta")
+tge4<-hrecount(seq)
+seq<-read.fasta("~/Trachypithecus_francoisi/seq1.fasta")
+tfr1<-hrecount(seq)
+seq<-read.fasta("~/Trachypithecus_francoisi/seq2.fasta")
+tfr2<-hrecount(seq)
+seq<-read.fasta("~/Trachypithecus_francoisi/seq3.fasta")
+tfr3<-hrecount(seq)
+seq<-read.fasta("~/Trachypithecus_francoisi/seq4.fasta")
+tfr4<-hrecount(seq)
+Aotus_nancymaae<-ana1+ana2+ana3+ana4
+Callathrix_jacchus<-cja1+cja2+cja3+cja4
+Cebus_capucinus<-cca1+cca2+cca3+cca4
+Cercocebus_atys<-cat1+cat2+cat3+cat4
+Chlorocebus_sabaeus<-csa1+csa2+csa3+csa4
+Colobus_angolensis<-can1+can2+can3+can4
+Gorilla_gorilla<-ggo1+ggo2+ggo3+ggo4
+Homo_sapiens<-hsa1+hsa2+hsa3+hsa4
+Hylobates_moloch<-hmo1+hmo2+hmo3+hmo4
+Macaca_fascicularis<-mfa1+mfa2+mfa3+mfa4
+Macaca_fuscata<-mfu1+mfu2+mfu3+mfu4
+Macaca_mulatta<-mmu1+mmu2+mmu3+mmu4
+Macaca_nemestrina<-mne1+mne2+mne3+mne4
+Mandrillus_leucophaeus<-mle1+mle2+mle3+mle4
+Mandrillus_sphinx<-msp1+msp2+msp3+msp4
+Nomascus_leucogenys<-nle1+nle2+nle3+nle4
+Pan_paniscus<-ppn1+ppn2+ppn3+ppn4
+Pan_troglodytes<-ptr1+ptr2+ptr3+ptr4
+Papio_anubis<-pan1+pan2+pan3+pan4
+Pongo_abelii<-pab1+pab2+pab3+pab4
+Saimiri_boliviensis<-sbo1+sbo2+sbo3+sbo4
+Theropithecus_gelada<-tge1+tge2+tge3+tge4
+Trachypithecus_francoisi<-tfr1+tfr2+tfr3+tfr4
+
+df<-as.data.frame(rbind(Aotus_nancymaae,Callathrix_jacchus,Cebus_capucinus,Cercocebus_atys,Chlorocebus_sabaeus,Colobus_angolensis,Gorilla_gorilla,Homo_sapiens,Hylobates_moloch,Macaca_fascicularis,Macaca_fuscata,Macaca_mulatta,Macaca_nemestrina,Mandrillus_leucophaeus,Mandrillus_sphinx,Nomascus_leucogenys,Pan_paniscus,Pan_troglodytes,Papio_anubis,Pongo_abelii,Saimiri_boliviensis,Theropithecus_gelada,Trachypithecus_francoisi))
