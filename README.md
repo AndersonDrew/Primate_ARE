@@ -1,5 +1,5 @@
 # Primate_ARE
-All coding for the Manuscript is foung in the Rwork file. Files are numbered based on creation and order of analysis, not the order they appear in the MS
+All coding for the Manuscript is found in the Rwork file. Files are numbered based on creation and order of analysis, not the order they appear in the MS
 
 Supplemental Table contains all data tables reference in the MS.
 
