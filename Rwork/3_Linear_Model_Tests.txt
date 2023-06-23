@@ -1,3 +1,7 @@
+######PLEASE NOTE, AS OF NOW (6/23/2023) DO NOT USE THIS ANALYSIS!! AN ERROR HAS BEEN DISCOVERED AND I WILL PROVIDE A NEW FILE IN THE NEAR FUTURE. PLEASE CONTACT ME IF YOU WISH TO KNOW MORE
+
+
+
 ##Added species names and raw measures of phenotypes to dataframe as well as column names for AREs--all done in Excel
 
 df<-read.csv("~/primdfall.csv")
