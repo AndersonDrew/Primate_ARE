@@ -1,5 +1,6 @@
 # Primate_ARE
 All coding for the Manuscript is found in the Rwork file. Files are numbered based on creation and order of analysis, not the order they appear in the MS
+(PLEASE NOTE AS OF 6/23/2023, RWORK FILE #3 HAS AN ERROR AND SHOULD NOT BE USED. UPDATES COMING SOON. PLEASE CONTACT WITH ANY QUESTIONS)
 
 Supplemental Table contains all data tables reference in the MS.
 
