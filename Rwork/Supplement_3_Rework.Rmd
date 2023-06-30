@@ -1,0 +1,485 @@
+---
+title: "Primate_data_correction_and_verification"
+author: "Drew"
+date: "2023-06-20"
+output:
+  word_document: default
+  pdf_document: default
+  html_document: default
+editor_options:
+  chunk_output_type: console
+---
+This is a reanalysis of 3_Linear_Model_Tests
+
+Colleagues Caleb Ghione and Matt Dean (University of Southern California) have pointed out phyl.vcv does not look for tip names in the data matrix and matches based on order of data. All other code DOES perform this match and is therefore correct.
+
+We further noticed our reruns were encountering errors and generating different values for 6 of our models. Upon inspection, we found all of these were originally using the free.lambda model and the model generated an estimate of lambda that was much great than 1 or less than 0. This caused some concern and we elected to restrict lambda to between 1 and 0 by excluding free.lambda as an option when it did this.
+
+The code uses the technique I wrote from 8_rpkm_to_ARE_analysis. This way a failure of the model to converge is seen in the output and the loop continues on to the next possible model; whereas before I would just delete the option to do that model and create multiple loops.
+
+Lastly, I wanted to compare the coefficient of the model to the correlation value as these should be the same at lamba=0 and therefore very close. To do so I scaled the data. I did check that unscaled data will result in the same outputs.
+
+Binomial tests are missing from this version as none are significant
+
+The phylo heat map is also missing as that one matched tip labels with the dataframe.
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	echo = TRUE,
+	message = FALSE,
+	warning = FALSE
+)
+```
+
+relevant packages and data
+
+````{r}
+library(phytools)
+library(nlme)
+````
+
+dataframes and trees
+
+````{r}
+df<-read.csv("~S5-primdfall.csv")
+tree<-read.nexus("~treeall.nex")
+treenoT<-read.nexus("~treenoT.nex")
+````
+
+Prep the data for analysis
+````{r}
+###This is the new stuff!! Reorder the dataframe to match tip labels
+df<-df[match(tree$tip.label,df$Species),] 
+###Follow original work
+Mass<-resid(lm(log(massm)~log(massf),df))
+Canine<-resid(lm(log(k9m)~log(k9f),df))
+Testes<-resid(lm(log(testes)~log(masst),na.action=na.exclude,df))
+TestesnoT<-Testes[complete.cases(Testes)]
+dtf<-data.frame(Testes,Mass,Canine,df[,8:25])
+rownames(dtf)<-df$Species
+hre<-prcomp(dtf[,4:21])
+###HRE PCA output is the same as before. The first dimension is the most appropriate to use
+PC_ARE<-hre$x[,1]
+dtf<-data.frame(dtf,PC_ARE)
+dtf$Species<-df$Species
+rownames(dtf)<-dtf$Species
+dtfnoT<-dtf[complete.cases(dtf),]
+###Scale the two dataframes independently
+dtfnoT<-data.frame(scale(dtfnoT[,1:22]),dtfnoT[,23])
+colnames(dtfnoT)<-c(colnames(dtf[,1:22]),"Species")
+dtf<-data.frame(scale(dtf[,1:22]),dtf[,23])
+colnames(dtf)<-c(colnames(dtf[,1:22]),"Species")
+````
+Generate the Mass Data Set
+This has notes on the changes discussed above
+````{r}
+Mass<-dtf$Mass
+###notice the new term "coefficient"
+mass.results<-data.frame(are=factor(),model=factor(),correlation=numeric(),pval=numeric(),r2=numeric(),lambda=numeric(),coefficient=numeric())
+for(i in 3:22)
+	{
+	 namei<-colnames(dtf)[i]
+	 v<-dtf[,i]
+	 l<-phylosig(tree,resid(gls(v~Mass,dtf)),method="lambda",test=T)$lambda
+	 ###keep lambda bound
+	 if(l>1)
+	 	  {
+	 	  	l=1
+	 	  }
+	 if(l<0)
+	 	  {
+	 	  	l=0
+	 	  }
+	 no.lambda<-gls(v~Mass,method="ML",dtf)
+	 fix.lambda<-gls(v~Mass,correlation=corPagel(l,phy=tree,form=~Species,fixed=TRUE),method="ML",dtf)
+	 ####This part of the loop tests if the model fails to converge
+	 ####A successful model is kept, a failed model moves onto different starting lambda values (1 and 0)
+	 t1<-try(gls(v~Mass,correlation=corPagel(l,phy=tree,form=~Species,fixed=FALSE),method="ML",dtf))
+	 loadError<-(is(t1,'try-error')|is(t1,'error'))
+	 if(loadError=="FALSE")
+	 	{
+	 	 free.lambda<-gls(v~Mass,correlation=corPagel(l,phy=tree,form=~Species,fixed=FALSE),method="ML",dtf)
+	 	 ####This part binds the lambda value between 0 and 1. Sometimes the absolute value of lambda is so large that the extraction of its value leads to a null. If any of those events happen I set free.lambda to be fix.lambda
+	 	 l2<-attr(free.lambda$apVar,"Pars")[1]
+	 	       if(is.null(l2))
+	 	      {
+	 	        free.lambda<-fix.lambda
+	 	      }else
+	 	      {
+	 	      if(l2>1)
+	 	        {
+	 	  	     free.lambda<-fix.lambda
+	 	        }
+	 	      if(l2<0)
+	 	       {
+	 	  	    free.lambda<-fix.lambda
+	 	      }
+	 	      } 
+	 	 }else
+	 	{
+	 	 t1<-try(gls(v~Mass,correlation=corPagel(l,phy=tree,form=~Species,fixed=FALSE),method="ML",dtf))
+	 	 loadError<-(is(t1,'try-error')|is(t1,'error'))
+		 if(loadError==F)
+	 		{
+	 		 free.lambda<-gls(v~Mass,correlation=corPagel(l,phy=tree,form=~Species,fixed=FALSE),method="ML",dtf)
+	 		l2<-attr(free.lambda$apVar,"Pars")[1]
+	 	       if(is.null(l2))
+	 	      {
+	 	        free.lambda<-fix.lambda
+	 	      }else
+	 	      {
+	 	      if(l2>1)
+	 	        {
+	 	  	     free.lambda<-fix.lambda
+	 	        }
+	 	      if(l2<0)
+	 	       {
+	 	  	    free.lambda<-fix.lambda
+	 	      }
+	 	      } 
+	 		 }else
+	 		{
+	 		 t1<-try(gls(v~Mass,correlation=corPagel(l,phy=tree,form=~Species,fixed=FALSE),method="ML",dtf))
+	 	 	 loadError<-(is(t1,'try-error')|is(t1,'error'))
+		 	 if(loadError==F)
+	 			{
+	 		  	 free.lambda<-gls(v~Mass,correlation=corPagel(l,phy=tree,form=~Species,fixed=FALSE),method="ML",dtf)
+	 		  	 l2<-attr(free.lambda$apVar,"Pars")[1]
+	 	       if(is.null(l2))
+	 	      {
+	 	        free.lambda<-fix.lambda
+	 	      }else
+	 	      {
+	 	      if(l2>1)
+	 	        {
+	 	  	     free.lambda<-fix.lambda
+	 	        }
+	 	      if(l2<0)
+	 	       {
+	 	  	    free.lambda<-fix.lambda
+	 	      }
+	 	      } 
+	 			}else
+	 			{
+	 			 free.lambda<-gls(v~Mass,correlation=corPagel(l,phy=tree,form=~Species,fixed=TRUE),method="ML",dtf)
+	 			}
+	 	 	}
+	 	}
+	 ####Put fix lambda as first so the aov will favor it over the other two when AIC is equal
+	 mod.choose<-anova(fix.lambda,free.lambda,no.lambda)
+	 model<-rownames(mod.choose)[which(min(mod.choose$AIC)==mod.choose$AIC)]
+	 if(length(model>1))
+	  {
+	   model=model[1]
+	  }
+	 if(model=="free.lambda")
+	 	{
+	 	 l<-attr(free.lambda$apVar,"Pars")[1]
+	   ###This ONE LINE was the issue from the previous version.
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dtf[,2:22]),vcv(tree),l)$R)[1,i-1]	
+	 	 p<-summary(free.lambda)$tTable[2,4]
+	 	 aov.free<-aov(free.lambda)
+	 	 RSS<-summary(aov.free)[[1]]["Residuals", "Sum Sq"]
+	 	 TSS<-summary(aov.free)[[1]]["Mass", "Sum Sq"]+RSS
+	 	 r<-1-RSS/TSS
+	 	 ####This line extracts the coefficient
+	 	 c<-free.lambda$coefficients[2]
+	 	}
+	 if(model=="fix.lambda")
+	 	{
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dtf[,2:22]),vcv(tree),l)$R)[1,i-1]	
+	 	 p<-summary(fix.lambda)$tTable[2,4]
+	 	 aov.fix<-aov(fix.lambda)
+	 	 RSS<-summary(aov.fix)[[1]]["Residuals", "Sum Sq"]
+	 	 TSS<-summary(aov.fix)[[1]]["Mass", "Sum Sq"]+RSS
+	 	 r<-1-RSS/TSS
+	 	 c<-fix.lambda$coefficients[2]
+	 	}
+	 if(model=="no.lambda")
+	 	{
+	 	 l=0
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dtf[,2:22]),vcv(tree),l)$R)[1,i-1]	
+	 	 p<-summary(no.lambda)$tTable[2,4]
+	 	 aov.no<-aov(no.lambda)
+	 	 RSS<-summary(aov.no)[[1]]["Residuals", "Sum Sq"]
+	 	 TSS<-summary(aov.no)[[1]]["Mass", "Sum Sq"]+RSS
+	 	 r<-1-RSS/TSS
+	 	 c<-no.lambda$coefficients[2]
+	 	}
+	 dfi<-data.frame(namei,model,cor,p,r,l,c)
+	 colnames(dfi)<-c("are","model","correlation","pval","r2","lambda","coefficient")
+	 mass.results<-rbind(mass.results,dfi)
+	}
+mass.results
+````
+
+Canine now
+
+````{r}
+Canine<-dtf$Canine
+canine.results<-data.frame(are=factor(),model=factor(),correlation=numeric(),pval=numeric(),r2=numeric(),lambda=numeric(),coefficient=numeric())
+for(i in 4:22)
+	{
+	 namei<-colnames(dtf)[i]
+	 v<-dtf[,i]
+	 l<-phylosig(tree,resid(gls(v~Canine,dtf)),method="lambda",test=T)$lambda
+	 if(l>1)
+	 	  {
+	 	  	l=1
+	 	  }
+	 if(l<0)
+	 	  {
+	 	  	l=0
+	 	  }
+	 no.lambda<-gls(v~Canine,method="ML",dtf)
+	 fix.lambda<-gls(v~Canine,correlation=corPagel(l,phy=tree,form=~Species,fixed=TRUE),method="ML",dtf)
+	 t1<-try(gls(v~Canine,correlation=corPagel(l,phy=tree,form=~Species,fixed=FALSE),method="ML",dtf))
+	 loadError<-(is(t1,'try-error')|is(t1,'error'))
+	 if(loadError=="FALSE")
+	 	{
+	 	 free.lambda<-gls(v~Canine,correlation=corPagel(l,phy=tree,form=~Species,fixed=FALSE),method="ML",dtf)
+	 	l2<-attr(free.lambda$apVar,"Pars")[1]
+	 	       if(is.null(l2))
+	 	      {
+	 	        free.lambda<-fix.lambda
+	 	      }else
+	 	      {
+	 	      if(l2>1)
+	 	        {
+	 	  	     free.lambda<-fix.lambda
+	 	        }
+	 	      if(l2<0)
+	 	       {
+	 	  	    free.lambda<-fix.lambda
+	 	      }
+	 	      } 
+	 	 }else
+	 	{
+	 	 t1<-try(gls(v~Canine,correlation=corPagel(l,phy=tree,form=~Species,fixed=FALSE),method="ML",dtf))
+	 	 loadError<-(is(t1,'try-error')|is(t1,'error'))
+		 if(loadError==F)
+	 		{
+	 		 free.lambda<-gls(v~Canine,correlation=corPagel(l,phy=tree,form=~Species,fixed=FALSE),method="ML",dtf)
+	 		 l2<-attr(free.lambda$apVar,"Pars")[1]
+	 	       if(is.null(l2))
+	 	      {
+	 	        free.lambda<-fix.lambda
+	 	      }else
+	 	      {
+	 	      if(l2>1)
+	 	        {
+	 	  	     free.lambda<-fix.lambda
+	 	        }
+	 	      if(l2<0)
+	 	       {
+	 	  	    free.lambda<-fix.lambda
+	 	      }
+	 	      } 
+	 		}else
+	 		{
+	 		 t1<-try(gls(v~Canine,correlation=corPagel(l,phy=tree,form=~Species,fixed=FALSE),method="ML",dtf))
+	 	 	 loadError<-(is(t1,'try-error')|is(t1,'error'))
+		 	 if(loadError==F)
+	 			{
+	 		  	 free.lambda<-gls(v~Canine,correlation=corPagel(l,phy=tree,form=~Species,fixed=FALSE),method="ML",dtf)
+	 		  	 l2<-attr(free.lambda$apVar,"Pars")[1]
+	 	       if(is.null(l2))
+	 	      {
+	 	        free.lambda<-fix.lambda
+	 	      }else
+	 	      {
+	 	      if(l2>1)
+	 	        {
+	 	  	     free.lambda<-fix.lambda
+	 	        }
+	 	      if(l2<0)
+	 	       {
+	 	  	    free.lambda<-fix.lambda
+	 	      }
+	 	      } 
+	 			}else
+	 			{
+	 			 free.lambda<-gls(v~Canine,correlation=corPagel(l,phy=tree,form=~Species,fixed=TRUE),method="ML",dtf)
+	 			}
+	 	 	}
+	 	 }
+	 mod.choose<-anova(fix.lambda,free.lambda,no.lambda)
+	 model<-rownames(mod.choose)[which(min(mod.choose$AIC)==mod.choose$AIC)]
+	 if(length(model>1))
+	  {
+	   model=model[1]
+	  }
+	 if(model=="free.lambda")
+	  {
+	 	 l<-attr(free.lambda$apVar,"Pars")[1]
+	   cor<-cov2cor(phyl.vcv(as.matrix(dtf[,3:22]),vcv(tree),l)$R)[1,i-2]	
+	 	 p<-summary(free.lambda)$tTable[2,4]
+	 	 aov.free<-aov(free.lambda)
+	 	 RSS<-summary(aov.free)[[1]]["Residuals", "Sum Sq"]
+	 	 TSS<-summary(aov.free)[[1]]["Canine", "Sum Sq"]+RSS
+	 	 r<-1-RSS/TSS
+	 	 c<-free.lambda$coefficients[2]
+	 	}
+	 if(model=="fix.lambda")
+	 	{
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dtf[,3:22]),vcv(tree),l)$R)[1,i-2]	
+	 	 p<-summary(fix.lambda)$tTable[2,4]
+	 	 aov.fix<-aov(fix.lambda)
+	 	 RSS<-summary(aov.fix)[[1]]["Residuals", "Sum Sq"]
+	 	 TSS<-summary(aov.fix)[[1]]["Canine", "Sum Sq"]+RSS
+	 	 r<-1-RSS/TSS
+	 	 c<-fix.lambda$coefficients[2]
+	 	}
+	 if(model=="no.lambda")
+	 	{
+	 	 l=0
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dtf[,3:22]),vcv(tree),l)$R)[1,i-2]	
+	 	 p<-summary(no.lambda)$tTable[2,4]
+	 	 aov.no<-aov(no.lambda)
+	 	 RSS<-summary(aov.no)[[1]]["Residuals", "Sum Sq"]
+	 	 TSS<-summary(aov.no)[[1]]["Canine", "Sum Sq"]+RSS
+	 	 r<-1-RSS/TSS
+	 	 c<-no.lambda$coefficients[2]
+	 	}
+	 dfi<-data.frame(namei,model,cor,p,r,l,c)
+	 colnames(dfi)<-c("are","model","correlation","pval","r2","lambda","coefficient")
+	 canine.results<-rbind(canine.results,dfi)
+	 }
+canine.results
+````
+
+Testes now
+
+````{r}
+TestesnoT<-dtfnoT$Testes
+testes.results<-data.frame(are=factor(),model=factor(),correlation=numeric(),pval=numeric(),r2=numeric(),lambda=numeric(),coefficient=numeric())
+for(i in 2:22)
+	{
+	 namei<-colnames(dtfnoT)[i]
+	 v<-dtfnoT[,i]
+	 l<-phylosig(treenoT,resid(gls(v~Testes,dtfnoT)),method="lambda",test=T)$lambda
+	  if(l>1)
+	 	  {
+	 	  	l=1
+	 	  }
+	 if(l<0)
+	 	  {
+	 	  	l=0
+	 	  }
+	 no.lambda<-gls(v~TestesnoT,method="ML",dtfnoT)
+	 fix.lambda<-gls(v~TestesnoT,correlation=corPagel(l,phy=treenoT,form=~Species,fixed=TRUE),method="ML",dtfnoT)
+	 t1<-try(gls(v~TestesnoT,correlation=corPagel(l,phy=treenoT,form=~Species,fixed=FALSE),method="ML",dtfnoT))
+	 loadError<-(is(t1,'try-error')|is(t1,'error'))
+	 if(loadError=="FALSE")
+	 	{
+	 	 free.lambda<-gls(v~TestesnoT,correlation=corPagel(l,phy=treenoT,form=~Species,fixed=FALSE),method="ML",dtfnoT)
+	 	 l2<-attr(free.lambda$apVar,"Pars")[1]
+	 	       if(is.null(l2))
+	 	      {
+	 	        free.lambda<-fix.lambda
+	 	      }else
+	 	      {
+	 	      if(l2>1)
+	 	        {
+	 	  	     free.lambda<-fix.lambda
+	 	        }
+	 	      if(l2<0)
+	 	       {
+	 	  	    free.lambda<-fix.lambda
+	 	      }
+	 	      } 
+	 	}else
+	 	{
+	 	 t1<-try(gls(v~TestesnoT,correlation=corPagel(l,phy=treenoT,form=~Species,fixed=FALSE),method="ML",dtfnoT))
+	 	 loadError<-(is(t1,'try-error')|is(t1,'error'))
+		 if(loadError==F)
+	 		{
+	 		 free.lambda<-gls(v~TestesnoT,correlation=corPagel(l,phy=treenoT,form=~Species,fixed=FALSE),method="ML",dtfnoT)
+	 		 l2<-attr(free.lambda$apVar,"Pars")[1]
+	 	       if(is.null(l2))
+	 	      {
+	 	        free.lambda<-fix.lambda
+	 	      }else
+	 	      {
+	 	      if(l2>1)
+	 	        {
+	 	  	     free.lambda<-fix.lambda
+	 	        }
+	 	      if(l2<0)
+	 	       {
+	 	  	    free.lambda<-fix.lambda
+	 	      }
+	 	      } 
+	 		}else
+	 		{
+	 		 t1<-try(gls(v~TestesnoT,correlation=corPagel(l,phy=treenoT,form=~Species,fixed=FALSE),method="ML",dtfnoT))
+	 	 	 loadError<-(is(t1,'try-error')|is(t1,'error'))
+		 	 if(loadError==F)
+	 			{
+	 		  	 free.lambda<-gls(v~TestesnoT,correlation=corPagel(l,phy=treenoT,form=~Species,fixed=FALSE),method="ML",dtfnoT)
+	 		    l2<-attr(free.lambda$apVar,"Pars")[1]
+	 	       if(is.null(l2))
+	 	      {
+	 	        free.lambda<-fix.lambda
+	 	      }else
+	 	      {
+	 	      if(l2>1)
+	 	        {
+	 	  	     free.lambda<-fix.lambda
+	 	        }
+	 	      if(l2<0)
+	 	       {
+	 	  	    free.lambda<-fix.lambda
+	 	      }
+	 	      } 
+	 			}else
+	 			{
+	 			 free.lambda<-gls(v~TestesnoT,correlation=corPagel(l,phy=treenoT,form=~Species,fixed=TRUE),method="ML",dtfnoT)
+	 			}
+	 	 	}
+	 	 }
+	 mod.choose<-anova(fix.lambda,free.lambda,no.lambda)
+	 model<-rownames(mod.choose)[which(min(mod.choose$AIC)==mod.choose$AIC)]
+	 if(length(model>1))
+	  {
+	   model=model[1]
+	  }
+	 if(model=="free.lambda")
+	 	{
+	 	 l<-attr(free.lambda$apVar,"Pars")[1]
+	   cor<-cov2cor(phyl.vcv(as.matrix(dtfnoT[,1:22]),vcv(treenoT),l)$R)[1,i]	
+	 	 p<-summary(free.lambda)$tTable[2,4]
+	 	 aov.free<-aov(free.lambda)
+	 	 RSS<-summary(aov.free)[[1]]["Residuals", "Sum Sq"]
+	 	 TSS<-summary(aov.free)[[1]]["TestesnoT", "Sum Sq"]+RSS
+	 	 r<-1-RSS/TSS
+	 	 c<-free.lambda$coefficients[2]
+	 	}
+	 if(model=="fix.lambda")
+	 	{
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dtfnoT[,1:22]),vcv(treenoT),l)$R)[1,i]	
+	 	 p<-summary(fix.lambda)$tTable[2,4]
+	 	 aov.fix<-aov(fix.lambda)
+	 	 RSS<-summary(aov.fix)[[1]]["Residuals", "Sum Sq"]
+	 	 TSS<-summary(aov.fix)[[1]]["TestesnoT", "Sum Sq"]+RSS
+	 	 r<-1-RSS/TSS
+	 	 c<-fix.lambda$coefficients[2]
+	 	}
+	 if(model=="no.lambda")
+	 	{
+	 	 l=0
+	 	 cor<-cov2cor(phyl.vcv(as.matrix(dtfnoT[,1:22]),vcv(treenoT),l)$R)[1,i]	
+	 	 p<-summary(no.lambda)$tTable[2,4]
+	 	 aov.no<-aov(no.lambda)
+	 	 RSS<-summary(aov.no)[[1]]["Residuals", "Sum Sq"]
+	 	 TSS<-summary(aov.no)[[1]]["TestesnoT", "Sum Sq"]+RSS
+	 	 r<-1-RSS/TSS
+	 	 c<-no.lambda$coefficients[2]
+	 	}
+	 dfi<-data.frame(namei,model,cor,p,r,l,c)
+	 colnames(dfi)<-c("are","model","correlation","pval","r2","lambda","coefficient")
+	 testes.results<-rbind(testes.results,dfi)
+}
+testes.results
+````
+
