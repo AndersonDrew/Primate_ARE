@@ -1,6 +1,9 @@
 # Primate_ARE
 All coding for the Manuscript is found in the Rwork file. Files are numbered based on creation and order of analysis, not the order they appear in the MS
-(PLEASE NOTE AS OF 6/23/2023, RWORK FILE #3 HAS AN ERROR AND SHOULD NOT BE USED. UPDATES COMING SOON. PLEASE CONTACT WITH ANY QUESTIONS)
+
+(PLEASE NOTE RWORK FILE #3 HAS AN ERROR AND SHOULD NOT BE USED WITH THE EXCEPTION OF THE PHYLOHEATMAP.)
+A corrected version of File 3 is now available that has an explanation of the error in the original version and what was done to correct it
+Further mass.results, testes.results, and canine.results come from this work and the correlation values are incorrect. Look in the Corrected_Output folder for the new and correct version of these tables
 
 Supplemental Table contains all data tables reference in the MS.
 
