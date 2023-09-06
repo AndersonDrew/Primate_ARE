@@ -1,0 +1,1044 @@
+%!PS-Adobe-3.0 EPSF-3.0
+%%DocumentNeededResources: font Helvetica
+%%+ font Helvetica-Bold
+%%+ font Helvetica-Oblique
+%%+ font Helvetica-BoldOblique
+%%+ font Symbol
+%%Title: R Graphics Output
+%%Creator: R Software
+%%Pages: (atend)
+%%BoundingBox: 0 0 504 504
+%%EndComments
+%%BeginProlog
+/bp  { gs sRGB gs } def
+% begin .ps.prolog
+/gs  { gsave } bind def
+/gr  { grestore } bind def
+/ep  { showpage gr gr } bind def
+/m   { moveto } bind def
+/l  { rlineto } bind def
+/np  { newpath } bind def
+/cp  { closepath } bind def
+/f   { fill } bind def
+/o   { stroke } bind def
+/c   { newpath 0 360 arc } bind def
+/r   { 4 2 roll moveto 1 copy 3 -1 roll exch 0 exch rlineto 0 rlineto -1 mul 0 exch rlineto closepath } bind def
+/p1  { stroke } bind def
+/p2  { gsave bg fill grestore newpath } bind def
+/p3  { gsave bg fill grestore stroke } bind def
+/p6  { gsave bg eofill grestore newpath } bind def
+/p7  { gsave bg eofill grestore stroke } bind def
+/t   { 5 -2 roll moveto gsave rotate
+       1 index stringwidth pop
+       mul neg 0 rmoveto show grestore } bind def
+/ta  { 4 -2 roll moveto gsave rotate show } bind def
+/tb  { 2 -1 roll 0 rmoveto show } bind def
+/cl  { grestore gsave newpath 3 index 3 index moveto 1 index
+       4 -1 roll lineto  exch 1 index lineto lineto
+       closepath clip newpath } bind def
+/rgb { setrgbcolor } bind def
+/s   { scalefont setfont } bind def
+% end   .ps.prolog
+/sRGB { [ /CIEBasedABC
+          << /DecodeLMN
+               [ { dup 0.03928 le
+                        {12.92321 div}
+                        {0.055 add 1.055 div 2.4 exp }
+                     ifelse
+                 } bind dup dup
+               ]
+             /MatrixLMN [0.412457 0.212673 0.019334
+                         0.357576 0.715152 0.119192
+                         0.180437 0.072175 0.950301]
+             /WhitePoint [0.9505 1.0 1.0890]
+           >>
+         ] setcolorspace } bind def
+/srgb { setcolor } bind def
+%%IncludeResource: font Helvetica
+/Helvetica findfont
+dup length dict begin
+  {1 index /FID ne {def} {pop pop} ifelse} forall
+  /Encoding ISOLatin1Encoding def
+  currentdict
+  end
+/Font1 exch definefont pop
+%%IncludeResource: font Helvetica-Bold
+/Helvetica-Bold findfont
+dup length dict begin
+  {1 index /FID ne {def} {pop pop} ifelse} forall
+  /Encoding ISOLatin1Encoding def
+  currentdict
+  end
+/Font2 exch definefont pop
+%%IncludeResource: font Helvetica-Oblique
+/Helvetica-Oblique findfont
+dup length dict begin
+  {1 index /FID ne {def} {pop pop} ifelse} forall
+  /Encoding ISOLatin1Encoding def
+  currentdict
+  end
+/Font3 exch definefont pop
+%%IncludeResource: font Helvetica-BoldOblique
+/Helvetica-BoldOblique findfont
+dup length dict begin
+  {1 index /FID ne {def} {pop pop} ifelse} forall
+  /Encoding ISOLatin1Encoding def
+  currentdict
+  end
+/Font4 exch definefont pop
+%%IncludeResource: font Symbol
+/Symbol findfont
+dup length dict begin
+  {1 index /FID ne {def} {pop pop} ifelse} forall
+  currentdict
+  end
+/Font5 exch definefont pop
+%%EndProlog
+%%Page: 1 1
+bp
+59.76 299.81 246.02 498.02 cl
+1 1 1 srgb
+0.75 setlinewidth
+[] 0 setdash
+1 setlinecap
+1 setlinejoin
+10.00 setmiterlimit
+134.82 443.53 2.24 c p1
+229.84 413.33 2.24 c p1
+201.15 474.90 2.24 c p1
+0.00 0.00 504.00 504.00 cl
+0 0 0 srgb
+0.75 setlinewidth
+[] 0 setdash
+1 setlinecap
+1 setlinejoin
+10.00 setmiterlimit
+np
+66.66 299.81 m
+172.47 0 l
+o
+np
+66.66 299.81 m
+0 -5.98 l
+o
+np
+109.78 299.81 m
+0 -5.98 l
+o
+np
+152.89 299.81 m
+0 -5.98 l
+o
+np
+196.01 299.81 m
+0 -5.98 l
+o
+np
+239.13 299.81 m
+0 -5.98 l
+o
+/Font1 findfont 10 s
+66.66 278.29 (-1.0) .5 0 t
+109.78 278.29 (-0.5) .5 0 t
+152.89 278.29 (0.0) .5 0 t
+196.01 278.29 (0.5) .5 0 t
+239.13 278.29 (1.0) .5 0 t
+np
+59.76 490.68 m
+0 -183.53 l
+o
+np
+59.76 490.68 m
+-5.98 0 l
+o
+np
+59.76 444.80 m
+-5.98 0 l
+o
+np
+59.76 398.92 m
+-5.98 0 l
+o
+np
+59.76 353.03 m
+-5.98 0 l
+o
+np
+59.76 307.15 m
+-5.98 0 l
+o
+45.42 307.15 (1.0) .5 90 t
+45.42 353.03 (0.5) .5 90 t
+45.42 398.92 (0.0) .5 90 t
+45.42 444.80 (-0.5) .5 90 t
+45.42 490.68 (-1.0) .5 90 t
+np
+ 59.76 299.81 m
+186.26 0 l
+0 198.21 l
+-186.26 0 l
+cp p1
+0.00 252.00 252.00 504.00 cl
+/Font1 findfont 12 s
+0 0 0 srgb
+152.89 254.39 (CCorA1) .5 0 t
+21.51 398.92 (CCorA2) .5 90 t
+59.76 299.81 246.02 498.02 cl
+0.6510 0.6510 0.6510 srgb
+0.75 setlinewidth
+[ 2.25 3.75] 0 setdash
+1 setlinecap
+1 setlinejoin
+10.00 setmiterlimit
+np
+59.76 398.92 m
+186.26 0 l
+o
+np
+152.89 299.81 m
+0 198.21 l
+o
+/Font1 findfont 5 s
+0.9333 0.0706 0.5373 srgb
+148.70 357.47 (Aotus_nancymaae) .5 0 t
+99.04 372.78 (Callithr) 0 ta
+0.075 (ix_jacchus) tb gr
+144.47 377.68 (Ceb) 0 ta
+-0.100 (us_imitator) tb gr
+0.8039 0.5843 0.0471 srgb
+154.77 415.11 (Cercoceb) 0 ta
+-0.100 (us_atys) tb gr
+140.60 354.90 (Chloroceb) 0 ta
+-0.100 (us_sabaeus) tb gr
+134.89 399.91 (Colob) 0 ta
+-0.100 (us_angolensis) tb gr
+0 0.8039 0.8039 srgb
+206.31 338.63 (Gor) 0 ta
+0.075 (illa_gor) tb
+0.075 (illa) tb gr
+107.40 377.37 (Homo_sapiens) .5 0 t
+116.91 372.17 (Hylobates_moloch) .5 0 t
+0.8039 0.5843 0.0471 srgb
+127.72 420.15 (Macaca_f) 0 ta
+-0.150 (ascicular) tb
+0.075 (is) tb gr
+126.21 428.67 (Macaca_fuscata) .5 0 t
+107.52 432.56 (Macaca_m) 0 ta
+-0.050 (ulatta) tb gr
+132.39 419.93 (Macaca_nemestr) 0 ta
+0.075 (ina) tb gr
+154.66 464.03 (Mandr) 0 ta
+0.075 (illus_leucophaeus) tb gr
+195.81 466.44 (Mandr) 0 ta
+0.075 (illus_sphinx) tb gr
+0 0.8039 0.8039 srgb
+107.85 358.15 (Nomascus_leucogen) 0 ta
+-0.075 (ys) tb gr
+94.59 396.98 (P) 0 ta
+-0.200 (an_paniscus) tb gr
+86.74 401.04 (P) 0 ta
+-0.200 (an_troglodytes) tb gr
+0.8039 0.5843 0.0471 srgb
+125.13 422.64 (P) 0 ta
+-0.200 (apio_an) tb
+-0.050 (ubis) tb gr
+0 0.8039 0.8039 srgb
+189.06 349.57 (P) 0 ta
+-0.250 (ongo_abelii) tb gr
+0.9333 0.0706 0.5373 srgb
+174.13 362.94 (Saimir) 0 ta
+0.075 (i_boliviensis) tb gr
+0.8039 0.5843 0.0471 srgb
+173.88 443.50 (Theropithecus_gelada) .5 0 t
+101.80 411.48 (T) 0 ta
+-0.600 (r) tb
+-0.050 (ach) tb
+-0.150 (ypithecus_fr) tb
+-0.050 (ancoisi) tb gr
+/Font1 findfont 25 s
+0 0 0 srgb
+70.97 477.12 (A) .5 0 t
+0.94 setlinewidth
+[] 0 setdash
+np
+152.89 398.92 m
+-18.07 44.61 l
+o
+np
+152.89 398.92 m
+76.95 14.41 l
+o
+np
+152.89 398.92 m
+48.26 75.98 l
+o
+/bg { 0 0 0 srgb } def
+np
+ 133.84 435.26 m
+0.41 3.54 l
+-0.17 3.78 l
+-0.73 3.88 l
+-1.27 3.83 l
+0 0 l
+1.76 -3.63 l
+2.17 -3.29 l
+2.51 -2.84 l
+2.76 -2.26 l
+0 0 l
+-0.22 0.28 l
+-0.40 0.18 l
+-0.55 0.09 l
+-0.68 -0.02 l
+-0.77 -0.12 l
+-0.83 -0.21 l
+-0.84 -0.30 l
+-0.81 -0.37 l
+-0.74 -0.42 l
+-0.64 -0.45 l
+-0.50 -0.46 l
+-0.33 -0.45 l
+-0.16 -0.41 l
+0.03 -0.35 l
+cp p3
+np
+ 221.93 415.93 m
+3.39 -1.10 l
+3.74 -0.58 l
+3.95 -0.06 l
+4.00 0.49 l
+0 0 l
+-3.90 -1.00 l
+-3.67 -1.48 l
+-3.27 -1.90 l
+-2.76 -2.25 l
+0 0 l
+0.31 0.16 l
+0.26 0.35 l
+0.20 0.52 l
+0.11 0.67 l
+0.04 0.78 l
+-0.05 0.85 l
+-0.12 0.89 l
+-0.20 0.87 l
+-0.27 0.81 l
+-0.32 0.71 l
+-0.35 0.58 l
+-0.37 0.42 l
+-0.37 0.23 l
+-0.35 0.04 l
+cp p3
+np
+ 193.85 470.89 m
+3.12 1.73 l
+2.98 2.33 l
+2.73 2.85 l
+2.38 3.26 l
+0 0 l
+-1.94 -3.54 l
+-1.41 -3.69 l
+-0.85 -3.69 l
+-0.24 -3.55 l
+0 0 l
+0.10 0.34 l
+-0.08 0.42 l
+-0.25 0.50 l
+-0.41 0.55 l
+-0.55 0.55 l
+-0.65 0.55 l
+-0.73 0.51 l
+-0.78 0.45 l
+-0.77 0.36 l
+-0.74 0.26 l
+-0.67 0.13 l
+-0.55 0.02 l
+-0.42 -0.11 l
+-0.27 -0.23 l
+cp p3
+/Font1 findfont 11 s
+118.32 447.01 (T) 0 ta
+-1.320 (estes) tb gr
+229.84 416.81 (Mass) .5 0 t
+201.15 478.29 (Canine) .5 0 t
+311.76 299.81 498.02 498.02 cl
+1 1 1 srgb
+0.75 setlinewidth
+[] 0 setdash
+1 setlinecap
+1 setlinejoin
+10.00 setmiterlimit
+419.89 459.67 2.24 c p1
+386.29 455.63 2.24 c p1
+398.52 437.09 2.24 c p1
+398.31 366.62 2.24 c p1
+397.37 405.37 2.24 c p1
+393.49 452.61 2.24 c p1
+415.46 449.18 2.24 c p1
+421.11 454.66 2.24 c p1
+397.82 378.54 2.24 c p1
+372.00 417.02 2.24 c p1
+391.57 435.78 2.24 c p1
+390.10 442.32 2.24 c p1
+422.14 452.39 2.24 c p1
+402.64 379.96 2.24 c p1
+416.48 461.64 2.24 c p1
+401.74 454.29 2.24 c p1
+396.76 363.08 2.24 c p1
+396.98 443.00 2.24 c p1
+0.00 0.00 504.00 504.00 cl
+0 0 0 srgb
+0.75 setlinewidth
+[] 0 setdash
+1 setlinecap
+1 setlinejoin
+10.00 setmiterlimit
+np
+318.66 299.81 m
+172.47 0 l
+o
+np
+318.66 299.81 m
+0 -5.98 l
+o
+np
+361.78 299.81 m
+0 -5.98 l
+o
+np
+404.89 299.81 m
+0 -5.98 l
+o
+np
+448.01 299.81 m
+0 -5.98 l
+o
+np
+491.13 299.81 m
+0 -5.98 l
+o
+/Font1 findfont 10 s
+318.66 278.29 (-1.0) .5 0 t
+361.78 278.29 (-0.5) .5 0 t
+404.89 278.29 (0.0) .5 0 t
+448.01 278.29 (0.5) .5 0 t
+491.13 278.29 (1.0) .5 0 t
+np
+311.76 490.68 m
+0 -183.53 l
+o
+np
+311.76 490.68 m
+-5.98 0 l
+o
+np
+311.76 444.80 m
+-5.98 0 l
+o
+np
+311.76 398.92 m
+-5.98 0 l
+o
+np
+311.76 353.03 m
+-5.98 0 l
+o
+np
+311.76 307.15 m
+-5.98 0 l
+o
+297.42 307.15 (1.0) .5 90 t
+297.42 353.03 (0.5) .5 90 t
+297.42 398.92 (0.0) .5 90 t
+297.42 444.80 (-0.5) .5 90 t
+297.42 490.68 (-1.0) .5 90 t
+np
+ 311.76 299.81 m
+186.26 0 l
+0 198.21 l
+-186.26 0 l
+cp p1
+252.00 252.00 504.00 504.00 cl
+/Font1 findfont 12 s
+0 0 0 srgb
+404.89 254.39 (CCorA1) .5 0 t
+273.51 398.92 (CCorA2) .5 90 t
+311.76 299.81 498.02 498.02 cl
+0.6510 0.6510 0.6510 srgb
+0.75 setlinewidth
+[ 2.25 3.75] 0 setdash
+1 setlinecap
+1 setlinejoin
+10.00 setmiterlimit
+np
+311.76 398.92 m
+186.26 0 l
+o
+np
+404.89 299.81 m
+0 198.21 l
+o
+/Font1 findfont 5 s
+0.9333 0.0706 0.5373 srgb
+398.77 352.38 (Aotus_nancymaae) .5 0 t
+352.01 372.63 (Callithr) 0 ta
+0.075 (ix_jacchus) tb gr
+395.90 375.66 (Ceb) 0 ta
+-0.100 (us_imitator) tb gr
+0.8039 0.5843 0.0471 srgb
+402.69 425.19 (Cercoceb) 0 ta
+-0.100 (us_atys) tb gr
+391.70 356.77 (Chloroceb) 0 ta
+-0.100 (us_sabaeus) tb gr
+382.64 383.74 (Colob) 0 ta
+-0.100 (us_angolensis) tb gr
+0 0.8039 0.8039 srgb
+458.33 345.24 (Gor) 0 ta
+0.075 (illa_gor) tb
+0.075 (illa) tb gr
+360.92 387.05 (Homo_sapiens) .5 0 t
+366.48 363.88 (Hylobates_moloch) .5 0 t
+0.8039 0.5843 0.0471 srgb
+379.10 424.75 (Macaca_f) 0 ta
+-0.150 (ascicular) tb
+0.075 (is) tb gr
+375.30 433.95 (Macaca_fuscata) .5 0 t
+364.11 414.89 (Macaca_m) 0 ta
+-0.050 (ulatta) tb gr
+385.83 431.84 (Macaca_nemestr) 0 ta
+0.075 (ina) tb gr
+409.88 463.98 (Mandr) 0 ta
+0.075 (illus_leucophaeus) tb gr
+448.18 449.64 (Mandr) 0 ta
+0.075 (illus_sphinx) tb gr
+0 0.8039 0.8039 srgb
+362.19 365.19 (Nomascus_leucogen) 0 ta
+-0.075 (ys) tb gr
+343.73 396.48 (P) 0 ta
+-0.200 (an_paniscus) tb gr
+340.35 386.64 (P) 0 ta
+-0.200 (an_troglodytes) tb gr
+0.8039 0.5843 0.0471 srgb
+379.55 428.28 (P) 0 ta
+-0.200 (apio_an) tb
+-0.050 (ubis) tb gr
+0 0.8039 0.8039 srgb
+444.18 346.41 (P) 0 ta
+-0.250 (ongo_abelii) tb gr
+0.9333 0.0706 0.5373 srgb
+426.77 364.95 (Saimir) 0 ta
+0.075 (i_boliviensis) tb gr
+0.8039 0.5843 0.0471 srgb
+420.94 449.16 (Theropithecus_gelada) .5 0 t
+357.02 425.42 (T) 0 ta
+-0.600 (r) tb
+-0.050 (ach) tb
+-0.150 (ypithecus_fr) tb
+-0.050 (ancoisi) tb gr
+/Font1 findfont 7 s
+0 0 0 srgb
+427.39 487.59 (cARE) .5 0 t
+376.99 481.53 (aARE) .5 0 t
+395.33 453.67 (aSRE) .5 0 t
+395.02 347.96 (cSRE) .5 0 t
+393.62 406.21 (c3) .5 0 t
+/Font1 findfont 12 s
+0 0 1 srgb
+387.80 475.23 (ccnd1) .5 0 t
+420.74 470.01 (hk2) .5 0 t
+429.23 478.22 (hklk) .5 0 t
+/Font1 findfont 7 s
+0 0 0 srgb
+394.28 366.56 (mvdp) .5 0 t
+/Font1 findfont 10 s
+1 0 0 srgb
+355.55 423.59 (p21) .5 0 t
+/Font1 findfont 7 s
+0 0 0 srgb
+384.91 452.42 (pb2) .5 0 t
+382.71 462.29 (pem1) .5 0 t
+430.77 477.38 (pem2) .5 0 t
+401.51 368.75 (psa1) .5 0 t
+/Font1 findfont 10 s
+1 0 0 srgb
+422.27 490.52 (psa3) .5 0 t
+/Font1 findfont 7 s
+0 0 0 srgb
+400.16 479.57 (sc12) .5 0 t
+392.70 343.37 (slp2) .5 0 t
+393.03 463.26 (slp3) .5 0 t
+/Font1 findfont 25 s
+322.97 477.12 (B) .5 0 t
+59.76 47.81 246.02 246.02 cl
+1 1 1 srgb
+0.75 setlinewidth
+[] 0 setdash
+1 setlinecap
+1 setlinejoin
+10.00 setmiterlimit
+226.05 191.53 2.24 c p1
+189.38 161.33 2.24 c p1
+156.00 222.90 2.24 c p1
+0.00 0.00 504.00 504.00 cl
+0 0 0 srgb
+0.75 setlinewidth
+[] 0 setdash
+1 setlinecap
+1 setlinejoin
+10.00 setmiterlimit
+np
+66.66 47.81 m
+172.47 0 l
+o
+np
+66.66 47.81 m
+0 -5.98 l
+o
+np
+109.78 47.81 m
+0 -5.98 l
+o
+np
+152.89 47.81 m
+0 -5.98 l
+o
+np
+196.01 47.81 m
+0 -5.98 l
+o
+np
+239.13 47.81 m
+0 -5.98 l
+o
+/Font1 findfont 10 s
+66.66 26.29 (-1.0) .5 0 t
+109.78 26.29 (-0.5) .5 0 t
+152.89 26.29 (0.0) .5 0 t
+196.01 26.29 (0.5) .5 0 t
+239.13 26.29 (1.0) .5 0 t
+np
+59.76 238.68 m
+0 -183.53 l
+o
+np
+59.76 238.68 m
+-5.98 0 l
+o
+np
+59.76 192.80 m
+-5.98 0 l
+o
+np
+59.76 146.92 m
+-5.98 0 l
+o
+np
+59.76 101.03 m
+-5.98 0 l
+o
+np
+59.76 55.15 m
+-5.98 0 l
+o
+45.42 55.15 (1.0) .5 90 t
+45.42 101.03 (0.5) .5 90 t
+45.42 146.92 (0.0) .5 90 t
+45.42 192.80 (-0.5) .5 90 t
+45.42 238.68 (-1.0) .5 90 t
+np
+ 59.76 47.81 m
+186.26 0 l
+0 198.21 l
+-186.26 0 l
+cp p1
+0.00 0.00 252.00 252.00 cl
+/Font1 findfont 12 s
+0 0 0 srgb
+152.89 2.39 (CCorA3) .5 0 t
+21.51 146.92 (CCorA2) .5 90 t
+59.76 47.81 246.02 246.02 cl
+0.6510 0.6510 0.6510 srgb
+0.75 setlinewidth
+[ 2.25 3.75] 0 setdash
+1 setlinecap
+1 setlinejoin
+10.00 setmiterlimit
+np
+59.76 146.92 m
+186.26 0 l
+o
+np
+152.89 47.81 m
+0 198.21 l
+o
+/Font1 findfont 5 s
+0.9333 0.0706 0.5373 srgb
+136.24 105.47 (Aotus_nancymaae) .5 0 t
+139.58 120.78 (Callithr) 0 ta
+0.075 (ix_jacchus) tb gr
+147.03 125.68 (Ceb) 0 ta
+-0.100 (us_imitator) tb gr
+0.8039 0.5843 0.0471 srgb
+151.02 163.11 (Cercoceb) 0 ta
+-0.100 (us_atys) tb gr
+165.88 102.90 (Chloroceb) 0 ta
+-0.100 (us_sabaeus) tb gr
+66.45 147.91 (Colob) 0 ta
+-0.100 (us_angolensis) tb gr
+0 0.8039 0.8039 srgb
+124.38 86.63 (Gor) 0 ta
+0.075 (illa_gor) tb
+0.075 (illa) tb gr
+131.62 125.37 (Homo_sapiens) .5 0 t
+136.09 120.17 (Hylobates_moloch) .5 0 t
+0.8039 0.5843 0.0471 srgb
+173.43 168.15 (Macaca_f) 0 ta
+-0.150 (ascicular) tb
+0.075 (is) tb gr
+176.80 176.67 (Macaca_fuscata) .5 0 t
+153.52 180.56 (Macaca_m) 0 ta
+-0.050 (ulatta) tb gr
+176.01 167.93 (Macaca_nemestr) 0 ta
+0.075 (ina) tb gr
+86.16 212.03 (Mandr) 0 ta
+0.075 (illus_leucophaeus) tb gr
+133.36 214.44 (Mandr) 0 ta
+0.075 (illus_sphinx) tb gr
+0 0.8039 0.8039 srgb
+65.88 106.15 (Nomascus_leucogen) 0 ta
+-0.075 (ys) tb gr
+171.54 144.98 (P) 0 ta
+-0.200 (an_paniscus) tb gr
+159.66 149.04 (P) 0 ta
+-0.200 (an_troglodytes) tb gr
+0.8039 0.5843 0.0471 srgb
+155.42 170.64 (P) 0 ta
+-0.200 (apio_an) tb
+-0.050 (ubis) tb gr
+0 0.8039 0.8039 srgb
+146.92 97.57 (P) 0 ta
+-0.250 (ongo_abelii) tb gr
+0.9333 0.0706 0.5373 srgb
+172.12 110.94 (Saimir) 0 ta
+0.075 (i_boliviensis) tb gr
+0.8039 0.5843 0.0471 srgb
+118.31 191.50 (Theropithecus_gelada) .5 0 t
+63.15 159.48 (T) 0 ta
+-0.600 (r) tb
+-0.050 (ach) tb
+-0.150 (ypithecus_fr) tb
+-0.050 (ancoisi) tb gr
+0 0 0 srgb
+0.94 setlinewidth
+[] 0 setdash
+np
+152.89 146.92 m
+73.16 44.61 l
+o
+np
+152.89 146.92 m
+36.49 14.41 l
+o
+np
+152.89 146.92 m
+3.11 75.98 l
+o
+/bg { 0 0 0 srgb } def
+np
+ 217.73 191.16 m
+3.56 0.17 l
+3.70 0.78 l
+3.71 1.35 l
+3.58 1.87 l
+0 0 l
+-3.30 -2.32 l
+-2.90 -2.68 l
+-2.39 -2.94 l
+-1.78 -3.08 l
+0 0 l
+0.23 0.26 l
+0.12 0.42 l
+0 0.56 l
+-0.13 0.66 l
+-0.24 0.75 l
+-0.35 0.78 l
+-0.43 0.78 l
+-0.50 0.74 l
+-0.53 0.67 l
+-0.55 0.55 l
+-0.54 0.42 l
+-0.49 0.26 l
+-0.43 0.09 l
+-0.34 -0.09 l
+cp p3
+np
+ 181.12 162.38 m
+3.53 -0.43 l
+3.79 0.13 l
+3.88 0.70 l
+3.84 1.23 l
+0 0 l
+-3.64 -1.72 l
+-3.32 -2.15 l
+-2.85 -2.49 l
+-2.28 -2.73 l
+0 0 l
+0.27 0.22 l
+0.19 0.39 l
+0.09 0.55 l
+-0.01 0.68 l
+-0.11 0.77 l
+-0.21 0.83 l
+-0.29 0.85 l
+-0.37 0.81 l
+-0.41 0.75 l
+-0.45 0.64 l
+-0.45 0.50 l
+-0.45 0.34 l
+-0.40 0.16 l
+-0.35 -0.03 l
+cp p3
+np
+ 151.70 215.77 m
+1.82 3.06 l
+1.41 3.51 l
+0.94 3.84 l
+0.43 4.01 l
+0 0 l
+0.10 -4.04 l
+0.62 -3.90 l
+1.12 -3.61 l
+1.57 -3.20 l
+0 0 l
+-0.09 0.34 l
+-0.28 0.33 l
+-0.47 0.31 l
+-0.62 0.27 l
+-0.75 0.21 l
+-0.85 0.14 l
+-0.89 0.08 l
+-0.89 0 l
+-0.85 -0.08 l
+-0.77 -0.15 l
+-0.64 -0.21 l
+-0.49 -0.27 l
+-0.31 -0.31 l
+-0.11 -0.33 l
+cp p3
+/Font1 findfont 11 s
+209.54 195.01 (T) 0 ta
+-1.320 (estes) tb gr
+189.38 164.81 (Mass) .5 0 t
+156.00 226.29 (Canine) .5 0 t
+/Font1 findfont 25 s
+70.97 225.12 (C) .5 0 t
+311.76 47.81 498.02 246.02 cl
+1 1 1 srgb
+0.75 setlinewidth
+[] 0 setdash
+1 setlinecap
+1 setlinejoin
+10.00 setmiterlimit
+347.80 147.70 2.24 c p1
+351.59 151.89 2.24 c p1
+369.02 157.60 2.24 c p1
+435.24 157.04 2.24 c p1
+398.82 135.87 2.24 c p1
+354.44 155.56 2.24 c p1
+357.66 152.61 2.24 c p1
+352.51 100.04 2.24 c p1
+424.04 160.78 2.24 c p1
+387.88 126.10 2.24 c p1
+370.25 174.84 2.24 c p1
+364.10 162.38 2.24 c p1
+354.65 161.60 2.24 c p1
+422.70 134.36 2.24 c p1
+345.95 151.08 2.24 c p1
+352.86 129.35 2.24 c p1
+438.57 137.32 2.24 c p1
+363.46 151.78 2.24 c p1
+0.00 0.00 504.00 504.00 cl
+0 0 0 srgb
+0.75 setlinewidth
+[] 0 setdash
+1 setlinecap
+1 setlinejoin
+10.00 setmiterlimit
+np
+318.66 47.81 m
+172.47 0 l
+o
+np
+318.66 47.81 m
+0 -5.98 l
+o
+np
+361.78 47.81 m
+0 -5.98 l
+o
+np
+404.89 47.81 m
+0 -5.98 l
+o
+np
+448.01 47.81 m
+0 -5.98 l
+o
+np
+491.13 47.81 m
+0 -5.98 l
+o
+/Font1 findfont 10 s
+318.66 26.29 (-1.0) .5 0 t
+361.78 26.29 (-0.5) .5 0 t
+404.89 26.29 (0.0) .5 0 t
+448.01 26.29 (0.5) .5 0 t
+491.13 26.29 (1.0) .5 0 t
+np
+311.76 238.68 m
+0 -183.53 l
+o
+np
+311.76 238.68 m
+-5.98 0 l
+o
+np
+311.76 192.80 m
+-5.98 0 l
+o
+np
+311.76 146.92 m
+-5.98 0 l
+o
+np
+311.76 101.03 m
+-5.98 0 l
+o
+np
+311.76 55.15 m
+-5.98 0 l
+o
+297.42 55.15 (1.0) .5 90 t
+297.42 101.03 (0.5) .5 90 t
+297.42 146.92 (0.0) .5 90 t
+297.42 192.80 (-0.5) .5 90 t
+297.42 238.68 (-1.0) .5 90 t
+np
+ 311.76 47.81 m
+186.26 0 l
+0 198.21 l
+-186.26 0 l
+cp p1
+252.00 0.00 504.00 252.00 cl
+/Font1 findfont 12 s
+0 0 0 srgb
+404.89 2.39 (CCorA3) .5 0 t
+273.51 146.92 (CCorA2) .5 90 t
+311.76 47.81 498.02 246.02 cl
+0.6510 0.6510 0.6510 srgb
+0.75 setlinewidth
+[ 2.25 3.75] 0 setdash
+1 setlinecap
+1 setlinejoin
+10.00 setmiterlimit
+np
+311.76 146.92 m
+186.26 0 l
+o
+np
+404.89 47.81 m
+0 198.21 l
+o
+/Font1 findfont 5 s
+0.9333 0.0706 0.5373 srgb
+413.21 100.38 (Aotus_nancymaae) .5 0 t
+379.70 120.63 (Callithr) 0 ta
+0.075 (ix_jacchus) tb gr
+388.30 123.66 (Ceb) 0 ta
+-0.100 (us_imitator) tb gr
+0.8039 0.5843 0.0471 srgb
+416.52 173.19 (Cercoceb) 0 ta
+-0.100 (us_atys) tb gr
+418.88 104.77 (Chloroceb) 0 ta
+-0.100 (us_sabaeus) tb gr
+344.20 131.74 (Colob) 0 ta
+-0.100 (us_angolensis) tb gr
+0 0.8039 0.8039 srgb
+377.96 93.24 (Gor) 0 ta
+0.075 (illa_gor) tb
+0.075 (illa) tb gr
+409.16 135.05 (Homo_sapiens) .5 0 t
+375.66 111.88 (Hylobates_moloch) .5 0 t
+0.8039 0.5843 0.0471 srgb
+430.20 172.75 (Macaca_f) 0 ta
+-0.150 (ascicular) tb
+0.075 (is) tb gr
+407.97 181.95 (Macaca_fuscata) .5 0 t
+428.04 162.89 (Macaca_m) 0 ta
+-0.050 (ulatta) tb gr
+425.10 179.84 (Macaca_nemestr) 0 ta
+0.075 (ina) tb gr
+374.22 211.98 (Mandr) 0 ta
+0.075 (illus_leucophaeus) tb gr
+351.62 197.64 (Mandr) 0 ta
+0.075 (illus_sphinx) tb gr
+0 0.8039 0.8039 srgb
+317.41 113.19 (Nomascus_leucogen) 0 ta
+-0.075 (ys) tb gr
+401.15 144.48 (P) 0 ta
+-0.200 (an_paniscus) tb gr
+405.85 134.64 (P) 0 ta
+-0.200 (an_troglodytes) tb gr
+0.8039 0.5843 0.0471 srgb
+390.79 176.28 (P) 0 ta
+-0.200 (apio_an) tb
+-0.050 (ubis) tb gr
+0 0.8039 0.8039 srgb
+372.45 94.41 (P) 0 ta
+-0.250 (ongo_abelii) tb gr
+0.9333 0.0706 0.5373 srgb
+440.79 112.95 (Saimir) 0 ta
+0.075 (i_boliviensis) tb gr
+0.8039 0.5843 0.0471 srgb
+373.40 197.16 (Theropithecus_gelada) .5 0 t
+303.97 173.42 (T) 0 ta
+-0.600 (r) tb
+-0.050 (ach) tb
+-0.150 (ypithecus_fr) tb
+-0.050 (ancoisi) tb gr
+/Font1 findfont 7 s
+0 0 0 srgb
+403.78 235.59 (cARE) .5 0 t
+397.88 229.53 (aARE) .5 0 t
+389.84 201.67 (aSRE) .5 0 t
+390.62 95.96 (cSRE) .5 0 t
+420.46 154.21 (c3) .5 0 t
+/Font1 findfont 12 s
+0 0 1 srgb
+392.71 223.23 (ccnd1) .5 0 t
+396.86 218.01 (hk2) .5 0 t
+470.97 226.22 (hklk) .5 0 t
+/Font1 findfont 7 s
+0 0 0 srgb
+385.35 114.56 (mvdp) .5 0 t
+/Font1 findfont 10 s
+1 0 0 srgb
+434.23 171.59 (p21) .5 0 t
+/Font1 findfont 7 s
+0 0 0 srgb
+365.53 200.42 (pb2) .5 0 t
+383.09 210.29 (pem1) .5 0 t
+384.19 225.38 (pem2) .5 0 t
+422.59 116.75 (psa1) .5 0 t
+/Font1 findfont 10 s
+1 0 0 srgb
+399.02 238.52 (psa3) .5 0 t
+/Font1 findfont 7 s
+0 0 0 srgb
+429.66 227.57 (sc12) .5 0 t
+418.41 91.37 (slp2) .5 0 t
+398.04 211.26 (slp3) .5 0 t
+/Font1 findfont 25 s
+322.97 225.12 (D) .5 0 t
+ep
+%%Trailer
+%%Pages: 1
+%%EOF
