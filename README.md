@@ -5,6 +5,10 @@ All coding for the Manuscript is found in the Rwork file. Files are numbered bas
 A corrected version of File 3 is now available that has an explanation of the error in the original version and what was done to correct it
 Further mass.results, testes.results, and canine.results come from this work and the correlation values are incorrect. Look in the Corrected_Output folder for the new and correct version of these tables
 
+Other figures that were adjusted for the new analysis: Table_Significant_ARE, CCorAplot, and networkFig
+
+We also redid rpkm and sexbias results to account for error discussed above. New results can be found for: S7-allrpkmsexbiasresults to account, and Table_ExpressionList
+
 Supplemental Table contains all data tables reference in the MS.
 
 Stuff Used is all data used in generating data that is not in the supplemental section. Items such as motif sequences, or transitional tables as data is analyzed. These tables are called in the Rwork files.
